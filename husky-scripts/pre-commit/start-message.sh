@@ -1,4 +1,5 @@
-# Import des fonctions utilitaires
+#!/bin/bash
+
 source "$(dirname "$0")/../utils.sh"
 
 echo_separator

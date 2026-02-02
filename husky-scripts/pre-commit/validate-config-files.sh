@@ -1,3 +1,5 @@
+#!/bin/bash
+
 source "$(dirname "$0")/../utils.sh"
 
 if [ "$BYPASS_PROTECTED_FILES" = "true" ]; then

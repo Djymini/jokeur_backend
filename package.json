@@ -3,5 +3,9 @@
     "husky": "^9.1.7",
     "prettier": "^3.8.1",
     "prettier-plugin-java": "^2.8.1"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "prettier": "npx prettier --write ."
   }
 }
