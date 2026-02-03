@@ -13,7 +13,7 @@ public class JokeurApiApplication {
     SpringApplication.run(JokeurApiApplication.class, args);
   }
 
-  @GetMapping("/test")
+  @GetMapping("/hello")
   public String sayHello() {
     return "Hello World!";
   }
