@@ -44,7 +44,7 @@ jobs:
           context: .
           file: ./docker/Dockerfile
           push: true
-          tags: ashleyby/jokeur-api:${{ steps.set_tag.outputs.tag }}
+          tags: ashleylby/jokeur-api:${{ steps.set_tag.outputs.tag }}
 
   deploy:
     name: Deploy to VPS
