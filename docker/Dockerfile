@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copie du projet et build
 COPY pom.xml .
+COPY checkstyle.xml .
 RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn clean package -DskipTests
