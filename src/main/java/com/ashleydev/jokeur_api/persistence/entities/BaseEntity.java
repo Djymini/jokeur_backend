@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 @Getter
 public abstract class BaseEntity {
 
-    @Id
+    /* @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; */
 
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
