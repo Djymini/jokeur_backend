@@ -16,80 +16,65 @@ import org.springframework.stereotype.Service;
 @Service
 public class HealthRecordService {
 
-    @Autowired
-    private HealthRecordRepository healthRecordRepository;
+  @Autowired
+  private HealthRecordRepository healthRecordRepository;
 
-    @Autowired
-    private OwnerRepository ownerRepository;
+  @Autowired
+  private OwnerRepository ownerRepository;
 
-    @Autowired
-    private HealthRecordRules healthRecordRules;
+  @Autowired
+  private HealthRecordRules healthRecordRules;
 
-    public HealthRecordResponseDTO create(HealthRecordRequestDTO dto) {
-        healthRecordRules.validateCreate(dto);
-        final Long ownerId = dto.ownerId();
+  public HealthRecordResponseDTO create(HealthRecordRequestDTO dto) {
+    healthRecordRules.validateCreate(dto);
+    final Long ownerId = dto.ownerId();
 
+    OwnerEntity owner = ownerRepository.findById(ownerId).orElseThrow(() -> new OwnerNotFoundException(ownerId));
 
-        OwnerEntity owner = ownerRepository
-                .findById(ownerId)
-                .orElseThrow(() -> new OwnerNotFoundException(ownerId));
+    HealthRecordEntity entity = HealthRecordMapper.toEntity(dto, owner);
+    HealthRecordEntity saved = healthRecordRepository.save(entity);
 
-        HealthRecordEntity entity = HealthRecordMapper.toEntity(dto, owner);
-        HealthRecordEntity saved = healthRecordRepository.save(entity);
+    return HealthRecordMapper.toResponseDto(saved);
+  }
 
-        return HealthRecordMapper.toResponseDto(saved);
-    }
+  public HealthRecordResponseDTO getById(Long healthRecordNumber) {
+    return healthRecordRepository.findResponseById(healthRecordNumber).orElseThrow(() -> new HealthRecordNotFoundException(healthRecordNumber));
+  }
 
-    public HealthRecordResponseDTO getById(Long healthRecordNumber) {
-        return healthRecordRepository
-                .findResponseById(healthRecordNumber)
-                .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordNumber));
-    }
+  public List<HealthRecordDashboardDTO> getDashboardByOwner(Long ownerId) {
+    return healthRecordRepository.findByOwner_IdOwner(ownerId).stream().map(HealthRecordMapper::toDashboardDto).toList();
+  }
 
+  public List<HealthRecordMyAnimalsDTO> getMyAnimalsByOwner(Long ownerId) {
+    return healthRecordRepository.findAllByOwner_IdOwner(ownerId).stream().map(HealthRecordMapper::toMyAnimalsDto).toList();
+  }
 
-    public List<HealthRecordDashboardDTO> getDashboardByOwner(Long ownerId) {
-        return healthRecordRepository
-                .findByOwner_IdOwner(ownerId)
-                .stream()
-                .map(HealthRecordMapper::toDashboardDto)
-                .toList();
-    }
+  public HealthRecordResponseDTO updatePartial(Long healthRecordNumber, HealthRecordUpdateDTO dto) {
+    healthRecordRules.validateUpdate(dto);
 
-    public List<HealthRecordMyAnimalsDTO> getMyAnimalsByOwner(Long ownerId) {
-        return healthRecordRepository
-                .findAllByOwner_IdOwner(ownerId)
-                .stream()
-                .map(HealthRecordMapper::toMyAnimalsDto)
-                .toList();
-    }
+    HealthRecordEntity entity = healthRecordRepository
+      .findById(healthRecordNumber)
+      .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordNumber));
 
-    public HealthRecordResponseDTO updatePartial(Long healthRecordNumber, HealthRecordUpdateDTO dto) {
-        healthRecordRules.validateUpdate(dto);
+    if (dto.getPetName() != null) entity.setPetName(dto.getPetName());
+    if (dto.getBreed() != null) entity.setBreed(dto.getBreed());
+    if (dto.getSex() != null) entity.setSex(dto.getSex());
+    if (dto.getBirthDate() != null) entity.setBirthDate(dto.getBirthDate());
+    if (dto.getCurrentWeight() != null) entity.setCurrentWeight(dto.getCurrentWeight());
+    if (dto.getColor() != null) entity.setColor(dto.getColor());
+    if (dto.getIdentificationNumber() != null) entity.setIdentificationNumber(dto.getIdentificationNumber());
+    if (dto.getTattooNumber() != null) entity.setTattooNumber(dto.getTattooNumber());
+    if (dto.getAllergy() != null) entity.setAllergy(dto.getAllergy());
 
-        HealthRecordEntity entity = healthRecordRepository
-                .findById(healthRecordNumber)
-                .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordNumber));
+    HealthRecordEntity saved = healthRecordRepository.save(entity);
+    return HealthRecordMapper.toResponseDto(saved);
+  }
 
-        if (dto.getPetName() != null) entity.setPetName(dto.getPetName());
-        if (dto.getBreed() != null) entity.setBreed(dto.getBreed());
-        if (dto.getSex() != null) entity.setSex(dto.getSex());
-        if (dto.getBirthDate() != null) entity.setBirthDate(dto.getBirthDate());
-        if (dto.getCurrentWeight() != null) entity.setCurrentWeight(dto.getCurrentWeight());
-        if (dto.getColor() != null) entity.setColor(dto.getColor());
-        if (dto.getIdentificationNumber() != null) entity.setIdentificationNumber(dto.getIdentificationNumber());
-        if (dto.getTattooNumber() != null) entity.setTattooNumber(dto.getTattooNumber());
-        if (dto.getAllergy() != null) entity.setAllergy(dto.getAllergy());
+  public void delete(Long healthRecordNumber) {
+    HealthRecordEntity entity = healthRecordRepository
+      .findById(healthRecordNumber)
+      .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordNumber));
 
-        HealthRecordEntity saved = healthRecordRepository.save(entity);
-        return HealthRecordMapper.toResponseDto(saved);
-    }
-
-
-    public void delete(Long healthRecordNumber) {
-        HealthRecordEntity entity = healthRecordRepository
-                .findById(healthRecordNumber)
-                .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordNumber));
-
-        healthRecordRepository.delete(entity);
-    }
+    healthRecordRepository.delete(entity);
+  }
 }

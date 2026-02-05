@@ -13,43 +13,38 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/health-records")
 public class HealthRecordController {
 
-    @Autowired
-    private HealthRecordService healthRecordService;
+  @Autowired
+  private HealthRecordService healthRecordService;
 
-    @PostMapping
-    public ResponseEntity<HealthRecordResponseDTO> createHealthRecord(
-            @Valid @RequestBody HealthRecordRequestDTO dto) {
+  @PostMapping
+  public ResponseEntity<HealthRecordResponseDTO> createHealthRecord(@Valid @RequestBody HealthRecordRequestDTO dto) {
+    HealthRecordResponseDTO saved = healthRecordService.create(dto);
+    return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+  }
 
-        HealthRecordResponseDTO saved = healthRecordService.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-    }
+  @GetMapping("/{healthRecordNumber}")
+  public HealthRecordResponseDTO getById(@PathVariable Long healthRecordNumber) {
+    return healthRecordService.getById(healthRecordNumber);
+  }
 
-    @GetMapping("/{healthRecordNumber}")
-    public HealthRecordResponseDTO getById(@PathVariable Long healthRecordNumber) {
-        return healthRecordService.getById(healthRecordNumber);
-    }
+  @GetMapping("/dashboard")
+  public List<HealthRecordDashboardDTO> dashboard(@RequestParam Long ownerId) {
+    return healthRecordService.getDashboardByOwner(ownerId);
+  }
 
-    @GetMapping("/dashboard")
-    public List<HealthRecordDashboardDTO> dashboard(@RequestParam Long ownerId) {
-        return healthRecordService.getDashboardByOwner(ownerId);
-    }
+  @GetMapping("/my-animals")
+  public List<HealthRecordMyAnimalsDTO> myAnimals(@RequestParam Long ownerId) {
+    return healthRecordService.getMyAnimalsByOwner(ownerId);
+  }
 
-    @GetMapping("/my-animals")
-    public List<HealthRecordMyAnimalsDTO> myAnimals(@RequestParam Long ownerId) {
-        return healthRecordService.getMyAnimalsByOwner(ownerId);
-    }
+  @PatchMapping("/{healthRecordNumber}")
+  public HealthRecordResponseDTO updatePartial(@PathVariable Long healthRecordNumber, @Valid @RequestBody HealthRecordUpdateDTO dto) {
+    return healthRecordService.updatePartial(healthRecordNumber, dto);
+  }
 
-    @PatchMapping("/{healthRecordNumber}")
-    public HealthRecordResponseDTO updatePartial(
-            @PathVariable Long healthRecordNumber,
-            @Valid @RequestBody HealthRecordUpdateDTO dto) {
-
-        return healthRecordService.updatePartial(healthRecordNumber, dto);
-    }
-
-    @DeleteMapping("/{healthRecordNumber}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long healthRecordNumber) {
-        healthRecordService.delete(healthRecordNumber);
-    }
+  @DeleteMapping("/{healthRecordNumber}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void delete(@PathVariable Long healthRecordNumber) {
+    healthRecordService.delete(healthRecordNumber);
+  }
 }

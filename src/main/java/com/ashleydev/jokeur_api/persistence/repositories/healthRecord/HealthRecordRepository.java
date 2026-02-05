@@ -11,28 +11,29 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity, Long> {
+  List<HealthRecordDashboardView> findByOwner_IdOwner(Long ownerId);
 
-    List<HealthRecordDashboardView> findByOwner_IdOwner(Long ownerId);
+  List<HealthRecordMyAnimalsView> findAllByOwner_IdOwner(Long ownerId);
 
-    List<HealthRecordMyAnimalsView> findAllByOwner_IdOwner(Long ownerId);
-
-    @Query("""
-    select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO(
-      hr.healthRecordNumber,
-      hr.owner.idOwner,
-      hr.petName,
-      hr.animalType,
-      hr.breed,
-      hr.sex,
-      hr.birthDate,
-      hr.currentWeight,
-      hr.color,
-      hr.identificationNumber,
-      hr.tattooNumber,
-      hr.allergy
-    )
-    from HealthRecordEntity hr
-    where hr.healthRecordNumber = :healthRecordNumber
-  """)
-    Optional<HealthRecordResponseDTO> findResponseById(@Param("healthRecordNumber") Long healthRecordNumber);
+  @Query(
+    """
+      select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO(
+        hr.healthRecordNumber,
+        hr.owner.idOwner,
+        hr.petName,
+        hr.animalType,
+        hr.breed,
+        hr.sex,
+        hr.birthDate,
+        hr.currentWeight,
+        hr.color,
+        hr.identificationNumber,
+        hr.tattooNumber,
+        hr.allergy
+      )
+      from HealthRecordEntity hr
+      where hr.healthRecordNumber = :healthRecordNumber
+    """
+  )
+  Optional<HealthRecordResponseDTO> findResponseById(@Param("healthRecordNumber") Long healthRecordNumber);
 }

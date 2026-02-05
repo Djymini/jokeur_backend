@@ -5,10 +5,9 @@ import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordUpdateEmptyE
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordValidationException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -83,11 +82,11 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
   }
 
-    @ExceptionHandler(OwnerUpdateEmptyException.class)
-    public ResponseEntity<Map<String, Object>> handleOwnerUpdateEmpty(OwnerUpdateEmptyException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("error", "OWNER_UPDATE_EMPTY");
-        body.put("message", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
-    }
+  @ExceptionHandler(OwnerUpdateEmptyException.class)
+  public ResponseEntity<Map<String, Object>> handleOwnerUpdateEmpty(OwnerUpdateEmptyException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("error", "OWNER_UPDATE_EMPTY");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+  }
 }
