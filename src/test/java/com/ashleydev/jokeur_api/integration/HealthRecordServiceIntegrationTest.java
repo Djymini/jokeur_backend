@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.profiles.active=integration")
 @ActiveProfiles("integration")
 @Transactional
 class HealthRecordServiceIntegrationTest {
