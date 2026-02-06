@@ -1,6 +1,7 @@
 package com.ashleydev.jokeur_api.persistence.repositories.healthRecord;
 
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import java.util.List;
 import java.util.Optional;
@@ -11,29 +12,41 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity, Long> {
-  List<HealthRecordDashboardView> findByOwner_IdOwner(Long ownerId);
 
-  List<HealthRecordMyAnimalsView> findAllByOwner_IdOwner(Long ownerId);
+    // ---- Dashboard
 
-  @Query(
-    """
-      select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO(
-        hr.healthRecordNumber,
-        hr.owner.idOwner,
-        hr.petName,
-        hr.animalType,
-        hr.breed,
-        hr.sex,
-        hr.birthDate,
-        hr.currentWeight,
-        hr.color,
-        hr.identificationNumber,
-        hr.tattooNumber,
-        hr.allergy
-      )
-      from HealthRecordEntity hr
-      where hr.healthRecordNumber = :healthRecordNumber
-    """
-  )
-  Optional<HealthRecordResponseDTO> findResponseById(@Param("healthRecordNumber") Long healthRecordNumber);
+    @Query("""
+    select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO(
+      hr.healthRecordNumber,
+      hr.petName
+    )
+    from HealthRecordEntity hr
+    where hr.owner.idOwner = :ownerId
+    order by hr.petName asc
+  """)
+    List<HealthRecordDashboardDTO> findDashboardDtosByOwnerId(@Param("ownerId") Long ownerId);
+
+
+    // ---- My Animals
+
+    @Query("""
+    select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO(
+      hr.healthRecordNumber,
+      hr.petName,
+      hr.animalType,
+      hr.breed,
+      hr.sex,
+      hr.currentWeight
+    )
+    from HealthRecordEntity hr
+    where hr.owner.idOwner = :ownerId
+    order by hr.petName asc
+  """)
+    List<HealthRecordMyAnimalsDTO> findMyAnimalsDtosByOwnerId(@Param("ownerId") Long ownerId);
+
+    Optional<HealthRecordEntity> findByHealthRecordNumber(Long healthRecordNumber);
+
+    boolean existsByHealthRecordNumber(Long healthRecordNumber);
+
+    void deleteByHealthRecordNumber(Long healthRecordNumber);
 }
