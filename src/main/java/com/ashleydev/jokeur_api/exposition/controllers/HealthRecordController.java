@@ -18,45 +18,42 @@ import org.springframework.web.bind.annotation.*;
 @SuppressWarnings("unused")
 public class HealthRecordController {
 
-    private final HealthRecordService healthRecordService;
+  private final HealthRecordService healthRecordService;
 
-    @Autowired
-    public HealthRecordController(HealthRecordService healthRecordService) {
-        this.healthRecordService = healthRecordService;
-    }
+  @Autowired
+  public HealthRecordController(HealthRecordService healthRecordService) {
+    this.healthRecordService = healthRecordService;
+  }
 
-    @PostMapping
-    public ResponseEntity<HealthRecordResponseDTO> createHealthRecord(@Valid @RequestBody HealthRecordRequestDTO dto) {
-        HealthRecordResponseDTO saved = healthRecordService.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-    }
+  @PostMapping
+  public ResponseEntity<HealthRecordResponseDTO> createHealthRecord(@Valid @RequestBody HealthRecordRequestDTO dto) {
+    HealthRecordResponseDTO saved = healthRecordService.create(dto);
+    return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+  }
 
-    @GetMapping("/{healthRecordNumber}")
-    public HealthRecordResponseDTO getByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
-        return healthRecordService.getByHealthRecordNumber(healthRecordNumber);
-    }
+  @GetMapping("/{healthRecordNumber}")
+  public HealthRecordResponseDTO getByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
+    return healthRecordService.getByHealthRecordNumber(healthRecordNumber);
+  }
 
-    @GetMapping("/dashboard")
-    public List<HealthRecordDashboardDTO> dashboard(@RequestParam Long ownerId) {
-        return healthRecordService.getDashboardByOwner(ownerId);
-    }
+  @GetMapping("/dashboard")
+  public List<HealthRecordDashboardDTO> dashboard(@RequestParam Long ownerId) {
+    return healthRecordService.getDashboardByOwner(ownerId);
+  }
 
-    @GetMapping("/my-animals")
-    public List<HealthRecordMyAnimalsDTO> myAnimals(@RequestParam Long ownerId) {
-        return healthRecordService.getMyAnimalsByOwner(ownerId);
-    }
+  @GetMapping("/my-animals")
+  public List<HealthRecordMyAnimalsDTO> myAnimals(@RequestParam Long ownerId) {
+    return healthRecordService.getMyAnimalsByOwner(ownerId);
+  }
 
-    @PatchMapping("/{healthRecordNumber}")
-    public HealthRecordResponseDTO updatePartial(
-            @PathVariable Long healthRecordNumber,
-            @Valid @RequestBody HealthRecordUpdateDTO dto
-    ) {
-        return healthRecordService.updatePartial(healthRecordNumber, dto);
-    }
+  @PatchMapping("/{healthRecordNumber}")
+  public HealthRecordResponseDTO updatePartial(@PathVariable Long healthRecordNumber, @Valid @RequestBody HealthRecordUpdateDTO dto) {
+    return healthRecordService.updatePartial(healthRecordNumber, dto);
+  }
 
-    @DeleteMapping("/{healthRecordNumber}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
-        healthRecordService.deleteByHealthRecordNumber(healthRecordNumber);
-    }
+  @DeleteMapping("/{healthRecordNumber}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
+    healthRecordService.deleteByHealthRecordNumber(healthRecordNumber);
+  }
 }

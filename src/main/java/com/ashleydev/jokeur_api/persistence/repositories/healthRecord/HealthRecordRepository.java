@@ -12,41 +12,43 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity, Long> {
+  // ---- Dashboard
 
-    // ---- Dashboard
+  @Query(
+    """
+      select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO(
+        hr.healthRecordNumber,
+        hr.petName
+      )
+      from HealthRecordEntity hr
+      where hr.owner.idOwner = :ownerId
+      order by hr.petName asc
+    """
+  )
+  List<HealthRecordDashboardDTO> findDashboardDtosByOwnerId(@Param("ownerId") Long ownerId);
 
-    @Query("""
-    select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO(
-      hr.healthRecordNumber,
-      hr.petName
-    )
-    from HealthRecordEntity hr
-    where hr.owner.idOwner = :ownerId
-    order by hr.petName asc
-  """)
-    List<HealthRecordDashboardDTO> findDashboardDtosByOwnerId(@Param("ownerId") Long ownerId);
+  // ---- My Animals
 
+  @Query(
+    """
+      select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO(
+        hr.healthRecordNumber,
+        hr.petName,
+        hr.animalType,
+        hr.breed,
+        hr.sex,
+        hr.currentWeight
+      )
+      from HealthRecordEntity hr
+      where hr.owner.idOwner = :ownerId
+      order by hr.petName asc
+    """
+  )
+  List<HealthRecordMyAnimalsDTO> findMyAnimalsDtosByOwnerId(@Param("ownerId") Long ownerId);
 
-    // ---- My Animals
+  Optional<HealthRecordEntity> findByHealthRecordNumber(Long healthRecordNumber);
 
-    @Query("""
-    select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO(
-      hr.healthRecordNumber,
-      hr.petName,
-      hr.animalType,
-      hr.breed,
-      hr.sex,
-      hr.currentWeight
-    )
-    from HealthRecordEntity hr
-    where hr.owner.idOwner = :ownerId
-    order by hr.petName asc
-  """)
-    List<HealthRecordMyAnimalsDTO> findMyAnimalsDtosByOwnerId(@Param("ownerId") Long ownerId);
+  boolean existsByHealthRecordNumber(Long healthRecordNumber);
 
-    Optional<HealthRecordEntity> findByHealthRecordNumber(Long healthRecordNumber);
-
-    boolean existsByHealthRecordNumber(Long healthRecordNumber);
-
-    void deleteByHealthRecordNumber(Long healthRecordNumber);
+  void deleteByHealthRecordNumber(Long healthRecordNumber);
 }
