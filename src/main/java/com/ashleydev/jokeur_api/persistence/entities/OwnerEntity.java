@@ -57,7 +57,7 @@ public class OwnerEntity extends BaseEntity implements UserDetails {
 
     @Override
     public String getPassword() {
-        return email;
+        return password;
     }
 
     @Override

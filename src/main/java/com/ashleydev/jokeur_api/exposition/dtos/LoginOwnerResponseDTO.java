@@ -8,11 +8,11 @@ public record LoginOwnerResponseDTO(
         String role
 ) {
 
-    public static LoginOwnerResponseDTO fromEntity(String token, OwnerEntity user) {
+    public static LoginOwnerResponseDTO fromEntity(String token, OwnerEntity owner) {
         return new LoginOwnerResponseDTO(
                 token,
-                user.getEmail(),
-                user.getRole().name()
+                owner.getEmail(),
+                owner.getRole().name()
         );
     }
 }

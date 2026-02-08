@@ -41,17 +41,17 @@ public class AuthController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        OwnerEntity user = request.toEntity();
+        OwnerEntity owner = request.toEntity();
         // 👇 On SET le mot de passe depuis le Controller, pas depuis le Mapper
-        user.setPassword(passwordEncoder.encode(request.password()));
-       ownerRepository.save(user);
+        owner.setPassword(passwordEncoder.encode(request.password()));
+       ownerRepository.save(owner);
 
         String response = "Utilisateur inscrit avec succès !";
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginOwnerResponseDTO> authenticateUser(@RequestBody LoginOwnerRequestDTO request) {
+    public ResponseEntity<LoginOwnerResponseDTO> authenticatedOwner(@RequestBody LoginOwnerRequestDTO request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
@@ -59,10 +59,10 @@ public class AuthController {
                 )
         );
 
-        OwnerEntity authenticatedUser = (OwnerEntity) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(authenticatedUser);
+        OwnerEntity authenticatedOwner = (OwnerEntity) authentication.getPrincipal();
+        String token = jwtUtil.generateToken(authenticatedOwner);
 
-        LoginOwnerResponseDTO response = LoginOwnerResponseDTO.fromEntity(token, authenticatedUser);
+        LoginOwnerResponseDTO response = LoginOwnerResponseDTO.fromEntity(token, authenticatedOwner);
         return ResponseEntity.ok(response);
     }
 

@@ -4,7 +4,8 @@ import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
 import com.ashleydev.jokeur_api.persistence.entities.Role;
 
 public record RegisterOwnerRequestDTO(
-    String pseudo,
+    /*String pseudo,*/
+    String username,
     String name,
     String firstname,
     String email,
@@ -12,7 +13,7 @@ public record RegisterOwnerRequestDTO(
 ) {
     public OwnerEntity toEntity() {
         OwnerEntity owner = new OwnerEntity();
-        owner.setPseudo(pseudo);
+        owner.setPseudo(username);
         owner.setName(name);
         owner.setFirstname(firstname);
         owner.setEmail(email);
