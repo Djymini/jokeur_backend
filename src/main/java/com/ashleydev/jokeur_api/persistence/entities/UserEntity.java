@@ -12,12 +12,12 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Entity
-@Table(name = "owners")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OwnerEntity extends BaseEntity implements UserDetails {
+public class UserEntity extends BaseEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

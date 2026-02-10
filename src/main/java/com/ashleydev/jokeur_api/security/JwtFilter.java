@@ -1,6 +1,6 @@
 package com.ashleydev.jokeur_api.security;
 
-import com.ashleydev.jokeur_api.domain.services.OwnerDetailsService;
+import com.ashleydev.jokeur_api.domain.services.UserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private OwnerDetailsService ownerDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -47,7 +47,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String email = jwtUtil.getEmailFromToken(jwt);
 
         // On charge l’utilisateur depuis la base
-        UserDetails userDetails = ownerDetailsService.loadUserByUsername(email);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
         // On crée un objet d’authentification Spring Security
         UsernamePasswordAuthenticationToken authentication =

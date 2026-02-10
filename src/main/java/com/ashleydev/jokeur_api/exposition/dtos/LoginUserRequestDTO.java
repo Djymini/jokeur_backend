@@ -1,6 +1,6 @@
 package com.ashleydev.jokeur_api.exposition.dtos;
 
-public record LoginOwnerRequestDTO(
+public record LoginUserRequestDTO(
         String email,
         String password
 ) {}

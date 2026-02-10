@@ -1,10 +1,10 @@
 package com.ashleydev.jokeur_api.exposition.controllers;
-
-import com.ashleydev.jokeur_api.exposition.dtos.LoginOwnerRequestDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.LoginOwnerResponseDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.RegisterOwnerRequestDTO;
-import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
-import com.ashleydev.jokeur_api.persistence.repositories.OwnerRepository;
+import com.ashleydev.jokeur_api.exposition.dtos.LoginUserRequestDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.LoginUserResponseDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.RegisterUserRequestDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.RegisterUserResponseDTO;
+import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
+import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private OwnerRepository ownerRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -34,24 +34,23 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerOwner(@RequestBody RegisterOwnerRequestDTO request) {
-        boolean alreadyExists = ownerRepository.existsByEmail(request.email());
-        if (alreadyExists) {
-            String response = "Cet email est déjà utilisé !";
-            return ResponseEntity.badRequest().body(response);
+    public ResponseEntity<RegisterUserResponseDTO> registerUser(@RequestBody RegisterUserRequestDTO request) {
+        if (userRepository.existsByEmail(request.email())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new RegisterUserResponseDTO("Cet email est déjà utilisé !"));
         }
 
-        OwnerEntity owner = request.toEntity();
+        UserEntity user = request.toEntity();
         // 👇 On SET le mot de passe depuis le Controller, pas depuis le Mapper
-        owner.setPassword(passwordEncoder.encode(request.password()));
-       ownerRepository.save(owner);
+        user.setPassword(passwordEncoder.encode(request.password()));
+        userRepository.save(user);
 
-        String response = "Utilisateur inscrit avec succès !";
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new RegisterUserResponseDTO("Utilisateur inscrit avec succès !"));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginOwnerResponseDTO> authenticatedOwner(@RequestBody LoginOwnerRequestDTO request) {
+    public ResponseEntity<LoginUserResponseDTO> authenticatedUser(@RequestBody LoginUserRequestDTO request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
@@ -59,10 +58,10 @@ public class AuthController {
                 )
         );
 
-        OwnerEntity authenticatedOwner = (OwnerEntity) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(authenticatedOwner);
+        UserEntity authenticatedUser = (UserEntity) authentication.getPrincipal();
+        String token = jwtUtil.generateToken(authenticatedUser);
 
-        LoginOwnerResponseDTO response = LoginOwnerResponseDTO.fromEntity(token, authenticatedOwner);
+        LoginUserResponseDTO response = LoginUserResponseDTO.fromEntity(token, authenticatedUser);
         return ResponseEntity.ok(response);
     }
 

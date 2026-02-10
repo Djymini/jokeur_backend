@@ -1,6 +1,6 @@
 package com.ashleydev.jokeur_api.security;
 
-import com.ashleydev.jokeur_api.domain.services.OwnerDetailsService;
+import com.ashleydev.jokeur_api.domain.services.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +28,7 @@ public class SecurityConfig {
     private JwtExceptionHandlerFilter jwtExceptionHandlerFilter;
 
     @Autowired
-    private OwnerDetailsService ownerDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -66,10 +66,10 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider(
-            OwnerDetailsService ownerDetailsService,
+            UserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder
     ) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(ownerDetailsService);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }

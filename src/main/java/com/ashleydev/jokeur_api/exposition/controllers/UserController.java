@@ -1,6 +1,6 @@
 package com.ashleydev.jokeur_api.exposition.controllers;
 
-import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
+import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +12,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/owner")
-public class OwnerController {
+public class UserController {
 
     @GetMapping("/me")
-    public ResponseEntity<Map<String, Object>> getCurrentUser(@AuthenticationPrincipal OwnerEntity owner) {
+    public ResponseEntity<Map<String, Object>> getCurrentUser(@AuthenticationPrincipal UserEntity owner) {
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("id", owner.getId());
         userInfo.put("email", owner.getEmail());

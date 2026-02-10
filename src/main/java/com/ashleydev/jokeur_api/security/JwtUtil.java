@@ -1,7 +1,7 @@
 package com.ashleydev.jokeur_api.security;
 
 import com.ashleydev.jokeur_api.exceptions.JwtValidationException;
-import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
+import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -26,7 +26,7 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(OwnerEntity owner) {
+    public String generateToken(UserEntity owner) {
         return Jwts.builder()
                 .setSubject(owner.getEmail())
                 .claim("role", owner.getRole().name())
