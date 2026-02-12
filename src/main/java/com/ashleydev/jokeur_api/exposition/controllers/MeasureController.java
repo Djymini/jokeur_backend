@@ -29,13 +29,14 @@ public class MeasureController {
   }
 
   @PutMapping("/{healthRecordNumber}/{id}")
-  public ResponseEntity<MeasureResponseDto> modify(@PathVariable Long healthRecordNumber, @PathVariable Long id, @RequestBody int value) {
-    MeasureResponseDto response = measureService.update(healthRecordNumber, id, value);
+  public ResponseEntity<String> modify(@PathVariable Long healthRecordNumber, @PathVariable Long id, @RequestBody int value) {
+    String response = measureService.update(healthRecordNumber, id, value);
     return ResponseEntity.status(HttpStatus.GONE).body(response);
   }
 
   @DeleteMapping("/{healthRecordNumber}/{id}")
-  public void delete(@PathVariable Long healthRecordNumber, @PathVariable Long id) {
-    measureService.delete(healthRecordNumber, id);
+  public ResponseEntity<String> delete(@PathVariable Long healthRecordNumber, @PathVariable Long id) {
+    String response = measureService.delete(healthRecordNumber, id);
+    return ResponseEntity.status(HttpStatus.GONE).body(response);
   }
 }

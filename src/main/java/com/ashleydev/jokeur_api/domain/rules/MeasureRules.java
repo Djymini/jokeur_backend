@@ -5,10 +5,6 @@ import java.util.ArrayList;
 
 public class MeasureRules {
 
-  public static void validateBeforeCreation(String type) {
-    checkType(type);
-  }
-
   public static void validateType(String type) {
     checkType(type);
   }

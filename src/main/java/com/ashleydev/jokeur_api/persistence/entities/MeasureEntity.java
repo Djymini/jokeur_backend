@@ -14,11 +14,11 @@ public class MeasureEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id_measure", nullable = false)
-  private Long idMeasure;
+  @Column(name = "id", nullable = false)
+  private Long id;
 
-  @Column(name = "value", nullable = false)
-  private int value;
+  @Column(name = "measure_value", nullable = false)
+  private float measureValue;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "measure_type", nullable = false, length = 20)
