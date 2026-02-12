@@ -2,38 +2,37 @@ package com.ashleydev.jokeur_api.persistence.entities;
 
 import com.ashleydev.jokeur_api.domain.enums.MeasureType;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "measure")
 public class MeasureEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_measure", nullable = false)
-    private Long idMeasure;
 
-    @Column(name = "value", nullable = false)
-    private int value;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id_measure", nullable = false)
+  private Long idMeasure;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "measure_type", nullable = false, length = 20)
-    private MeasureType measureType;
+  @Column(name = "value", nullable = false)
+  private int value;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "health_record_number", nullable = false)
-    private HealthRecordEntity healthRecordEntity;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "measure_type", nullable = false, length = 20)
+  private MeasureType measureType;
 
-    @Column(name = "creation_date", nullable = false, updatable = false)
-    private LocalDate creationDate;
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "health_record_number", nullable = false)
+  private HealthRecordEntity healthRecordEntity;
 
-    @PrePersist
-    public void onCreate() {
-        creationDate = LocalDate.now();
-    }
+  @Column(name = "creation_date", nullable = false, updatable = false)
+  private LocalDate creationDate;
+
+  @PrePersist
+  public void onCreate() {
+    creationDate = LocalDate.now();
+  }
 }

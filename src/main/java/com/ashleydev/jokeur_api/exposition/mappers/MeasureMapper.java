@@ -8,24 +8,25 @@ import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 
 public class MeasureMapper {
-    private HealthRecordRepository healthRecordRepository;
 
-    public static MeasureEntity toEntity(MeasureRequestDto dto, HealthRecordEntity healthRecordEntity) {
-        MeasureEntity entity = new MeasureEntity();
-        entity.setValue(dto.value());
-        entity.setMeasureType(MeasureType.valueOf(dto.measureType()));
-        entity.setHealthRecordEntity(healthRecordEntity);
+  private HealthRecordRepository healthRecordRepository;
 
-        return entity;
-    }
+  public static MeasureEntity toEntity(MeasureRequestDto dto, HealthRecordEntity healthRecordEntity) {
+    MeasureEntity entity = new MeasureEntity();
+    entity.setValue(dto.value());
+    entity.setMeasureType(MeasureType.valueOf(dto.measureType()));
+    entity.setHealthRecordEntity(healthRecordEntity);
 
-    public static MeasureResponseDto toDto(MeasureEntity entity) {
-        return new MeasureResponseDto(
-                entity.getIdMeasure(),
-                entity.getValue(),
-                entity.getMeasureType().toString(),
-                entity.getHealthRecordEntity().getHealthRecordNumber(),
-                entity.getCreationDate()
-        );
-    }
+    return entity;
+  }
+
+  public static MeasureResponseDto toDto(MeasureEntity entity) {
+    return new MeasureResponseDto(
+      entity.getIdMeasure(),
+      entity.getValue(),
+      entity.getMeasureType().toString(),
+      entity.getHealthRecordEntity().getHealthRecordNumber(),
+      entity.getCreationDate()
+    );
+  }
 }
