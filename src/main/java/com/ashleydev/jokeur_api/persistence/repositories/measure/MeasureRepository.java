@@ -24,4 +24,13 @@ public interface MeasureRepository extends JpaRepository<MeasureEntity, Long> {
 
   Optional<MeasureEntity> findById(Long id);
   void deleteById(Long id);
+
+  @Query(
+    """
+    SELECT p FROM MeasureEntity p
+    WHERE EXISTS
+    (SELECT p FROM MeasureEntity p WHERE p.healthRecordEntity.healthRecordNumber = :healthRecordNumber AND p.id = :id)
+    """
+  )
+  boolean existByHealthRecordNumberAndId(@Param("healthRecordNumber") Long healthRecordNumber, @Param("id") Long id);
 }

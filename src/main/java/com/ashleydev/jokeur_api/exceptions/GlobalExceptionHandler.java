@@ -94,14 +94,14 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(MeasureNotFoundException.class)
   public ResponseEntity<String> handleMeasureNotFound(MeasureNotFoundException ex) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
   }
 
   @ExceptionHandler(MeasureTypeNotValidateException.class)
   public ResponseEntity<Map<String, Object>> handleMeasureTypeNotValidate(MeasureTypeNotValidateException ex) {
-      Map<String, Object> body = new HashMap<>();
-      body.put("error", "MEASURE_TYPE_NOT_VALIDATE");
-      body.put("message", ex.getMessage());
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    Map<String, Object> body = new HashMap<>();
+    body.put("error", "MEASURE_TYPE_NOT_VALIDATE");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
   }
 }

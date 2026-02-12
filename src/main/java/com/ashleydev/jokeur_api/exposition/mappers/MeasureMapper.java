@@ -14,7 +14,7 @@ public class MeasureMapper {
   public static MeasureEntity toEntity(MeasureRequestDto dto, HealthRecordEntity healthRecordEntity) {
     MeasureEntity entity = new MeasureEntity();
     entity.setValue(dto.value());
-    entity.setMeasureType(MeasureType.valueOf(dto.measureType()));
+    entity.setMeasureType(MeasureType.valueOf(dto.measureType().toUpperCase()));
     entity.setHealthRecordEntity(healthRecordEntity);
 
     return entity;

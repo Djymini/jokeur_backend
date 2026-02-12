@@ -1,6 +1,8 @@
 package com.ashleydev.jokeur_api.domain.services;
 
 import com.ashleydev.jokeur_api.domain.enums.MeasureType;
+import com.ashleydev.jokeur_api.domain.rules.MeasureRules;
+import com.ashleydev.jokeur_api.exceptions.measure.MeasureNotFoundException;
 import com.ashleydev.jokeur_api.exposition.dtos.measure.MeasureRequestDto;
 import com.ashleydev.jokeur_api.exposition.dtos.measure.MeasureResponseDto;
 import com.ashleydev.jokeur_api.exposition.mappers.MeasureMapper;
@@ -23,6 +25,7 @@ public class MeasureService {
   private HealthRecordRepository healthRecordRepository;
 
   public MeasureResponseDto create(MeasureRequestDto request) {
+    MeasureRules.validateBeforeCreation(request.measureType());
     HealthRecordEntity healthRecord = healthRecordRepository.findByHealthRecordNumber(request.healthRecordNumber()).get();
     MeasureEntity newEntity = MeasureMapper.toEntity(request, healthRecord);
 
@@ -31,6 +34,7 @@ public class MeasureService {
   }
 
   public List<MeasureResponseDto> getByType(String type, Long healthRecordNumber) {
+    MeasureRules.validateType(type);
     List<MeasureEntity> measureList = measureRepository.findAllByHealthRecordNumber(healthRecordNumber, MeasureType.valueOf(type));
     List<MeasureResponseDto> response = new ArrayList<MeasureResponseDto>();
     for (MeasureEntity measure : measureList) {
@@ -41,6 +45,7 @@ public class MeasureService {
   }
 
   public MeasureResponseDto update(Long healthRecordNumber, Long measureId, int newValue) {
+    checkHealthRecordNumberAndId(healthRecordNumber, measureId);
     MeasureEntity measureForUpdate = measureRepository.findById(measureId).get();
     measureForUpdate.setValue(newValue);
     MeasureEntity measureUpdated = measureRepository.save(measureForUpdate);
@@ -48,6 +53,13 @@ public class MeasureService {
   }
 
   public void delete(Long healthRecordNumber, Long measureId) {
+    checkHealthRecordNumberAndId(healthRecordNumber, measureId);
     measureRepository.deleteById(measureId);
+  }
+
+  private void checkHealthRecordNumberAndId(Long healthRecordNumber, Long measureId) {
+    if (!measureRepository.existByHealthRecordNumberAndId(healthRecordNumber, measureId)) {
+      throw new MeasureNotFoundException("The measure : " + measureId + " of Health record number : " + healthRecordNumber + "doesn't exist");
+    }
   }
 }
