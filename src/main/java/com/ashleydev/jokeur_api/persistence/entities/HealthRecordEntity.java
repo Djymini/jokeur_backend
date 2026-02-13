@@ -52,6 +52,13 @@ public class HealthRecordEntity {
     @Column(name = "allergy", length = 100)
     private String allergy;
 
+    @Lob
+    @Column(name = "image", columnDefinition = "MEDIUMBLOB")
+    private byte[] image;
+
+    @Column(name = "image_type")
+    private String imageType;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "animal_type", nullable = false, length = 20)
     private AnimalType animalType;
@@ -64,18 +71,7 @@ public class HealthRecordEntity {
     @JsonManagedReference
     private List<ReminderEntity> reminders;
 
-   // @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  //  private List<Measure> measures;
+    @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AppointmentEntity> appointments;
 
-   // @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-   // private List<Symptom> symptoms;
-
-   // @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-   // private List<Treatment> treatments;
-
-  //  @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-   // private List<FoodPlan> foodPlans;
-
-  //  @ManyToMany(mappedBy = "healthRecords")
-  //  private Set<Veterinarian> veterinarians;
 }

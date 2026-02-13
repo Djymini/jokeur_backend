@@ -33,6 +33,4 @@ public class OwnerEntity {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<HealthRecordEntity> healthRecords;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<AppointmentEntity> appointments;
 }

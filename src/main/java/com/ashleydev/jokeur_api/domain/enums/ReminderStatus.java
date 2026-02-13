@@ -1,4 +1,4 @@
-package com.ashleydev.jokeur_api.domain;
+package com.ashleydev.jokeur_api.domain.enums;
 
 public enum ReminderStatus {
     PENDING,        // En attente

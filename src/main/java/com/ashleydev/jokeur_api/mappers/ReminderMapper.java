@@ -11,7 +11,6 @@ public class ReminderMapper {
                 entity.getType(),
                 entity.getDescription(),
                 entity.getReminderDate(),
-                entity.getNotificationSent(),
                 entity.getStatus()
         );
 

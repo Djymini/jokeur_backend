@@ -14,6 +14,9 @@ public record HealthRecordResponseDto(
         String identificationNumber,
         String tattoo,
         String allergy,
+        byte[] image,
+        String imageType,
         Enum AnimalType
+
 
 ) {}

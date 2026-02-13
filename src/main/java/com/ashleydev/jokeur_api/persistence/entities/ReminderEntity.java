@@ -1,6 +1,6 @@
 package com.ashleydev.jokeur_api.persistence.entities;
 
-import com.ashleydev.jokeur_api.domain.ReminderStatus;
+import com.ashleydev.jokeur_api.domain.enums.ReminderStatus;
 import com.ashleydev.jokeur_api.domain.enums.ReminderType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -12,6 +12,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
+@Table(name ="reminder")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -32,9 +33,6 @@ public class ReminderEntity {
 
     @Column(name = "reminder_date")
     private LocalDate reminderDate;
-
-    @Column(name = "notification_sent")
-    private Boolean notificationSent = false;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)

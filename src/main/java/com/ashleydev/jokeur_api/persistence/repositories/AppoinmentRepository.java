@@ -13,7 +13,7 @@ public interface AppoinmentRepository extends JpaRepository<AppointmentEntity, L
 
     @Query("""
         Select app from AppointmentEntity app
-        where app.owner.id = :idOwner
+        where app.healthRecord.owner.id = :idOwner
         and app.dateTime >= CURRENT_TIMESTAMP
         order by app.dateTime asc
     """)
