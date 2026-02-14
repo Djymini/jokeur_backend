@@ -12,6 +12,7 @@
         </module>
         <module name="MagicNumber">
             <property name="ignoreNumbers" value="0,1,-1"/>
+            <property name="severity" value="warning"/>
         </module>
         <module name="OneStatementPerLine">
             <property name="treatTryResourcesAsStatement" value="true"/>
