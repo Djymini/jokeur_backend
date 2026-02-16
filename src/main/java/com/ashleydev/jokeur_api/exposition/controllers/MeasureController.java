@@ -32,7 +32,11 @@ public class MeasureController {
   }
 
   @PutMapping("/{healthRecordNumber}/{id}")
-  public ResponseEntity<MeasureResponseDto> modifyMeasureById(@PathVariable Long healthRecordNumber, @PathVariable Long id, @RequestBody float value) {
+  public ResponseEntity<MeasureResponseDto> modifyMeasureById(
+    @PathVariable Long healthRecordNumber,
+    @PathVariable Long id,
+    @RequestBody float value
+  ) {
     MeasureResponseDto response = measureService.update(healthRecordNumber, id, value);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
