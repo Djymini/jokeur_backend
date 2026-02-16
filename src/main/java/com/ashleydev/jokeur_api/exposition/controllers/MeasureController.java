@@ -17,7 +17,10 @@ public class MeasureController {
   MeasureService measureService;
 
   @GetMapping("/{healthRecordNumber}/{type}")
-  public ResponseEntity<List<MeasureResponseDto>> getAllMeasureOfHealthRecordByType(@PathVariable Long healthRecordNumber, @PathVariable String type) {
+  public ResponseEntity<List<MeasureResponseDto>> getAllMeasureOfHealthRecordByType(
+    @PathVariable Long healthRecordNumber,
+    @PathVariable String type
+  ) {
     List<MeasureResponseDto> response = measureService.getByType(type, healthRecordNumber);
     return ResponseEntity.ok(response);
   }

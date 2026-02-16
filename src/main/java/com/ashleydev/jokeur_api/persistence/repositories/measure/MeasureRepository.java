@@ -2,10 +2,9 @@ package com.ashleydev.jokeur_api.persistence.repositories.measure;
 
 import com.ashleydev.jokeur_api.domain.enums.MeasureType;
 import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-
-import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
