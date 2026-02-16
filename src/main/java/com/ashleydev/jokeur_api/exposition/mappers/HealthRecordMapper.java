@@ -42,7 +42,7 @@ public class HealthRecordMapper {
       entity.getIdentificationNumber(),
       entity.getTattooNumber(),
       entity.getAllergy(),
-            measures
+      measures
     );
   }
 

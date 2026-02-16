@@ -43,7 +43,10 @@ public class MeasureService {
 
   public List<MeasureResponseDto> getByType(String type, Long healthRecordNumber) {
     MeasureRules.validateType(type);
-    List<MeasureEntity> measureList = measureRepository.findAllByHealthRecordNumberAndType(healthRecordNumber, MeasureType.valueOf(type.toUpperCase()));
+    List<MeasureEntity> measureList = measureRepository.findAllByHealthRecordNumberAndType(
+      healthRecordNumber,
+      MeasureType.valueOf(type.toUpperCase())
+    );
     List<MeasureResponseDto> response = new ArrayList<MeasureResponseDto>();
     for (MeasureEntity measure : measureList) {
       response.add(MeasureMapper.toDto(measure));

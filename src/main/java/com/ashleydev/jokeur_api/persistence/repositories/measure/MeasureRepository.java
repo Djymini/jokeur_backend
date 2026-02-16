@@ -14,14 +14,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Transactional
 public interface MeasureRepository extends JpaRepository<MeasureEntity, Long> {
-    @Query(
-            """
-            SELECT p FROM MeasureEntity p
-            WHERE p.healthRecordEntity.healthRecordNumber = :healthRecordNumber"""
-    )
-    List<MeasureEntity> findByHealthRecordNumber(
-            @Param("healthRecordNumber") Long healthRecordNumber
-    );
+  @Query(
+    """
+    SELECT p FROM MeasureEntity p
+    WHERE p.healthRecordEntity.healthRecordNumber = :healthRecordNumber"""
+  )
+  List<MeasureEntity> findByHealthRecordNumber(@Param("healthRecordNumber") Long healthRecordNumber);
 
   @Query(
     """

@@ -7,7 +7,6 @@ import com.ashleydev.jokeur_api.exposition.dtos.measure.MeasureResponseDto;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,30 +33,23 @@ public class MeasureMapper {
     );
   }
 
-    public static HealthRecordMeasuresResponseDTO toHealthRecordDto(List<MeasureEntity> allEntity) {
-      List<MeasureResponseDto> weight = createMeasureResponseDtoList(allEntity, MeasureType.WEIGHT);
-        List<MeasureResponseDto> temperature = createMeasureResponseDtoList(allEntity, MeasureType.TEMPERATURE);
-        List<MeasureResponseDto> respiratoryRate = createMeasureResponseDtoList(allEntity, MeasureType.RESPIRATORY_RATE);
-        List<MeasureResponseDto> bpm = createMeasureResponseDtoList(allEntity, MeasureType.BPM);
+  public static HealthRecordMeasuresResponseDTO toHealthRecordDto(List<MeasureEntity> allEntity) {
+    List<MeasureResponseDto> weight = createMeasureResponseDtoList(allEntity, MeasureType.WEIGHT);
+    List<MeasureResponseDto> temperature = createMeasureResponseDtoList(allEntity, MeasureType.TEMPERATURE);
+    List<MeasureResponseDto> respiratoryRate = createMeasureResponseDtoList(allEntity, MeasureType.RESPIRATORY_RATE);
+    List<MeasureResponseDto> bpm = createMeasureResponseDtoList(allEntity, MeasureType.BPM);
 
-        return new HealthRecordMeasuresResponseDTO(
-                temperature,
-                weight,
-                respiratoryRate,
-                bpm
-        );
+    return new HealthRecordMeasuresResponseDTO(temperature, weight, respiratoryRate, bpm);
+  }
+
+  private static List<MeasureResponseDto> createMeasureResponseDtoList(List<MeasureEntity> entity, MeasureType type) {
+    List<MeasureResponseDto> measureResponseDtoArrayList = new ArrayList<MeasureResponseDto>();
+    for (MeasureEntity measure : entity) {
+      if (measure.getMeasureType() == type) {
+        measureResponseDtoArrayList.add(toDto(measure));
+      }
     }
 
-    private static List<MeasureResponseDto> createMeasureResponseDtoList(List<MeasureEntity> entity, MeasureType type){
-        List<MeasureResponseDto> measureResponseDtoArrayList = new ArrayList<MeasureResponseDto>();
-        for (MeasureEntity measure : entity){
-            if (measure.getMeasureType() == type){
-                measureResponseDtoArrayList.add(toDto(measure));
-
-            }
-        }
-
-        return measureResponseDtoArrayList;
-    }
-
+    return measureResponseDtoArrayList;
+  }
 }

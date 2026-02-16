@@ -57,8 +57,8 @@ public class HealthRecordService {
       .findByHealthRecordNumber(healthRecordNumber)
       .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordNumber));
 
-      List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordNumber(entity.getHealthRecordNumber());
-      HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
+    List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordNumber(entity.getHealthRecordNumber());
+    HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
 
     return HealthRecordMapper.toResponseDto(entity, measures);
   }
@@ -88,8 +88,8 @@ public class HealthRecordService {
     if (dto.getTattooNumber() != null) entity.setTattooNumber(dto.getTattooNumber());
     if (dto.getAllergy() != null) entity.setAllergy(dto.getAllergy());
 
-  List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordNumber(entity.getHealthRecordNumber());
-  HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
+    List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordNumber(entity.getHealthRecordNumber());
+    HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
 
     return HealthRecordMapper.toResponseDto(healthRecordRepository.save(entity), measures);
   }
