@@ -6,7 +6,7 @@ import com.ashleydev.jokeur_api.domain.enums.PetSex;
 import java.math.BigDecimal;
 
 public record HealthRecordMyAnimalsDTO(
-  Long healthRecordNumber,
+  Long id,
   String petName,
   AnimalType animalType,
   PetBreed breed,

@@ -1,4 +1,4 @@
-package com.ashleydev.jokeur_api.exposition.controller;
+package com.ashleydev.jokeur_api.exposition.controllers;
 
 import com.ashleydev.jokeur_api.domain.services.ReminderService;
 import com.ashleydev.jokeur_api.exposition.dtos.ReminderResponseDto;

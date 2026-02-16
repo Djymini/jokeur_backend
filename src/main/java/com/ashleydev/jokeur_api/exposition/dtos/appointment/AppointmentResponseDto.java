@@ -1,4 +1,4 @@
-package com.ashleydev.jokeur_api.exposition.dtos;
+package com.ashleydev.jokeur_api.exposition.dtos.appointment;
 
 
 import java.time.LocalDateTime;

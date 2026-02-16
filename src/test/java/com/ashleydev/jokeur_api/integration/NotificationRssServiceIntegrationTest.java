@@ -1,7 +1,7 @@
 package com.ashleydev.jokeur_api.integration;
 
 import com.ashleydev.jokeur_api.domain.services.NotificationRssService;
-import com.ashleydev.jokeur_api.exposition.dtos.NotificationResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.notification.NotificationResponseDto;
 import com.ashleydev.jokeur_api.persistence.entities.NotificationEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.NotificationRepository;
 import org.junit.jupiter.api.BeforeEach;

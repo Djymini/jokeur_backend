@@ -1,6 +1,9 @@
 package com.ashleydev.jokeur_api.persistence.entities;
 
 import com.ashleydev.jokeur_api.domain.enums.AnimalType;
+import com.ashleydev.jokeur_api.domain.enums.PetBreed;
+import com.ashleydev.jokeur_api.domain.enums.PetColor;
+import com.ashleydev.jokeur_api.domain.enums.PetSex;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,17 +25,19 @@ public class HealthRecordEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "pet_name", nullable = false, length = 50)
     private String petName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "breed", length = 50)
-    private String breed;
+    private PetBreed breed;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "sex", nullable = false, length = 12)
-    private String sex;
+    private PetSex sex;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
@@ -40,14 +45,15 @@ public class HealthRecordEntity {
     @Column(name = "current_weight", precision = 4, scale = 2)
     private BigDecimal currentWeight;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "color", length = 20)
-    private String color;
+    private PetColor color;
 
     @Column(name = "identification_number", unique = true, length = 20)
     private String identificationNumber;
 
-    @Column(name = "tatoo", unique = true, length = 50)
-    private String tattoo;
+    @Column(name = "tattoo", length = 50, unique = true)
+    private String tattooNumber;
 
     @Column(name = "allergy", length = 100)
     private String allergy;

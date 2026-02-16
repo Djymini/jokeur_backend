@@ -17,11 +17,11 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
   @Query(
     """
       select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO(
-        hr.healthRecordNumber,
+        hr.id,
         hr.petName
       )
       from HealthRecordEntity hr
-      where hr.owner.idOwner = :ownerId
+      where hr.owner.id = :ownerId
       order by hr.petName asc
     """
   )
@@ -32,7 +32,7 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
   @Query(
     """
       select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO(
-        hr.healthRecordNumber,
+        hr.id,
         hr.petName,
         hr.animalType,
         hr.breed,
@@ -40,15 +40,23 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
         hr.currentWeight
       )
       from HealthRecordEntity hr
-      where hr.owner.idOwner = :ownerId
+      where hr.owner.id = :ownerId
       order by hr.petName asc
     """
   )
   List<HealthRecordMyAnimalsDTO> findMyAnimalsDtosByOwnerId(@Param("ownerId") Long ownerId);
 
-  Optional<HealthRecordEntity> findByHealthRecordNumber(Long healthRecordNumber);
+  Optional<HealthRecordEntity> findById(Long id);
 
-  boolean existsByHealthRecordNumber(Long healthRecordNumber);
+  boolean existsById(Long id);
 
-  void deleteByHealthRecordNumber(Long healthRecordNumber);
+  void deleteById(Long healthRecordNumber);
+
+
+    @Query("""
+           Select hr from HealthRecordEntity hr
+           where hr.owner.id = :idOwner
+           """
+    )
+    List<HealthRecordEntity> findAllAnimals(@Param("idOwner") Long idOwner);
 }

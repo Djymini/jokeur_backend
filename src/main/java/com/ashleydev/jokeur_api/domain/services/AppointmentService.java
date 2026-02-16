@@ -1,6 +1,6 @@
 package com.ashleydev.jokeur_api.domain.services;
 
-import com.ashleydev.jokeur_api.exposition.dtos.AppointmentResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.appointment.AppointmentResponseDto;
 import com.ashleydev.jokeur_api.mappers.AppointmentMapper;
 import com.ashleydev.jokeur_api.persistence.repositories.AppoinmentRepository;
 import lombok.AllArgsConstructor;

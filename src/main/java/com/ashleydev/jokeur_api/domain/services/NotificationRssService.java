@@ -2,7 +2,7 @@ package com.ashleydev.jokeur_api.domain.services;
 
 import com.ashleydev.jokeur_api.config.JokeurProperties;
 import com.ashleydev.jokeur_api.domain.rules.NotificationRssRules;
-import com.ashleydev.jokeur_api.exposition.dtos.NotificationResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.notification.NotificationResponseDto;
 import com.ashleydev.jokeur_api.mappers.NotificationMapper;
 import com.ashleydev.jokeur_api.persistence.entities.NotificationEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.NotificationRepository;
@@ -42,7 +42,7 @@ public class NotificationRssService {
 
         entries.stream() // parcourir le flux rss
                 .filter((e -> !isArticlePresent(e)))
-                .filter(NotificationRssRules::articleAboutAnimal) // filtrer avec Rule les item qui nous interesse
+                .filter(NotificationRssRules::articleAboutAnimal) // filtrer avec Rule les item qui nous intéresse
                 .map(NotificationMapper::toEntity) // transformer en entity chaque item retenu
                 .forEach(notificationRepository::save); // on enregistre chaque élement retenu
 

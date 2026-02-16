@@ -1,7 +1,7 @@
-package com.ashleydev.jokeur_api.exposition.controller;
+package com.ashleydev.jokeur_api.exposition.controllers;
 
 import com.ashleydev.jokeur_api.domain.services.NotificationRssService;
-import com.ashleydev.jokeur_api.exposition.dtos.NotificationResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.notification.NotificationResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

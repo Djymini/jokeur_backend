@@ -1,7 +1,7 @@
 package com.ashleydev.jokeur_api.mappers;
 
 
-import com.ashleydev.jokeur_api.exposition.dtos.NotificationResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.notification.NotificationResponseDto;
 import com.ashleydev.jokeur_api.persistence.entities.NotificationEntity;
 import com.rometools.rome.feed.synd.SyndEntry;
 

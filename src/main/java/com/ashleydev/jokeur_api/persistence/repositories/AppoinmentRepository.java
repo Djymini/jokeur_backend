@@ -17,5 +17,5 @@ public interface AppoinmentRepository extends JpaRepository<AppointmentEntity, L
         and app.dateTime >= CURRENT_TIMESTAMP
         order by app.dateTime asc
     """)
-    public List<AppointmentEntity> getAllAppointement(@Param("idOwner") Long idOwner);
+    List<AppointmentEntity> getAllAppointement(@Param("idOwner") Long idOwner);
 }
