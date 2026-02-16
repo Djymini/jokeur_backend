@@ -4,6 +4,7 @@ import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboa
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.measure.HealthRecordMeasuresResponseDTO;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordDashboardView;
@@ -27,7 +28,7 @@ public class HealthRecordMapper {
     return entity;
   }
 
-  public static HealthRecordResponseDTO toResponseDto(HealthRecordEntity entity) {
+  public static HealthRecordResponseDTO toResponseDto(HealthRecordEntity entity, HealthRecordMeasuresResponseDTO measures) {
     return new HealthRecordResponseDTO(
       entity.getHealthRecordNumber(),
       entity.getOwner().getIdOwner(),
@@ -40,7 +41,8 @@ public class HealthRecordMapper {
       entity.getColor(),
       entity.getIdentificationNumber(),
       entity.getTattooNumber(),
-      entity.getAllergy()
+      entity.getAllergy(),
+            measures
     );
   }
 

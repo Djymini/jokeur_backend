@@ -10,6 +10,7 @@ import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequest
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO;
 import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
+import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.owner.OwnerRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ class HealthRecordServiceIntegrationTest {
     private final HealthRecordService healthRecordService;
     private final OwnerRepository ownerRepository;
     private final HealthRecordRepository healthRecordRepository;
+    private final MeasureRepository measureRepository;
 
     private Long ownerId;
 
@@ -35,11 +37,13 @@ class HealthRecordServiceIntegrationTest {
     HealthRecordServiceIntegrationTest(
             HealthRecordService healthRecordService,
             OwnerRepository ownerRepository,
-            HealthRecordRepository healthRecordRepository
+            HealthRecordRepository healthRecordRepository,
+            MeasureRepository measureRepository
     ) {
         this.healthRecordService = healthRecordService;
         this.ownerRepository = ownerRepository;
         this.healthRecordRepository = healthRecordRepository;
+        this.measureRepository = measureRepository;
     }
 
     @BeforeEach

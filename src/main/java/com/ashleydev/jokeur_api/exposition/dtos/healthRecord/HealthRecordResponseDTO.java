@@ -4,6 +4,8 @@ import com.ashleydev.jokeur_api.domain.enums.AnimalType;
 import com.ashleydev.jokeur_api.domain.enums.PetBreed;
 import com.ashleydev.jokeur_api.domain.enums.PetColor;
 import com.ashleydev.jokeur_api.domain.enums.PetSex;
+import com.ashleydev.jokeur_api.exposition.dtos.measure.HealthRecordMeasuresResponseDTO;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -19,5 +21,6 @@ public record HealthRecordResponseDTO(
   PetColor color,
   String identificationNumber,
   String tattooNumber,
-  String allergy
+  String allergy,
+  HealthRecordMeasuresResponseDTO measures
 ) {}

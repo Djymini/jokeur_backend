@@ -97,8 +97,8 @@ public class MeasureServiceIntegrationTest {
     @Test
     @Transactional
     void shouldCreateMeasures() {
-        List<MeasureEntity> allWeight = measureRepository.findAllByHealthRecordNumber(healthRecord.healthRecordNumber(), MeasureType.WEIGHT);
-        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumber(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
+        List<MeasureEntity> allWeight = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.WEIGHT);
+        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
 
         assertThat(allWeight).hasSize(1);
         assertThat(allRespiratoryRate).hasSize(3);
@@ -132,7 +132,7 @@ public class MeasureServiceIntegrationTest {
     void shouldGetMeasures() {
         List<MeasureResponseDto> response = measureService.getByType("respiratory_rate", healthRecord.healthRecordNumber());
 
-        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumber(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
+        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
 
         assertThat(allRespiratoryRate).hasSize(3);
         assertThat(response).hasSize(allRespiratoryRate.size());
@@ -161,7 +161,7 @@ public class MeasureServiceIntegrationTest {
 
         String response = measureService.update(healthRecord.healthRecordNumber(), measureId, newValue);
 
-        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumber(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
+        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
 
         assertThat(response).isEqualTo("Measure : "+measureId+" is changed");
 
@@ -196,7 +196,7 @@ public class MeasureServiceIntegrationTest {
 
         String response = measureService.delete(healthRecord.healthRecordNumber(), measureId);
 
-        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumber(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
+        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
 
         assertThat(response).isEqualTo("Measure : "+measureId+" is deleted");
 

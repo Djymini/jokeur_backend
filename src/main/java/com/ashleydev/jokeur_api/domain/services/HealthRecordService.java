@@ -8,10 +8,14 @@ import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnima
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordUpdateDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.measure.HealthRecordMeasuresResponseDTO;
 import com.ashleydev.jokeur_api.exposition.mappers.HealthRecordMapper;
+import com.ashleydev.jokeur_api.exposition.mappers.MeasureMapper;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
+import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
 import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
+import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.owner.OwnerRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,9 @@ public class HealthRecordService {
   private final HealthRecordRepository healthRecordRepository;
   private final OwnerRepository ownerRepository;
   private final HealthRecordRules healthRecordRules;
+
+  @Autowired
+  private MeasureRepository measureRepository;
 
   @Autowired
   public HealthRecordService(HealthRecordRepository healthRecordRepository, OwnerRepository ownerRepository, HealthRecordRules healthRecordRules) {
@@ -39,7 +46,10 @@ public class HealthRecordService {
     HealthRecordEntity entity = HealthRecordMapper.toEntity(dto, owner);
     HealthRecordEntity saved = healthRecordRepository.save(entity);
 
-    return HealthRecordMapper.toResponseDto(saved);
+    List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordNumber(saved.getHealthRecordNumber());
+    HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
+
+    return HealthRecordMapper.toResponseDto(saved, measures);
   }
 
   public HealthRecordResponseDTO getByHealthRecordNumber(Long healthRecordNumber) {
@@ -47,7 +57,10 @@ public class HealthRecordService {
       .findByHealthRecordNumber(healthRecordNumber)
       .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordNumber));
 
-    return HealthRecordMapper.toResponseDto(entity);
+      List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordNumber(entity.getHealthRecordNumber());
+      HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
+
+    return HealthRecordMapper.toResponseDto(entity, measures);
   }
 
   public List<HealthRecordDashboardDTO> getDashboardByOwner(Long ownerId) {
@@ -75,7 +88,10 @@ public class HealthRecordService {
     if (dto.getTattooNumber() != null) entity.setTattooNumber(dto.getTattooNumber());
     if (dto.getAllergy() != null) entity.setAllergy(dto.getAllergy());
 
-    return HealthRecordMapper.toResponseDto(healthRecordRepository.save(entity));
+  List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordNumber(entity.getHealthRecordNumber());
+  HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
+
+    return HealthRecordMapper.toResponseDto(healthRecordRepository.save(entity), measures);
   }
 
   public void deleteByHealthRecordNumber(Long healthRecordNumber) {
