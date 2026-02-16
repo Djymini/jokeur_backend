@@ -25,10 +25,10 @@ public class MeasureMapper {
 
   public static MeasureResponseDto toDto(MeasureEntity entity) {
     return new MeasureResponseDto(
-      entity.getIdMeasure(),
+      entity.getId(),
       entity.getMeasureValue(),
       entity.getMeasureType().toString(),
-      entity.getHealthRecordEntity().getHealthRecordNumber(),
+      entity.getHealthRecordEntity().getId(),
       entity.getCreationDate()
     );
   }

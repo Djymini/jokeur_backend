@@ -17,24 +17,24 @@ public interface MeasureRepository extends JpaRepository<MeasureEntity, Long> {
   @Query(
     """
     SELECT p FROM MeasureEntity p
-    WHERE p.healthRecordEntity.healthRecordNumber = :healthRecordNumber"""
+    WHERE p.healthRecordEntity.id = :healthRecordEntityId"""
   )
-  List<MeasureEntity> findByHealthRecordNumber(@Param("healthRecordNumber") Long healthRecordNumber);
+  List<MeasureEntity> findByHealthRecordId(@Param("healthRecordEntityId") Long healthRecordEntityId);
 
   @Query(
     """
     SELECT p FROM MeasureEntity p
-    WHERE p.healthRecordEntity.healthRecordNumber = :healthRecordNumber
+    WHERE p.healthRecordEntity.id = :healthRecordEntityId
     AND p.measureType = :measureType"""
   )
-  List<MeasureEntity> findAllByHealthRecordNumberAndType(
-    @Param("healthRecordNumber") Long healthRecordNumber,
+  List<MeasureEntity> findAllByHealthRecordIdAndType(
+    @Param("healthRecordEntityId") Long healthRecordEntityId,
     @Param("measureType") MeasureType measureType
   );
 
   @Modifying(clearAutomatically = true)
-  @Query("UPDATE MeasureEntity m SET m.measureValue = :newValue WHERE m.id = :id AND m.healthRecordEntity.healthRecordNumber = :healthRecordNumber")
-  void setMeasureById(@Param("healthRecordNumber") Long healthRecordNumber, @Param("id") Long id, @Param("newValue") float newValue);
+  @Query("UPDATE MeasureEntity m SET m.measureValue = :newValue WHERE m.id = :id AND m.healthRecordEntity.id = :healthRecordId")
+  void setMeasureById(@Param("healthRecordId") Long healthRecordId, @Param("id") Long id, @Param("newValue") float newValue);
 
   Optional<MeasureEntity> findById(Long id);
   void deleteById(Long id);
@@ -44,8 +44,8 @@ public interface MeasureRepository extends JpaRepository<MeasureEntity, Long> {
         SELECT count(m) > 0
         FROM MeasureEntity m
         WHERE m.id = :id
-        AND m.healthRecordEntity.healthRecordNumber = :healthRecordNumber
+        AND m.healthRecordEntity.id = :healthRecordId
     """
   )
-  boolean existByHealthRecordNumberAndId(@Param("healthRecordNumber") Long healthRecordNumber, @Param("id") Long id);
+  boolean existByHealthRecordIdAndId(@Param("healthRecordId") Long healthRecordId, @Param("id") Long id);
 }

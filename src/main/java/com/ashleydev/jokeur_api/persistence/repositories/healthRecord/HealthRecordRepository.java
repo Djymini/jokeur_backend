@@ -17,7 +17,7 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
   @Query(
     """
       select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO(
-        hr.healthRecordNumber,
+        hr.id,
         hr.petName
       )
       from HealthRecordEntity hr
@@ -32,7 +32,7 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
   @Query(
     """
       select new com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO(
-        hr.healthRecordNumber,
+        hr.id,
         hr.petName,
         hr.animalType,
         hr.breed,
@@ -46,9 +46,7 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
   )
   List<HealthRecordMyAnimalsDTO> findMyAnimalsDtosByOwnerId(@Param("ownerId") Long ownerId);
 
-  Optional<HealthRecordEntity> findByHealthRecordNumber(Long healthRecordNumber);
+  Optional<HealthRecordEntity> findById(Long id);
 
-  boolean existsByHealthRecordNumber(Long healthRecordNumber);
-
-  void deleteByHealthRecordNumber(Long healthRecordNumber);
+  void deleteById(Long id);
 }

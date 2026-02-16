@@ -31,9 +31,9 @@ public class HealthRecordController {
     return ResponseEntity.status(HttpStatus.CREATED).body(saved);
   }
 
-  @GetMapping("/{healthRecordNumber}")
-  public HealthRecordResponseDTO getByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
-    return healthRecordService.getByHealthRecordNumber(healthRecordNumber);
+  @GetMapping("/{id}")
+  public HealthRecordResponseDTO getById(@PathVariable Long id) {
+    return healthRecordService.getById(id);
   }
 
   @GetMapping("/dashboard")
@@ -46,14 +46,15 @@ public class HealthRecordController {
     return healthRecordService.getMyAnimalsByOwner(ownerId);
   }
 
-  @PatchMapping("/{healthRecordNumber}")
-  public HealthRecordResponseDTO updatePartial(@PathVariable Long healthRecordNumber, @Valid @RequestBody HealthRecordUpdateDTO dto) {
-    return healthRecordService.updatePartial(healthRecordNumber, dto);
+  @PatchMapping("/{id}")
+  public HealthRecordResponseDTO updatePartial(@PathVariable Long id, @Valid @RequestBody HealthRecordUpdateDTO dto) {
+    return healthRecordService.updatePartial(id, dto);
   }
 
-  @DeleteMapping("/{healthRecordNumber}")
+  @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
-    healthRecordService.deleteByHealthRecordNumber(healthRecordNumber);
+  public void deleteById(@PathVariable Long id) {
+    healthRecordService.deleteById(id);
   }
 }
+

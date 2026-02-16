@@ -14,8 +14,8 @@ public class HealthRecordEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "health_record_number", nullable = false)
-  private Long healthRecordNumber;
+  @Column(name = "id", nullable = false)
+  private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "id_owner", nullable = false)
@@ -57,8 +57,8 @@ public class HealthRecordEntity {
 
   public HealthRecordEntity() {}
 
-  public Long getHealthRecordNumber() {
-    return healthRecordNumber;
+  public Long getId() {
+    return id;
   }
 
   public OwnerEntity getOwner() {

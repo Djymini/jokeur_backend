@@ -30,21 +30,21 @@ public class MeasureService {
   public MeasureResponseDto create(MeasureRequestDto request) {
     MeasureRules.validateType(request.measureType());
 
-    if (!healthRecordRepository.existsByHealthRecordNumber(request.healthRecordNumber())) {
-      throw new HealthRecordNotFoundException(request.healthRecordNumber());
+    if (!healthRecordRepository.existsById(request.healthRecordId())) {
+      throw new HealthRecordNotFoundException(request.healthRecordId());
     }
 
-    HealthRecordEntity healthRecord = healthRecordRepository.findByHealthRecordNumber(request.healthRecordNumber()).get();
+    HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
     MeasureEntity newEntity = MeasureMapper.toEntity(request, healthRecord);
 
     MeasureEntity response = measureRepository.save(newEntity);
     return MeasureMapper.toDto(response);
   }
 
-  public List<MeasureResponseDto> getByType(String type, Long healthRecordNumber) {
+  public List<MeasureResponseDto> getByType(String type, Long healthRecordId) {
     MeasureRules.validateType(type);
-    List<MeasureEntity> measureList = measureRepository.findAllByHealthRecordNumberAndType(
-      healthRecordNumber,
+    List<MeasureEntity> measureList = measureRepository.findAllByHealthRecordIdAndType(
+      healthRecordId,
       MeasureType.valueOf(type.toUpperCase())
     );
     List<MeasureResponseDto> response = new ArrayList<MeasureResponseDto>();
@@ -55,9 +55,9 @@ public class MeasureService {
     return response;
   }
 
-  public MeasureResponseDto update(Long healthRecordNumber, Long measureId, float newValue) {
-    checkHealthRecordNumberAndId(healthRecordNumber, measureId);
-    measureRepository.setMeasureById(healthRecordNumber, measureId, newValue);
+  public MeasureResponseDto update(Long healthRecordId, Long measureId, float newValue) {
+    checkHealthRecordIdAndId(healthRecordId, measureId);
+    measureRepository.setMeasureById(healthRecordId, measureId, newValue);
 
     MeasureEntity checkChange = measureRepository.findById(measureId).get();
     if (checkChange.getMeasureValue() != newValue) {
@@ -67,20 +67,20 @@ public class MeasureService {
     return MeasureMapper.toDto(checkChange);
   }
 
-  public String delete(Long healthRecordNumber, Long measureId) {
-    checkHealthRecordNumberAndId(healthRecordNumber, measureId);
+  public String delete(Long healthRecordId, Long measureId) {
+    checkHealthRecordIdAndId(healthRecordId, measureId);
     measureRepository.deleteById(measureId);
 
-    if (measureRepository.existByHealthRecordNumberAndId(healthRecordNumber, measureId)) {
+    if (measureRepository.existByHealthRecordIdAndId(healthRecordId, measureId)) {
       throw new MeasureDeleteFailedException("Measure : " + measureId + " is not deleted");
     }
 
     return "Measure : " + measureId + " is deleted";
   }
 
-  private void checkHealthRecordNumberAndId(Long healthRecordNumber, Long measureId) {
-    if (!measureRepository.existByHealthRecordNumberAndId(healthRecordNumber, measureId)) {
-      throw new MeasureNotFoundException("The measure : " + measureId + " of Health record number : " + healthRecordNumber + " doesn't exist");
+  private void checkHealthRecordIdAndId(Long healthRecordId, Long measureId) {
+    if (!measureRepository.existByHealthRecordIdAndId(healthRecordId, measureId)) {
+      throw new MeasureNotFoundException("The measure : " + measureId + " of Health record number : " + healthRecordId + " doesn't exist");
     }
   }
 }

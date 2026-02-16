@@ -83,10 +83,10 @@ public class MeasureServiceIntegrationTest {
 
         healthRecord = healthRecordService.create(healthRecordRequest);
 
-        measure1 = new MeasureRequestDto(5, "weight", healthRecord.healthRecordNumber(), LocalDate.now());
-        measure2 = new MeasureRequestDto(61, "respiratory_rate", healthRecord.healthRecordNumber(), LocalDate.now());
-        measure3 = new MeasureRequestDto(63, "respiratory_rate", healthRecord.healthRecordNumber(), LocalDate.now());
-        measure4 = new MeasureRequestDto(60, "respiratory_rate", healthRecord.healthRecordNumber(), LocalDate.now());
+        measure1 = new MeasureRequestDto(5, "weight", healthRecord.id(), LocalDate.now());
+        measure2 = new MeasureRequestDto(61, "respiratory_rate", healthRecord.id(), LocalDate.now());
+        measure3 = new MeasureRequestDto(63, "respiratory_rate", healthRecord.id(), LocalDate.now());
+        measure4 = new MeasureRequestDto(60, "respiratory_rate", healthRecord.id(), LocalDate.now());
 
         measureCreated1 = measureService.create(measure1);
         measureCreated2 = measureService.create(measure2);
@@ -97,14 +97,14 @@ public class MeasureServiceIntegrationTest {
     @Test
     @Transactional
     void shouldCreateMeasures() {
-        List<MeasureEntity> allWeight = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.WEIGHT);
-        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
+        List<MeasureEntity> allWeight = measureRepository.findAllByHealthRecordIdAndType(healthRecord.id(), MeasureType.WEIGHT);
+        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordIdAndType(healthRecord.id(), MeasureType.RESPIRATORY_RATE);
 
         assertThat(allWeight).hasSize(1);
         assertThat(allRespiratoryRate).hasSize(3);
 
         MeasureEntity persisted = allRespiratoryRate.get(2);
-        assertThat(persisted.getIdMeasure()).isEqualTo(measureCreated4.id());
+        assertThat(persisted.getId()).isEqualTo(measureCreated4.id());
         assertThat(persisted.getCreationDate()).isEqualTo(LocalDate.now());
         assertThat(persisted.getMeasureType()).isEqualTo(MeasureType.RESPIRATORY_RATE);
         assertThat(persisted.getMeasureValue()).isEqualTo(60);
@@ -113,7 +113,7 @@ public class MeasureServiceIntegrationTest {
     @Test
     @Transactional
     void shouldThrowForBadCreation() {
-        MeasureRequestDto measureInvalid1 = new MeasureRequestDto(5, "meight", healthRecord.healthRecordNumber(), LocalDate.now());
+        MeasureRequestDto measureInvalid1 = new MeasureRequestDto(5, "meight", healthRecord.id(), LocalDate.now());
         MeasureRequestDto measureInvalid2 = new MeasureRequestDto(61, "respiratory_rate", 100L, LocalDate.now());
 
         Exception exception1 = assertThrows(RuntimeException.class,
@@ -130,9 +130,9 @@ public class MeasureServiceIntegrationTest {
     @Test
     @Transactional
     void shouldGetMeasures() {
-        List<MeasureResponseDto> response = measureService.getByType("respiratory_rate", healthRecord.healthRecordNumber());
+        List<MeasureResponseDto> response = measureService.getByType("respiratory_rate", healthRecord.id());
 
-        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
+        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordIdAndType(healthRecord.id(), MeasureType.RESPIRATORY_RATE);
 
         assertThat(allRespiratoryRate).hasSize(3);
         assertThat(response).hasSize(allRespiratoryRate.size());
@@ -159,14 +159,14 @@ public class MeasureServiceIntegrationTest {
         Long measureId = measureCreated4.id();
         float newValue = 74;
 
-        MeasureResponseDto response = measureService.update(healthRecord.healthRecordNumber(), measureId, newValue);
+        MeasureResponseDto response = measureService.update(healthRecord.id(), measureId, newValue);
 
-        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
+        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordIdAndType(healthRecord.id(), MeasureType.RESPIRATORY_RATE);
 
         assertThat(response.value()).isEqualTo(newValue);
 
         MeasureEntity persisted = allRespiratoryRate.get(2);
-        assertThat(persisted.getIdMeasure()).isEqualTo(measureCreated4.id());
+        assertThat(persisted.getId()).isEqualTo(measureCreated4.id());
         assertThat(persisted.getCreationDate()).isEqualTo(LocalDate.now());
         assertThat(persisted.getMeasureType().toString()).isEqualTo("RESPIRATORY_RATE");
         assertThat(persisted.getMeasureValue()).isEqualTo(74);
@@ -184,9 +184,9 @@ public class MeasureServiceIntegrationTest {
         assertTrue(ex.getMessage().contains("The measure : "+measureId+" of Health record number : 999 doesn't exist"));
 
         Exception ex2 = assertThrows(RuntimeException.class,
-                () -> measureService.update(healthRecord.healthRecordNumber(), 50L, newValue));
+                () -> measureService.update(healthRecord.id(), 50L, newValue));
 
-        assertTrue(ex2.getMessage().contains("The measure : 50 of Health record number : "+healthRecord.healthRecordNumber()+" doesn't exist"));
+        assertTrue(ex2.getMessage().contains("The measure : 50 of Health record number : "+healthRecord.id()+" doesn't exist"));
     }
 
     @Test
@@ -194,15 +194,15 @@ public class MeasureServiceIntegrationTest {
     void shouldGetDelete() {
         Long measureId = measureCreated2.id();
 
-        String response = measureService.delete(healthRecord.healthRecordNumber(), measureId);
+        String response = measureService.delete(healthRecord.id(), measureId);
 
-        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
+        List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordIdAndType(healthRecord.id(), MeasureType.RESPIRATORY_RATE);
 
         assertThat(response).isEqualTo("Measure : "+measureId+" is deleted");
 
         assertThat(allRespiratoryRate).hasSize(2);
         MeasureEntity persisted = allRespiratoryRate.get(0);
-        assertThat(persisted.getIdMeasure()).isEqualTo(measureCreated3.id());
+        assertThat(persisted.getId()).isEqualTo(measureCreated3.id());
         assertThat(persisted.getCreationDate()).isEqualTo(LocalDate.now());
         assertThat(persisted.getMeasureType().toString()).isEqualTo("RESPIRATORY_RATE");
         assertThat(persisted.getMeasureValue()).isEqualTo(63);

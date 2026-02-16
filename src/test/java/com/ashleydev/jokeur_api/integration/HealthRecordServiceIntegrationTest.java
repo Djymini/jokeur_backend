@@ -64,11 +64,11 @@ class HealthRecordServiceIntegrationTest {
 
         HealthRecordResponseDTO saved = healthRecordService.create(dto);
 
-        assertNotNull(saved.healthRecordNumber());
+        assertNotNull(saved.id());
         assertEquals(ownerId, saved.ownerId());
         assertEquals("Naya", saved.petName());
 
-        assertTrue(healthRecordRepository.existsByHealthRecordNumber(saved.healthRecordNumber()));
+        assertTrue(healthRecordRepository.existsById(saved.id()));
     }
 
     @Test
@@ -79,13 +79,13 @@ class HealthRecordServiceIntegrationTest {
     }
 
     @Test
-    void getByHealthRecordNumber_shouldReturnData_whenExists() {
+    void getById_shouldReturnData_whenExists() {
         HealthRecordResponseDTO created = healthRecordService.create(validCreateDto(ownerId));
 
         HealthRecordResponseDTO found =
-                healthRecordService.getByHealthRecordNumber(created.healthRecordNumber());
+                healthRecordService.getById(created.id());
 
-        assertEquals(created.healthRecordNumber(), found.healthRecordNumber());
+        assertEquals(created.id(), found.id());
         assertEquals(ownerId, found.ownerId());
         assertEquals("Naya", found.petName());
     }
@@ -100,7 +100,7 @@ class HealthRecordServiceIntegrationTest {
         assertNotNull(dashboard);
         assertEquals(2, dashboard.size());
 
-        assertTrue(dashboard.stream().allMatch(d -> d.healthRecordNumber() != null));
+        assertTrue(dashboard.stream().allMatch(d -> d.healthRecordId() != null));
         assertTrue(dashboard.stream().allMatch(d -> d.petName() != null && !d.petName().isBlank()));
 
         var names = dashboard.stream().map(d -> d.petName()).toList();
@@ -118,7 +118,7 @@ class HealthRecordServiceIntegrationTest {
         assertNotNull(myAnimals);
         assertEquals(2, myAnimals.size());
 
-        assertTrue(myAnimals.stream().allMatch(a -> a.healthRecordNumber() != null));
+        assertTrue(myAnimals.stream().allMatch(a -> a.healthRecordId() != null));
         assertTrue(myAnimals.stream().allMatch(a -> a.petName() != null && !a.petName().isBlank()));
         assertTrue(myAnimals.stream().allMatch(a -> a.animalType() != null));
         assertTrue(myAnimals.stream().allMatch(a -> a.sex() != null));

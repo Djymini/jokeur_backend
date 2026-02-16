@@ -14,8 +14,8 @@ public class MeasureEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id_measure", nullable = false)
-  private Long idMeasure;
+  @Column(name = "id", nullable = false)
+  private Long id;
 
   @Column(name = "measure_value", nullable = false)
   private float measureValue;

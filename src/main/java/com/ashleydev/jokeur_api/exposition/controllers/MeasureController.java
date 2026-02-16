@@ -16,12 +16,12 @@ public class MeasureController {
   @Autowired
   MeasureService measureService;
 
-  @GetMapping("/{healthRecordNumber}/{type}")
+  @GetMapping("/{healthRecordId}/{type}")
   public ResponseEntity<List<MeasureResponseDto>> getAllMeasureOfHealthRecordByType(
-    @PathVariable Long healthRecordNumber,
+    @PathVariable Long healthRecordId,
     @PathVariable String type
   ) {
-    List<MeasureResponseDto> response = measureService.getByType(type, healthRecordNumber);
+    List<MeasureResponseDto> response = measureService.getByType(type, healthRecordId);
     return ResponseEntity.ok(response);
   }
 
@@ -31,19 +31,19 @@ public class MeasureController {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-  @PutMapping("/{healthRecordNumber}/{id}")
+  @PutMapping("/{healthRecordId}/{id}")
   public ResponseEntity<MeasureResponseDto> modifyMeasureById(
-    @PathVariable Long healthRecordNumber,
+    @PathVariable Long healthRecordId,
     @PathVariable Long id,
     @RequestBody float value
   ) {
-    MeasureResponseDto response = measureService.update(healthRecordNumber, id, value);
+    MeasureResponseDto response = measureService.update(healthRecordId, id, value);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
-  @DeleteMapping("/{healthRecordNumber}/{id}")
-  public ResponseEntity<String> deleteMeasureOfHealthRecordById(@PathVariable Long healthRecordNumber, @PathVariable Long id) {
-    String response = measureService.delete(healthRecordNumber, id);
+  @DeleteMapping("/{healthRecordId}/{id}")
+  public ResponseEntity<String> deleteMeasureOfHealthRecordById(@PathVariable Long healthRecordId, @PathVariable Long id) {
+    String response = measureService.delete(healthRecordId, id);
     return ResponseEntity.status(HttpStatus.GONE).body(response);
   }
 }

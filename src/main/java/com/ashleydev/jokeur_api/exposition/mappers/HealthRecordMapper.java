@@ -30,7 +30,7 @@ public class HealthRecordMapper {
 
   public static HealthRecordResponseDTO toResponseDto(HealthRecordEntity entity, HealthRecordMeasuresResponseDTO measures) {
     return new HealthRecordResponseDTO(
-      entity.getHealthRecordNumber(),
+      entity.getId(),
       entity.getOwner().getIdOwner(),
       entity.getPetName(),
       entity.getAnimalType(),
@@ -47,12 +47,12 @@ public class HealthRecordMapper {
   }
 
   public static HealthRecordDashboardDTO toDashboardDto(HealthRecordDashboardView view) {
-    return new HealthRecordDashboardDTO(view.getHealthRecordNumber(), view.getPetName());
+    return new HealthRecordDashboardDTO(view.getHealthRecordId(), view.getPetName());
   }
 
   public static HealthRecordMyAnimalsDTO toMyAnimalsDto(HealthRecordMyAnimalsView view) {
     return new HealthRecordMyAnimalsDTO(
-      view.getHealthRecordNumber(),
+      view.getHealthRecordId(),
       view.getPetName(),
       view.getAnimalType(),
       view.getBreed(),

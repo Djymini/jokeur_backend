@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record HealthRecordResponseDTO(
-  Long healthRecordNumber,
+  Long id,
   Long ownerId,
   String petName,
   AnimalType animalType,
