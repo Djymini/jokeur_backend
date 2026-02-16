@@ -57,4 +57,3 @@ public class HealthRecordController {
     healthRecordService.deleteById(id);
   }
 }
-

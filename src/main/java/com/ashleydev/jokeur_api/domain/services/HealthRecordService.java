@@ -53,9 +53,7 @@ public class HealthRecordService {
   }
 
   public HealthRecordResponseDTO getById(Long healthRecordId) {
-    HealthRecordEntity entity = healthRecordRepository
-      .findById(healthRecordId)
-      .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordId));
+    HealthRecordEntity entity = healthRecordRepository.findById(healthRecordId).orElseThrow(() -> new HealthRecordNotFoundException(healthRecordId));
 
     List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordId(entity.getId());
     HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
@@ -74,9 +72,7 @@ public class HealthRecordService {
   public HealthRecordResponseDTO updatePartial(Long healthRecordId, HealthRecordUpdateDTO dto) {
     healthRecordRules.validateUpdate(dto);
 
-    HealthRecordEntity entity = healthRecordRepository
-      .findById(healthRecordId)
-      .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordId));
+    HealthRecordEntity entity = healthRecordRepository.findById(healthRecordId).orElseThrow(() -> new HealthRecordNotFoundException(healthRecordId));
 
     if (dto.getPetName() != null) entity.setPetName(dto.getPetName());
     if (dto.getBreed() != null) entity.setBreed(dto.getBreed());

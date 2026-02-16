@@ -17,10 +17,7 @@ public class MeasureController {
   MeasureService measureService;
 
   @GetMapping("/{healthRecordId}/{type}")
-  public ResponseEntity<List<MeasureResponseDto>> getAllMeasureOfHealthRecordByType(
-    @PathVariable Long healthRecordId,
-    @PathVariable String type
-  ) {
+  public ResponseEntity<List<MeasureResponseDto>> getAllMeasureOfHealthRecordByType(@PathVariable Long healthRecordId, @PathVariable String type) {
     List<MeasureResponseDto> response = measureService.getByType(type, healthRecordId);
     return ResponseEntity.ok(response);
   }
@@ -32,11 +29,7 @@ public class MeasureController {
   }
 
   @PutMapping("/{healthRecordId}/{id}")
-  public ResponseEntity<MeasureResponseDto> modifyMeasureById(
-    @PathVariable Long healthRecordId,
-    @PathVariable Long id,
-    @RequestBody float value
-  ) {
+  public ResponseEntity<MeasureResponseDto> modifyMeasureById(@PathVariable Long healthRecordId, @PathVariable Long id, @RequestBody float value) {
     MeasureResponseDto response = measureService.update(healthRecordId, id, value);
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
