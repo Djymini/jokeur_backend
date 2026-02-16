@@ -17,25 +17,25 @@ public class MeasureController {
   MeasureService measureService;
 
   @GetMapping("/{healthRecordNumber}/{type}")
-  public ResponseEntity<List<MeasureResponseDto>> getByType(@PathVariable Long healthRecordNumber, @PathVariable String type) {
+  public ResponseEntity<List<MeasureResponseDto>> getAllMeasureOfHealthRecordByType(@PathVariable Long healthRecordNumber, @PathVariable String type) {
     List<MeasureResponseDto> response = measureService.getByType(type, healthRecordNumber);
     return ResponseEntity.ok(response);
   }
 
   @PostMapping
-  public ResponseEntity<MeasureResponseDto> create(@RequestBody MeasureRequestDto measure) {
+  public ResponseEntity<MeasureResponseDto> addMeasure(@RequestBody MeasureRequestDto measure) {
     MeasureResponseDto response = measureService.create(measure);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @PutMapping("/{healthRecordNumber}/{id}")
-  public ResponseEntity<String> modify(@PathVariable Long healthRecordNumber, @PathVariable Long id, @RequestBody int value) {
+  public ResponseEntity<String> modifyMeasureById(@PathVariable Long healthRecordNumber, @PathVariable Long id, @RequestBody float value) {
     String response = measureService.update(healthRecordNumber, id, value);
-    return ResponseEntity.status(HttpStatus.GONE).body(response);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @DeleteMapping("/{healthRecordNumber}/{id}")
-  public ResponseEntity<String> delete(@PathVariable Long healthRecordNumber, @PathVariable Long id) {
+  public ResponseEntity<String> deleteMeasureOfHealthRecordById(@PathVariable Long healthRecordNumber, @PathVariable Long id) {
     String response = measureService.delete(healthRecordNumber, id);
     return ResponseEntity.status(HttpStatus.GONE).body(response);
   }

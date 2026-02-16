@@ -104,7 +104,7 @@ public class MeasureServiceIntegrationTest {
         assertThat(allRespiratoryRate).hasSize(3);
 
         MeasureEntity persisted = allRespiratoryRate.get(2);
-        assertThat(persisted.getId()).isEqualTo(measureCreated4.id());
+        assertThat(persisted.getIdMeasure()).isEqualTo(measureCreated4.id());
         assertThat(persisted.getCreationDate()).isEqualTo(LocalDate.now());
         assertThat(persisted.getMeasureType()).isEqualTo(MeasureType.RESPIRATORY_RATE);
         assertThat(persisted.getMeasureValue()).isEqualTo(60);
@@ -166,7 +166,7 @@ public class MeasureServiceIntegrationTest {
         assertThat(response).isEqualTo("Measure : "+measureId+" is changed");
 
         MeasureEntity persisted = allRespiratoryRate.get(2);
-        assertThat(persisted.getId()).isEqualTo(measureCreated4.id());
+        assertThat(persisted.getIdMeasure()).isEqualTo(measureCreated4.id());
         assertThat(persisted.getCreationDate()).isEqualTo(LocalDate.now());
         assertThat(persisted.getMeasureType().toString()).isEqualTo("RESPIRATORY_RATE");
         assertThat(persisted.getMeasureValue()).isEqualTo(74);
@@ -179,9 +179,9 @@ public class MeasureServiceIntegrationTest {
         float newValue = 74;
 
         Exception ex = assertThrows(RuntimeException.class,
-                () -> measureService.update(10L, measureId, newValue));
+                () -> measureService.update(999L, measureId, newValue));
 
-        assertTrue(ex.getMessage().contains("The measure : "+measureId+" of Health record number : 10 doesn't exist"));
+        assertTrue(ex.getMessage().contains("The measure : "+measureId+" of Health record number : 999 doesn't exist"));
 
         Exception ex2 = assertThrows(RuntimeException.class,
                 () -> measureService.update(healthRecord.healthRecordNumber(), 50L, newValue));
@@ -202,7 +202,7 @@ public class MeasureServiceIntegrationTest {
 
         assertThat(allRespiratoryRate).hasSize(2);
         MeasureEntity persisted = allRespiratoryRate.get(0);
-        assertThat(persisted.getId()).isEqualTo(measureCreated3.id());
+        assertThat(persisted.getIdMeasure()).isEqualTo(measureCreated3.id());
         assertThat(persisted.getCreationDate()).isEqualTo(LocalDate.now());
         assertThat(persisted.getMeasureType().toString()).isEqualTo("RESPIRATORY_RATE");
         assertThat(persisted.getMeasureValue()).isEqualTo(63);
