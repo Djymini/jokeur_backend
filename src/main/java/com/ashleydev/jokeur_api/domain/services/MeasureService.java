@@ -55,7 +55,7 @@ public class MeasureService {
     return response;
   }
 
-  public String update(Long healthRecordNumber, Long measureId, float newValue) {
+  public MeasureResponseDto update(Long healthRecordNumber, Long measureId, float newValue) {
     checkHealthRecordNumberAndId(healthRecordNumber, measureId);
     measureRepository.setMeasureById(healthRecordNumber, measureId, newValue);
 
@@ -64,7 +64,7 @@ public class MeasureService {
       throw new MeasureUpdateNotChangeValueException("Measure : " + measureId + " not changed after update");
     }
 
-    return "Measure : " + measureId + " is changed";
+    return MeasureMapper.toDto(checkChange);
   }
 
   public String delete(Long healthRecordNumber, Long measureId) {

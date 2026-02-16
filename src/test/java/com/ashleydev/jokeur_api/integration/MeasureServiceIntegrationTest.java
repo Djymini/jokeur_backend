@@ -159,11 +159,11 @@ public class MeasureServiceIntegrationTest {
         Long measureId = measureCreated4.id();
         float newValue = 74;
 
-        String response = measureService.update(healthRecord.healthRecordNumber(), measureId, newValue);
+        MeasureResponseDto response = measureService.update(healthRecord.healthRecordNumber(), measureId, newValue);
 
         List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordNumberAndType(healthRecord.healthRecordNumber(), MeasureType.RESPIRATORY_RATE);
 
-        assertThat(response).isEqualTo("Measure : "+measureId+" is changed");
+        assertThat(response.value()).isEqualTo(newValue);
 
         MeasureEntity persisted = allRespiratoryRate.get(2);
         assertThat(persisted.getIdMeasure()).isEqualTo(measureCreated4.id());
