@@ -19,7 +19,6 @@ public interface ReminderRepository extends JpaRepository<ReminderEntity, Long> 
     and r.reminderDate between CURRENT_DATE and :maxIntervalDate
     order by r.reminderDate asc
     """)
-    List<ReminderEntity> findByOwnerId
-    (@Param("idOwner") Long idOwner, @Param("maxIntervalDate") LocalDate maxIntervalDate);
+    List<ReminderEntity> findByOwnerId(@Param("idOwner")Long idOwner, @Param("maxIntervalDate")LocalDate maxIntervalDate);
 
 }

@@ -13,8 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public class ReminderService {
 
-    private final ReminderRepository reminderRepository;
     private static final int REMINDER_MONTH_INTERVAL = 3;
+
+    private final ReminderRepository reminderRepository;
 
     public List<ReminderResponseDto> getReminders(Long idOwner){
         LocalDate maxIntervalDate = LocalDate.now().plusMonths(REMINDER_MONTH_INTERVAL);

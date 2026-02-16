@@ -9,7 +9,6 @@ import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
 import java.util.HashMap;
 import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

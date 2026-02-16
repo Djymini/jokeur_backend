@@ -1,20 +1,15 @@
 package com.ashleydev.jokeur_api.exposition.controllers;
 
 import com.ashleydev.jokeur_api.domain.services.HealthRecordService;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordUpdateDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.*;
 import jakarta.validation.Valid;
-import java.util.List;
-
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/health-records")
