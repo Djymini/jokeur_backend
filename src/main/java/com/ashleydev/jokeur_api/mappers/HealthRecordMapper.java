@@ -1,9 +1,10 @@
 package com.ashleydev.jokeur_api.mappers;
 
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.measure.HealthRecordMeasuresResponseDTO;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordDashboardView;
@@ -27,14 +28,13 @@ public class HealthRecordMapper {
     return entity;
   }
 
-
   public static HealthRecordDashboardDTO toDashboardDto(HealthRecordDashboardView view) {
-    return new HealthRecordDashboardDTO(view.getHealthRecordNumber(), view.getPetName());
+    return new HealthRecordDashboardDTO(view.getHealthRecordId(), view.getPetName());
   }
 
   public static HealthRecordMyAnimalsDTO toMyAnimalsDto(HealthRecordMyAnimalsView view) {
     return new HealthRecordMyAnimalsDTO(
-      view.getHealthRecordNumber(),
+      view.getHealthRecordId(),
       view.getPetName(),
       view.getAnimalType(),
       view.getBreed(),
@@ -43,22 +43,22 @@ public class HealthRecordMapper {
     );
   }
 
-
-    public static HealthRecordResponseDto toDto(HealthRecordEntity entity){
-        return new HealthRecordResponseDto(
-                entity.getId(),
-                entity.getPetName(),
-                entity.getBreed().name(),
-                entity.getSex().name(),
-                entity.getBirthDate(),
-                entity.getCurrentWeight(),
-                entity.getColor().name(),
-                entity.getIdentificationNumber(),
-                entity.getTattooNumber(),
-                entity.getAllergy(),
-                entity.getImage(),
-                entity.getImageType(),
-                entity.getAnimalType().name()
-        );
-    }
+  public static HealthRecordResponseDto toDto(HealthRecordEntity entity, HealthRecordMeasuresResponseDTO measures) {
+    return new HealthRecordResponseDto(
+      entity.getId(),
+      entity.getPetName(),
+      entity.getBreed().name(),
+      entity.getSex().name(),
+      entity.getBirthDate(),
+      entity.getCurrentWeight(),
+      entity.getColor().name(),
+      entity.getIdentificationNumber(),
+      entity.getTattooNumber(),
+      entity.getAllergy(),
+      entity.getImage(),
+      entity.getImageType(),
+      entity.getAnimalType().name(),
+      measures
+    );
+  }
 }

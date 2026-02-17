@@ -5,7 +5,6 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @ConfigurationProperties(prefix = "jokeur")
 @Getter
@@ -14,5 +13,6 @@ import org.springframework.stereotype.Component;
  * cette class permet de récupèrer les propertiems qui sont defini dans le fichier application.yml
  */
 public class JokeurProperties {
-    String rssUrl;
+
+  String rssUrl;
 }

@@ -5,14 +5,7 @@ import com.ashleydev.jokeur_api.persistence.entities.ReminderEntity;
 
 public class ReminderMapper {
 
-    public static ReminderResponseDto toDto(ReminderEntity entity){
-        return new ReminderResponseDto(
-                entity.getId(),
-                entity.getType(),
-                entity.getDescription(),
-                entity.getReminderDate(),
-                entity.getStatus()
-        );
-
-    }
+  public static ReminderResponseDto toDto(ReminderEntity entity) {
+    return new ReminderResponseDto(entity.getId(), entity.getType(), entity.getDescription(), entity.getReminderDate(), entity.getStatus());
+  }
 }

@@ -6,7 +6,7 @@ import com.ashleydev.jokeur_api.domain.enums.PetSex;
 import java.math.BigDecimal;
 
 public interface HealthRecordMyAnimalsView {
-  Long getHealthRecordNumber();
+  Long getHealthRecordId();
   String getPetName();
   AnimalType getAnimalType();
   PetBreed getBreed();
