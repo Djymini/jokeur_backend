@@ -3,17 +3,16 @@ package com.ashleydev.jokeur_api.domain.services;
 import com.ashleydev.jokeur_api.domain.rules.HealthRecordRules;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.*;
+import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
 import com.ashleydev.jokeur_api.mappers.HealthRecordMapper;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.owner.OwnerRepository;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +21,6 @@ public class HealthRecordService {
   private final HealthRecordRepository healthRecordRepository;
   private final OwnerRepository ownerRepository;
   private final HealthRecordRules healthRecordRules;
-
 
   public HealthRecordResponseDto create(HealthRecordRequestDTO dto) {
     healthRecordRules.validateCreate(dto);
@@ -36,9 +34,7 @@ public class HealthRecordService {
   }
 
   public HealthRecordResponseDto getByHealthRecordNumber(Long id) {
-    HealthRecordEntity entity = healthRecordRepository
-      .findById(id)
-      .orElseThrow(() -> new HealthRecordNotFoundException(id));
+    HealthRecordEntity entity = healthRecordRepository.findById(id).orElseThrow(() -> new HealthRecordNotFoundException(id));
 
     return HealthRecordMapper.toDto(entity);
   }
@@ -78,14 +74,12 @@ public class HealthRecordService {
     healthRecordRepository.deleteById(healthRecordNumber);
   }
 
-    /**
-     * permet de récupèrer les information d'un animal pour alimenter la page dashbaoard et page animal
-     * @param idOwner
-     * @return
-     */
-    public List<HealthRecordResponseDto> getAllAnimals(Long idOwner){
-        return healthRecordRepository.findAllAnimals(idOwner).stream().map(
-                HealthRecordMapper::toDto
-        ).toList();
-    }
+  /**
+   * permet de récupèrer les information d'un animal pour alimenter la page dashbaoard et page animal
+   * @param idOwner
+   * @return
+   */
+  public List<HealthRecordResponseDto> getAllAnimals(Long idOwner) {
+    return healthRecordRepository.findAllAnimals(idOwner).stream().map(HealthRecordMapper::toDto).toList();
+  }
 }

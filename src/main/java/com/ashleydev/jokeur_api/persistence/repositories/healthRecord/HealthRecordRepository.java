@@ -52,11 +52,11 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
 
   void deleteById(Long healthRecordNumber);
 
-
-    @Query("""
-           Select hr from HealthRecordEntity hr
-           where hr.owner.id = :idOwner
-           """
-    )
-    List<HealthRecordEntity> findAllAnimals(@Param("idOwner") Long idOwner);
+  @Query(
+    """
+    Select hr from HealthRecordEntity hr
+    where hr.owner.id = :idOwner
+    """
+  )
+  List<HealthRecordEntity> findAllAnimals(@Param("idOwner") Long idOwner);
 }

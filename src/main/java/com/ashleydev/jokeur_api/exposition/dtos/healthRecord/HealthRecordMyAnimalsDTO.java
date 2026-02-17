@@ -5,11 +5,4 @@ import com.ashleydev.jokeur_api.domain.enums.PetBreed;
 import com.ashleydev.jokeur_api.domain.enums.PetSex;
 import java.math.BigDecimal;
 
-public record HealthRecordMyAnimalsDTO(
-  Long id,
-  String petName,
-  AnimalType animalType,
-  PetBreed breed,
-  PetSex sex,
-  BigDecimal currentWeight
-) {}
+public record HealthRecordMyAnimalsDTO(Long id, String petName, AnimalType animalType, PetBreed breed, PetSex sex, BigDecimal currentWeight) {}

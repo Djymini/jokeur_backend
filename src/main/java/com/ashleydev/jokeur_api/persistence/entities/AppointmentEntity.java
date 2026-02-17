@@ -1,12 +1,11 @@
 package com.ashleydev.jokeur_api.persistence.entities;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appoitment")
@@ -16,19 +15,18 @@ import java.time.LocalDateTime;
 @Setter
 public class AppointmentEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    @Column(name = "reason", nullable = false, length = 120)
-    private String reason;
+  @Column(name = "reason", nullable = false, length = 120)
+  private String reason;
 
-    @Column(name = "date_time", nullable = false)
-    private LocalDateTime dateTime;
+  @Column(name = "date_time", nullable = false)
+  private LocalDateTime dateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_health_record", nullable = false)
-    private HealthRecordEntity healthRecord;
-
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_health_record", nullable = false)
+  private HealthRecordEntity healthRecord;
 }

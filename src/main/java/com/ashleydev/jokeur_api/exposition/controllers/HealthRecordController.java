@@ -4,12 +4,11 @@ import com.ashleydev.jokeur_api.domain.services.HealthRecordService;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.*;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/health-records")
@@ -19,11 +18,11 @@ public class HealthRecordController {
 
   private final HealthRecordService healthRecordService;
 
-    @GetMapping()
-    public ResponseEntity<List<HealthRecordResponseDto>> getAllAnimals(@PathParam(value = "idOwner") Long idOwner){
-        List<HealthRecordResponseDto> response = healthRecordService.getAllAnimals(idOwner);
-        return ResponseEntity.ok(response);
-    }
+  @GetMapping
+  public ResponseEntity<List<HealthRecordResponseDto>> getAllAnimals(@PathParam(value = "idOwner") Long idOwner) {
+    List<HealthRecordResponseDto> response = healthRecordService.getAllAnimals(idOwner);
+    return ResponseEntity.ok(response);
+  }
 
   @PostMapping
   public ResponseEntity<HealthRecordResponseDto> createHealthRecord(@Valid @RequestBody HealthRecordRequestDTO dto) {
