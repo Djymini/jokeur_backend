@@ -6,7 +6,7 @@ import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
 import com.ashleydev.jokeur_api.exposition.dtos.owner.OwnerCreateDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.owner.OwnerResponseDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.owner.OwnerUpdateDTO;
-import com.ashleydev.jokeur_api.exposition.mappers.OwnerMapper;
+import com.ashleydev.jokeur_api.mappers.OwnerMapper;
 import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.owner.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

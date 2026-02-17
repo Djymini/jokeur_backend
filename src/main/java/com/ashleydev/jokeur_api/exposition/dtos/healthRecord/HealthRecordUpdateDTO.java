@@ -5,9 +5,14 @@ import com.ashleydev.jokeur_api.domain.enums.PetColor;
 import com.ashleydev.jokeur_api.domain.enums.PetSex;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Getter
+@Setter
 public class HealthRecordUpdateDTO {
 
   @Size(max = 50, message = "petName must not exceed 50 characters")
@@ -24,8 +29,8 @@ public class HealthRecordUpdateDTO {
 
   private PetColor color;
 
-  @Size(max = 20, message = "identificationNumber must not exceed 20 characters")
-  private String identificationNumber;
+  @Size(max = 20, message = "id must not exceed 20 characters")
+  private String id;
 
   @Size(max = 50, message = "tattooNumber must not exceed 50 characters")
   private String tattooNumber;
@@ -41,81 +46,11 @@ public class HealthRecordUpdateDTO {
       birthDate != null ||
       currentWeight != null ||
       color != null ||
-      identificationNumber != null ||
+      id != null ||
       tattooNumber != null ||
       allergy != null
     );
   }
 
-  public String getPetName() {
-    return petName;
-  }
 
-  public void setPetName(String petName) {
-    this.petName = petName;
-  }
-
-  public PetBreed getBreed() {
-    return breed;
-  }
-
-  public void setBreed(PetBreed breed) {
-    this.breed = breed;
-  }
-
-  public PetSex getSex() {
-    return sex;
-  }
-
-  public void setSex(PetSex sex) {
-    this.sex = sex;
-  }
-
-  public LocalDate getBirthDate() {
-    return birthDate;
-  }
-
-  public void setBirthDate(LocalDate birthDate) {
-    this.birthDate = birthDate;
-  }
-
-  public BigDecimal getCurrentWeight() {
-    return currentWeight;
-  }
-
-  public void setCurrentWeight(BigDecimal currentWeight) {
-    this.currentWeight = currentWeight;
-  }
-
-  public PetColor getColor() {
-    return color;
-  }
-
-  public void setColor(PetColor color) {
-    this.color = color;
-  }
-
-  public String getIdentificationNumber() {
-    return identificationNumber;
-  }
-
-  public void setIdentificationNumber(String identificationNumber) {
-    this.identificationNumber = identificationNumber;
-  }
-
-  public String getTattooNumber() {
-    return tattooNumber;
-  }
-
-  public void setTattooNumber(String tattooNumber) {
-    this.tattooNumber = tattooNumber;
-  }
-
-  public String getAllergy() {
-    return allergy;
-  }
-
-  public void setAllergy(String allergy) {
-    this.allergy = allergy;
-  }
 }

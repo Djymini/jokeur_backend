@@ -3,11 +3,13 @@ package com.ashleydev.jokeur_api.integration;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.ashleydev.jokeur_api.domain.enums.AnimalType;
+import com.ashleydev.jokeur_api.domain.enums.PetBreed;
+import com.ashleydev.jokeur_api.domain.enums.PetColor;
 import com.ashleydev.jokeur_api.domain.enums.PetSex;
 import com.ashleydev.jokeur_api.domain.services.HealthRecordService;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
 import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.owner.OwnerRepository;
@@ -51,20 +53,20 @@ class HealthRecordServiceIntegrationTest {
         owner.setEmail("owner@test.com");
         owner.setName("Owner Test");
         owner.setPhoneNumber("0600000000");
-        ownerId = ownerRepository.save(owner).getIdOwner();
+        ownerId = ownerRepository.save(owner).getId();
     }
 
     @Test
     void create_shouldPersist_andReturnResponse() {
         HealthRecordRequestDTO dto = validCreateDto(ownerId);
 
-        HealthRecordResponseDTO saved = healthRecordService.create(dto);
+        HealthRecordResponseDto saved = healthRecordService.create(dto);
 
-        assertNotNull(saved.healthRecordNumber());
-        assertEquals(ownerId, saved.ownerId());
+        assertNotNull(saved.id());
+        assertEquals(ownerId, saved.id());
         assertEquals("Naya", saved.petName());
 
-        assertTrue(healthRecordRepository.existsByHealthRecordNumber(saved.healthRecordNumber()));
+        assertTrue(healthRecordRepository.existsById(saved.id()));
     }
 
     @Test
@@ -76,13 +78,13 @@ class HealthRecordServiceIntegrationTest {
 
     @Test
     void getByHealthRecordNumber_shouldReturnData_whenExists() {
-        HealthRecordResponseDTO created = healthRecordService.create(validCreateDto(ownerId));
+        HealthRecordResponseDto created = healthRecordService.create(validCreateDto(ownerId));
 
-        HealthRecordResponseDTO found =
-                healthRecordService.getByHealthRecordNumber(created.healthRecordNumber());
+        HealthRecordResponseDto found =
+                healthRecordService.getByHealthRecordNumber(created.id());
 
-        assertEquals(created.healthRecordNumber(), found.healthRecordNumber());
-        assertEquals(ownerId, found.ownerId());
+        assertEquals(created.id(), found.id());
+        assertEquals(ownerId, found.id());
         assertEquals("Naya", found.petName());
     }
 
@@ -96,7 +98,7 @@ class HealthRecordServiceIntegrationTest {
         assertNotNull(dashboard);
         assertEquals(2, dashboard.size());
 
-        assertTrue(dashboard.stream().allMatch(d -> d.healthRecordNumber() != null));
+        assertTrue(dashboard.stream().allMatch(d -> d.id() != null));
         assertTrue(dashboard.stream().allMatch(d -> d.petName() != null && !d.petName().isBlank()));
 
         var names = dashboard.stream().map(d -> d.petName()).toList();
@@ -114,7 +116,7 @@ class HealthRecordServiceIntegrationTest {
         assertNotNull(myAnimals);
         assertEquals(2, myAnimals.size());
 
-        assertTrue(myAnimals.stream().allMatch(a -> a.healthRecordNumber() != null));
+        assertTrue(myAnimals.stream().allMatch(a -> a.id() != null));
         assertTrue(myAnimals.stream().allMatch(a -> a.petName() != null && !a.petName().isBlank()));
         assertTrue(myAnimals.stream().allMatch(a -> a.animalType() != null));
         assertTrue(myAnimals.stream().allMatch(a -> a.sex() != null));
@@ -125,11 +127,11 @@ class HealthRecordServiceIntegrationTest {
                 ownerId,
                 "Naya",
                 AnimalType.values()[0],
-                null,
+                PetBreed.LABRADOR,
                 PetSex.values()[0],
                 LocalDate.now().minusYears(2),
                 new BigDecimal("4.20"),
-                null,
+                PetColor.BLACK,
                 "CHIP123",
                 null,
                 null
@@ -141,11 +143,11 @@ class HealthRecordServiceIntegrationTest {
                 ownerId,
                 petName,
                 AnimalType.values()[0],
-                null,
+                PetBreed.PERSIAN,
                 PetSex.values()[0],
                 LocalDate.now().minusYears(2),
                 new BigDecimal("4.20"),
-                null,
+                PetColor.BLACK,
                 "CHIP-" + petName,
                 null,
                 null

@@ -1,38 +1,38 @@
 package com.ashleydev.jokeur_api.exposition.controllers;
 
 import com.ashleydev.jokeur_api.domain.services.HealthRecordService;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordUpdateDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.*;
 import jakarta.validation.Valid;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.websocket.server.PathParam;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/health-records")
+@AllArgsConstructor
 @SuppressWarnings("unused")
 public class HealthRecordController {
 
   private final HealthRecordService healthRecordService;
 
-  @Autowired
-  public HealthRecordController(HealthRecordService healthRecordService) {
-    this.healthRecordService = healthRecordService;
-  }
+    @GetMapping()
+    public ResponseEntity<List<HealthRecordResponseDto>> getAllAnimals(@PathParam(value = "idOwner") Long idOwner){
+        List<HealthRecordResponseDto> response = healthRecordService.getAllAnimals(idOwner);
+        return ResponseEntity.ok(response);
+    }
 
   @PostMapping
-  public ResponseEntity<HealthRecordResponseDTO> createHealthRecord(@Valid @RequestBody HealthRecordRequestDTO dto) {
-    HealthRecordResponseDTO saved = healthRecordService.create(dto);
+  public ResponseEntity<HealthRecordResponseDto> createHealthRecord(@Valid @RequestBody HealthRecordRequestDTO dto) {
+    HealthRecordResponseDto saved = healthRecordService.create(dto);
     return ResponseEntity.status(HttpStatus.CREATED).body(saved);
   }
 
-  @GetMapping("/{healthRecordNumber}")
-  public HealthRecordResponseDTO getByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
+  @GetMapping("/{id}")
+  public HealthRecordResponseDto getByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
     return healthRecordService.getByHealthRecordNumber(healthRecordNumber);
   }
 
@@ -46,12 +46,12 @@ public class HealthRecordController {
     return healthRecordService.getMyAnimalsByOwner(ownerId);
   }
 
-  @PatchMapping("/{healthRecordNumber}")
-  public HealthRecordResponseDTO updatePartial(@PathVariable Long healthRecordNumber, @Valid @RequestBody HealthRecordUpdateDTO dto) {
+  @PatchMapping("/{id}")
+  public HealthRecordResponseDto updatePartial(@PathVariable Long healthRecordNumber, @Valid @RequestBody HealthRecordUpdateDTO dto) {
     return healthRecordService.updatePartial(healthRecordNumber, dto);
   }
 
-  @DeleteMapping("/{healthRecordNumber}")
+  @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
     healthRecordService.deleteByHealthRecordNumber(healthRecordNumber);
