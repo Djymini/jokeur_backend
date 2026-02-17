@@ -77,11 +77,11 @@ class HealthRecordServiceIntegrationTest {
     }
 
     @Test
-    void getByHealthRecordNumber_shouldReturnData_whenExists() {
+    void getByHealthRecordId_shouldReturnData_whenExists() {
         HealthRecordResponseDto created = healthRecordService.create(validCreateDto(ownerId));
 
         HealthRecordResponseDto found =
-                healthRecordService.getByHealthRecordNumber(created.id());
+                healthRecordService.getByHealthRecordId(created.id());
 
         assertEquals(created.id(), found.id());
         assertEquals(ownerId, found.id());
