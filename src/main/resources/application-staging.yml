@@ -1,3 +1,6 @@
+jokeur:
+  rssUrl: https://www.animaux.fr/actualites/rss/
+
 spring:
   datasource:
     url: jdbc:mysql://${DB_HOST_STAGING}:${DB_PORT_STAGING}/${DB_NAME_STAGING}?createDatabaseIfNotExist=true
