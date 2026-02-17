@@ -19,9 +19,9 @@ import java.util.Collections;
 @AllArgsConstructor
 public class UserEntity extends BaseEntity implements UserDetails {
 
-    @Id
+    /* @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; */
 
     @Column(nullable = false, unique = true)
     private String pseudo;

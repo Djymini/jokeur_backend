@@ -39,13 +39,14 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/test/all").permitAll()
+                        .requestMatchers("/auth/**", "/test/all", "/owners/**").permitAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        .requestMatchers("/user/**").hasRole("USER")
+                        // .requestMatchers("/user/**").hasRole("OWNER")
+                        .requestMatchers("/user/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
@@ -55,14 +56,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    /*@Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setOwnerDetailsService(userDetailsService);
-        provider.setPasswordEncoder(new BCryptPasswordEncoder());
-        return provider;
-    }*/
 
     @Bean
     public AuthenticationProvider authenticationProvider(

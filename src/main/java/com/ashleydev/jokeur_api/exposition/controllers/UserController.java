@@ -17,8 +17,10 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<Map<String, Object>> getCurrentUser(@AuthenticationPrincipal UserEntity user) {
         Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("id", user.getId());
-        userInfo.put("email", user.getEmail());
+        // userInfo.put("id", user.getId());
+        userInfo.put("id", user.getUsername());
+        // userInfo.put("email", user.getEmail());
+        // userInfo.put("email", user.ge);
         userInfo.put("role", user.getRole().name());
         return ResponseEntity.ok(userInfo);
     }
