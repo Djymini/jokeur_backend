@@ -1,5 +1,6 @@
 package com.ashleydev.jokeur_api.exposition.dtos.healthRecord;
 
+import com.ashleydev.jokeur_api.exposition.dtos.measure.HealthRecordMeasuresResponseDTO;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -16,5 +17,6 @@ public record HealthRecordResponseDto(
   String allergy,
   byte[] image,
   String imageType,
-  String AnimalType
+  String AnimalType,
+  HealthRecordMeasuresResponseDTO measures
 ) {}
