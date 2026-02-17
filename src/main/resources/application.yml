@@ -1,3 +1,7 @@
+jokeur:
+  rssUrl: https://www.animaux.fr/actualites/rss/
+
+
 spring:
   application:
     name: jokeur_api
@@ -19,7 +23,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true

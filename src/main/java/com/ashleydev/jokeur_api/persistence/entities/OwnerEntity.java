@@ -1,52 +1,36 @@
 package com.ashleydev.jokeur_api.persistence.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.List;
+
+@NoArgsConstructor
 @Entity
-@Table(name = "owner")
+@Table(name ="owner")
+@AllArgsConstructor
+@Getter
+@Setter
 public class OwnerEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id_owner", nullable = false)
-  private Long idOwner;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-  @Column(nullable = false, length = 100)
-  private String email;
+    @Column(name = "email", nullable = false, unique = true, length = 50)
+    private String email;
 
-  @Column(nullable = false, length = 80)
-  private String name;
+    @Column(name = "name", nullable = false, length = 25)
+    private String name;
 
-  @Column(length = 20)
-  private String phoneNumber;
+    @Column(name = "phone_number", length = 13)
+    private String phoneNumber;
 
-  public OwnerEntity() {}
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<HealthRecordEntity> healthRecords;
 
-  public Long getIdOwner() {
-    return idOwner;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
 }

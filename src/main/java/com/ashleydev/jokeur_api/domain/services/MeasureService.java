@@ -8,7 +8,7 @@ import com.ashleydev.jokeur_api.exceptions.measure.MeasureNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.measure.MeasureUpdateNotChangeValueException;
 import com.ashleydev.jokeur_api.exposition.dtos.measure.MeasureRequestDto;
 import com.ashleydev.jokeur_api.exposition.dtos.measure.MeasureResponseDto;
-import com.ashleydev.jokeur_api.exposition.mappers.MeasureMapper;
+import com.ashleydev.jokeur_api.mappers.MeasureMapper;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;

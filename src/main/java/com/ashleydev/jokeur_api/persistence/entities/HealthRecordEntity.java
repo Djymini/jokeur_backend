@@ -4,148 +4,80 @@ import com.ashleydev.jokeur_api.domain.enums.AnimalType;
 import com.ashleydev.jokeur_api.domain.enums.PetBreed;
 import com.ashleydev.jokeur_api.domain.enums.PetColor;
 import com.ashleydev.jokeur_api.domain.enums.PetSex;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "health_record")
 public class HealthRecordEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", nullable = false)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "id_owner", nullable = false)
-  private OwnerEntity owner;
+    @Column(name = "pet_name", nullable = false, length = 50)
+    private String petName;
 
-  @Column(name = "pet_name", nullable = false, length = 50)
-  private String petName;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "breed", length = 50)
+    private PetBreed breed;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "animal_type", nullable = false, length = 20)
-  private AnimalType animalType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sex", nullable = false, length = 12)
+    private PetSex sex;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "breed", length = 50)
-  private PetBreed breed;
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "sex", nullable = false, length = 12)
-  private PetSex sex;
+    @Column(name = "current_weight", precision = 4, scale = 2)
+    private BigDecimal currentWeight;
 
-  @Column(name = "birth_date")
-  private LocalDate birthDate;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "color", length = 20)
+    private PetColor color;
 
-  @Column(name = "current_weight", precision = 4, scale = 2)
-  private BigDecimal currentWeight;
+    @Column(name = "identification_number", unique = true, length = 20)
+    private String identificationNumber;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "color", length = 20)
-  private PetColor color;
+    @Column(name = "tattoo", length = 50, unique = true)
+    private String tattooNumber;
 
-  @Column(name = "identification_number", length = 20, unique = true)
-  private String identificationNumber;
+    @Column(name = "allergy", length = 100)
+    private String allergy;
 
-  @Column(name = "tattoo", length = 50, unique = true)
-  private String tattooNumber;
+    @Lob
+    @Column(name = "image", columnDefinition = "MEDIUMBLOB")
+    private byte[] image;
 
-  @Column(name = "allergy", length = 100)
-  private String allergy;
+    @Column(name = "image_type")
+    private String imageType;
 
-  public HealthRecordEntity() {}
+    @Enumerated(EnumType.STRING)
+    @Column(name = "animal_type", nullable = false, length = 20)
+    private AnimalType animalType;
 
-  public Long getId() {
-    return id;
-  }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_owner", nullable = false)
+    private OwnerEntity owner;
 
-  public OwnerEntity getOwner() {
-    return owner;
-  }
+    @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ReminderEntity> reminders;
 
-  public void setOwner(OwnerEntity owner) {
-    this.owner = owner;
-  }
+    @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AppointmentEntity> appointments;
 
-  public String getPetName() {
-    return petName;
-  }
-
-  public void setPetName(String petName) {
-    this.petName = petName;
-  }
-
-  public AnimalType getAnimalType() {
-    return animalType;
-  }
-
-  public void setAnimalType(AnimalType animalType) {
-    this.animalType = animalType;
-  }
-
-  public PetBreed getBreed() {
-    return breed;
-  }
-
-  public void setBreed(PetBreed breed) {
-    this.breed = breed;
-  }
-
-  public PetSex getSex() {
-    return sex;
-  }
-
-  public void setSex(PetSex sex) {
-    this.sex = sex;
-  }
-
-  public LocalDate getBirthDate() {
-    return birthDate;
-  }
-
-  public void setBirthDate(LocalDate birthDate) {
-    this.birthDate = birthDate;
-  }
-
-  public BigDecimal getCurrentWeight() {
-    return currentWeight;
-  }
-
-  public void setCurrentWeight(BigDecimal currentWeight) {
-    this.currentWeight = currentWeight;
-  }
-
-  public PetColor getColor() {
-    return color;
-  }
-
-  public void setColor(PetColor color) {
-    this.color = color;
-  }
-
-  public String getIdentificationNumber() {
-    return identificationNumber;
-  }
-
-  public void setIdentificationNumber(String identificationNumber) {
-    this.identificationNumber = identificationNumber;
-  }
-
-  public String getTattooNumber() {
-    return tattooNumber;
-  }
-
-  public void setTattooNumber(String tattooNumber) {
-    this.tattooNumber = tattooNumber;
-  }
-
-  public String getAllergy() {
-    return allergy;
-  }
-
-  public void setAllergy(String allergy) {
-    this.allergy = allergy;
-  }
 }

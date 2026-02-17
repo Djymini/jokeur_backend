@@ -41,7 +41,7 @@ public class HealthRecordRules {
       throw new HealthRecordValidationException("currentWeight must be > 0.");
     }
 
-    if (dto.identificationNumber() != null && dto.identificationNumber().isBlank()) {
+    if (dto.id() != null && dto.id().isBlank()) {
       throw new HealthRecordValidationException("identificationNumber cannot be blank.");
     }
 
@@ -72,7 +72,7 @@ public class HealthRecordRules {
       throw new HealthRecordValidationException("currentWeight must be > 0.");
     }
 
-    if (dto.getIdentificationNumber() != null && dto.getIdentificationNumber().isBlank()) {
+    if (dto.getId() != null && dto.getId().isBlank()) {
       throw new HealthRecordValidationException("identificationNumber cannot be blank.");
     }
 

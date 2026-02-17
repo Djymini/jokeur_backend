@@ -1,12 +1,10 @@
 package com.ashleydev.jokeur_api.integration;
 
-import com.ashleydev.jokeur_api.domain.enums.AnimalType;
-import com.ashleydev.jokeur_api.domain.enums.MeasureType;
-import com.ashleydev.jokeur_api.domain.enums.PetSex;
+import com.ashleydev.jokeur_api.domain.enums.*;
 import com.ashleydev.jokeur_api.domain.services.HealthRecordService;
 import com.ashleydev.jokeur_api.domain.services.MeasureService;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
 import com.ashleydev.jokeur_api.exposition.dtos.measure.MeasureRequestDto;
 import com.ashleydev.jokeur_api.exposition.dtos.measure.MeasureResponseDto;
 import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
@@ -44,7 +42,7 @@ public class MeasureServiceIntegrationTest {
     @Autowired private OwnerRepository ownerRepository;
 
     private Long ownerId;
-    private HealthRecordResponseDTO healthRecord;
+    private HealthRecordResponseDto healthRecord;
     private MeasureRequestDto measure1;
     private MeasureRequestDto measure2;
     private MeasureRequestDto measure3;
@@ -65,17 +63,17 @@ public class MeasureServiceIntegrationTest {
         owner.setEmail("owner@test.com");
         owner.setName("Owner Test");
         owner.setPhoneNumber("0600000000");
-        ownerId = ownerRepository.save(owner).getIdOwner();
+        ownerId = ownerRepository.save(owner).getId();
 
         HealthRecordRequestDTO healthRecordRequest = new HealthRecordRequestDTO(
                 ownerId,
                 "Naya",
                 AnimalType.values()[0],
-                null,
+                PetBreed.LABRADOR,
                 PetSex.values()[0],
                 LocalDate.now().minusYears(2),
                 new BigDecimal("4.20"),
-                null,
+                PetColor.BLACK,
                 "CHIP123",
                 null,
                 null

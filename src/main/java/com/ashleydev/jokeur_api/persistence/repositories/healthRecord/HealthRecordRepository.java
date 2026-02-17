@@ -21,7 +21,7 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
         hr.petName
       )
       from HealthRecordEntity hr
-      where hr.owner.idOwner = :ownerId
+      where hr.owner.id = :ownerId
       order by hr.petName asc
     """
   )
@@ -40,7 +40,7 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
         hr.currentWeight
       )
       from HealthRecordEntity hr
-      where hr.owner.idOwner = :ownerId
+      where hr.owner.id = :ownerId
       order by hr.petName asc
     """
   )
@@ -48,5 +48,15 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
 
   Optional<HealthRecordEntity> findById(Long id);
 
-  void deleteById(Long id);
+  boolean existsById(Long id);
+
+  void deleteById(Long healthRecordNumber);
+
+
+    @Query("""
+           Select hr from HealthRecordEntity hr
+           where hr.owner.id = :idOwner
+           """
+    )
+    List<HealthRecordEntity> findAllAnimals(@Param("idOwner") Long idOwner);
 }

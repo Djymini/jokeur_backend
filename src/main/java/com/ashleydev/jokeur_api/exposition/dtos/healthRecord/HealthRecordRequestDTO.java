@@ -27,7 +27,7 @@ public record HealthRecordRequestDTO(
 
   PetColor color,
 
-  @Size(max = 20, message = "identificationNumber must not exceed 20 characters") String identificationNumber,
+  @Size(max = 20, message = "identificationNumber must not exceed 20 characters") String id,
 
   @Size(max = 50, message = "tattooNumber must not exceed 50 characters") String tattooNumber,
 

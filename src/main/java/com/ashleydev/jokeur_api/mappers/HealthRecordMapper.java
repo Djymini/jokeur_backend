@@ -1,10 +1,9 @@
-package com.ashleydev.jokeur_api.exposition.mappers;
+package com.ashleydev.jokeur_api.mappers;
 
+import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.measure.HealthRecordMeasuresResponseDTO;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordDashboardView;
@@ -22,29 +21,12 @@ public class HealthRecordMapper {
     entity.setBirthDate(dto.birthDate());
     entity.setCurrentWeight(dto.currentWeight());
     entity.setColor(dto.color());
-    entity.setIdentificationNumber(dto.identificationNumber());
+    entity.setIdentificationNumber(dto.id());
     entity.setTattooNumber(dto.tattooNumber());
     entity.setAllergy(dto.allergy());
     return entity;
   }
 
-  public static HealthRecordResponseDTO toResponseDto(HealthRecordEntity entity, HealthRecordMeasuresResponseDTO measures) {
-    return new HealthRecordResponseDTO(
-      entity.getId(),
-      entity.getOwner().getIdOwner(),
-      entity.getPetName(),
-      entity.getAnimalType(),
-      entity.getBreed(),
-      entity.getSex(),
-      entity.getBirthDate(),
-      entity.getCurrentWeight(),
-      entity.getColor(),
-      entity.getIdentificationNumber(),
-      entity.getTattooNumber(),
-      entity.getAllergy(),
-      measures
-    );
-  }
 
   public static HealthRecordDashboardDTO toDashboardDto(HealthRecordDashboardView view) {
     return new HealthRecordDashboardDTO(view.getHealthRecordId(), view.getPetName());
@@ -60,4 +42,23 @@ public class HealthRecordMapper {
       view.getCurrentWeight()
     );
   }
+
+
+    public static HealthRecordResponseDto toDto(HealthRecordEntity entity){
+        return new HealthRecordResponseDto(
+                entity.getId(),
+                entity.getPetName(),
+                entity.getBreed().name(),
+                entity.getSex().name(),
+                entity.getBirthDate(),
+                entity.getCurrentWeight(),
+                entity.getColor().name(),
+                entity.getIdentificationNumber(),
+                entity.getTattooNumber(),
+                entity.getAllergy(),
+                entity.getImage(),
+                entity.getImageType(),
+                entity.getAnimalType().name()
+        );
+    }
 }
