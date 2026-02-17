@@ -3,26 +3,29 @@ package com.ashleydev.jokeur_api.domain.services;
 import com.ashleydev.jokeur_api.domain.rules.HealthRecordRules;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
-import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.*;
+import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.measure.HealthRecordMeasuresResponseDTO;
 import com.ashleydev.jokeur_api.mappers.HealthRecordMapper;
+import com.ashleydev.jokeur_api.mappers.MeasureMapper;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
+import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
 import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
+import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.owner.OwnerRepository;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class HealthRecordService {
 
   private final HealthRecordRepository healthRecordRepository;
+  private final MeasureRepository measureRepository;
   private final OwnerRepository ownerRepository;
   private final HealthRecordRules healthRecordRules;
-
 
   public HealthRecordResponseDto create(HealthRecordRequestDTO dto) {
     healthRecordRules.validateCreate(dto);
@@ -32,15 +35,19 @@ public class HealthRecordService {
     HealthRecordEntity entity = HealthRecordMapper.toEntity(dto, owner);
     HealthRecordEntity saved = healthRecordRepository.save(entity);
 
-    return HealthRecordMapper.toDto(saved);
+    List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordId(saved.getId());
+    HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
+
+    return HealthRecordMapper.toDto(saved, measures);
   }
 
   public HealthRecordResponseDto getByHealthRecordNumber(Long id) {
-    HealthRecordEntity entity = healthRecordRepository
-      .findById(id)
-      .orElseThrow(() -> new HealthRecordNotFoundException(id));
+    HealthRecordEntity entity = healthRecordRepository.findById(id).orElseThrow(() -> new HealthRecordNotFoundException(id));
 
-    return HealthRecordMapper.toDto(entity);
+    List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordId(entity.getId());
+    HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
+
+    return HealthRecordMapper.toDto(entity, measures);
   }
 
   public List<HealthRecordDashboardDTO> getDashboardByOwner(Long ownerId) {
@@ -68,7 +75,10 @@ public class HealthRecordService {
     if (dto.getTattooNumber() != null) entity.setTattooNumber(dto.getTattooNumber());
     if (dto.getAllergy() != null) entity.setAllergy(dto.getAllergy());
 
-    return HealthRecordMapper.toDto(healthRecordRepository.save(entity));
+    List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordId(entity.getId());
+    HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
+
+    return HealthRecordMapper.toDto(healthRecordRepository.save(entity), measures);
   }
 
   public void deleteByHealthRecordNumber(Long healthRecordNumber) {
@@ -78,14 +88,21 @@ public class HealthRecordService {
     healthRecordRepository.deleteById(healthRecordNumber);
   }
 
-    /**
-     * permet de récupèrer les information d'un animal pour alimenter la page dashbaoard et page animal
-     * @param idOwner
-     * @return
-     */
-    public List<HealthRecordResponseDto> getAllAnimals(Long idOwner){
-        return healthRecordRepository.findAllAnimals(idOwner).stream().map(
-                HealthRecordMapper::toDto
-        ).toList();
-    }
+  /**
+   * permet de récupèrer les information d'un animal pour alimenter la page dashbaoard et page animal
+   * @param idOwner
+   * @return
+   */
+  public List<HealthRecordResponseDto> getAllAnimals(Long idOwner) {
+    return healthRecordRepository
+      .findAllAnimals(idOwner)
+      .stream()
+      .map(entity -> {
+        List<MeasureEntity> measures = measureRepository.findByHealthRecordId(entity.getId());
+        HealthRecordMeasuresResponseDTO measuresDto = MeasureMapper.toHealthRecordDto(measures);
+
+        return HealthRecordMapper.toDto(entity, measuresDto);
+      })
+      .toList();
+  }
 }

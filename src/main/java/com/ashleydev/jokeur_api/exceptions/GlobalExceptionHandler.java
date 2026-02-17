@@ -3,12 +3,13 @@ package com.ashleydev.jokeur_api.exceptions;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordUpdateEmptyException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordValidationException;
+import com.ashleydev.jokeur_api.exceptions.measure.MeasureNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.measure.MeasureTypeNotValidateException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -86,6 +87,19 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Map<String, Object>> handleOwnerUpdateEmpty(OwnerUpdateEmptyException ex) {
     Map<String, Object> body = new HashMap<>();
     body.put("error", "OWNER_UPDATE_EMPTY");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+  }
+
+  @ExceptionHandler(MeasureNotFoundException.class)
+  public ResponseEntity<String> handleMeasureNotFound(MeasureNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(MeasureTypeNotValidateException.class)
+  public ResponseEntity<Map<String, Object>> handleMeasureTypeNotValidate(MeasureTypeNotValidateException ex) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("error", "MEASURE_TYPE_NOT_VALIDATE");
     body.put("message", ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
   }

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 @EnableScheduling
 public class RssScheduler {
 
-    private final NotificationRssService notificationRssService;
+  private final NotificationRssService notificationRssService;
 
-    @Scheduled(cron = "0 0 */24 * * *") // toutes les 24+h
-    public void fetchRss(){
-        notificationRssService.importRssNotifications();
-    }
+  @Scheduled(cron = "0 0 */24 * * *") // toutes les 24+h
+  public void fetchRss() {
+    notificationRssService.importRssNotifications();
+  }
 }

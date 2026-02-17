@@ -1,6 +1,6 @@
 package com.ashleydev.jokeur_api.persistence.repositories.healthRecord;
 
 public interface HealthRecordDashboardView {
-  Long getHealthRecordNumber();
+  Long getHealthRecordId();
   String getPetName();
 }

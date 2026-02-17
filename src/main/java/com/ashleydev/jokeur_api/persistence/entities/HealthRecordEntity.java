@@ -6,14 +6,13 @@ import com.ashleydev.jokeur_api.domain.enums.PetColor;
 import com.ashleydev.jokeur_api.domain.enums.PetSex;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,61 +22,60 @@ import java.util.List;
 @Table(name = "health_record")
 public class HealthRecordEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
+  private Long id;
 
-    @Column(name = "pet_name", nullable = false, length = 50)
-    private String petName;
+  @Column(name = "pet_name", nullable = false, length = 50)
+  private String petName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "breed", length = 50)
-    private PetBreed breed;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "breed", length = 50)
+  private PetBreed breed;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "sex", nullable = false, length = 12)
-    private PetSex sex;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "sex", nullable = false, length = 12)
+  private PetSex sex;
 
-    @Column(name = "birth_date")
-    private LocalDate birthDate;
+  @Column(name = "birth_date")
+  private LocalDate birthDate;
 
-    @Column(name = "current_weight", precision = 4, scale = 2)
-    private BigDecimal currentWeight;
+  @Column(name = "current_weight", precision = 4, scale = 2)
+  private BigDecimal currentWeight;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "color", length = 20)
-    private PetColor color;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "color", length = 20)
+  private PetColor color;
 
-    @Column(name = "identification_number", unique = true, length = 20)
-    private String identificationNumber;
+  @Column(name = "identification_number", unique = true, length = 20)
+  private String identificationNumber;
 
-    @Column(name = "tattoo", length = 50, unique = true)
-    private String tattooNumber;
+  @Column(name = "tattoo", length = 50, unique = true)
+  private String tattooNumber;
 
-    @Column(name = "allergy", length = 100)
-    private String allergy;
+  @Column(name = "allergy", length = 100)
+  private String allergy;
 
-    @Lob
-    @Column(name = "image", columnDefinition = "MEDIUMBLOB")
-    private byte[] image;
+  @Lob
+  @Column(name = "image", columnDefinition = "MEDIUMBLOB")
+  private byte[] image;
 
-    @Column(name = "image_type")
-    private String imageType;
+  @Column(name = "image_type")
+  private String imageType;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "animal_type", nullable = false, length = 20)
-    private AnimalType animalType;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "animal_type", nullable = false, length = 20)
+  private AnimalType animalType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_owner", nullable = false)
-    private OwnerEntity owner;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_owner", nullable = false)
+  private OwnerEntity owner;
 
-    @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<ReminderEntity> reminders;
+  @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JsonManagedReference
+  private List<ReminderEntity> reminders;
 
-    @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<AppointmentEntity> appointments;
-
+  @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<AppointmentEntity> appointments;
 }
