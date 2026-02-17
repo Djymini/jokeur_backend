@@ -31,8 +31,8 @@ public class HealthRecordController {
   }
 
   @GetMapping("/{id}")
-  public HealthRecordResponseDto getByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
-    return healthRecordService.getByHealthRecordNumber(healthRecordNumber);
+  public HealthRecordResponseDto getByHealthRecordId(@PathVariable Long id) {
+    return healthRecordService.getByHealthRecordId(id);
   }
 
   @GetMapping("/dashboard")
@@ -46,13 +46,13 @@ public class HealthRecordController {
   }
 
   @PatchMapping("/{id}")
-  public HealthRecordResponseDto updatePartial(@PathVariable Long healthRecordNumber, @Valid @RequestBody HealthRecordUpdateDTO dto) {
-    return healthRecordService.updatePartial(healthRecordNumber, dto);
+  public HealthRecordResponseDto updatePartial(@PathVariable Long id, @Valid @RequestBody HealthRecordUpdateDTO dto) {
+    return healthRecordService.updatePartial(id, dto);
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteByHealthRecordNumber(@PathVariable Long healthRecordNumber) {
-    healthRecordService.deleteByHealthRecordNumber(healthRecordNumber);
+  public void deleteByHealthRecordId(@PathVariable Long id) {
+    healthRecordService.deleteByHealthRecordId(id);
   }
 }
