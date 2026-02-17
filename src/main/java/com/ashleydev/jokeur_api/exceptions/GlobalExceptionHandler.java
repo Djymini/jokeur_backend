@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -102,5 +103,13 @@ public class GlobalExceptionHandler {
     body.put("error", "MEASURE_TYPE_NOT_VALIDATE");
     body.put("message", ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+  }
+
+  @ExceptionHandler(MissingPathVariableException.class)
+  public ResponseEntity<Map<String, String>> handlePathVariableError(MissingPathVariableException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "PATH_VARIABLE_ERROR");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
   }
 }
