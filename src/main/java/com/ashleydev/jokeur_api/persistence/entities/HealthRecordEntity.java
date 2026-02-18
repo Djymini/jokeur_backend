@@ -52,7 +52,7 @@ public class HealthRecordEntity {
   private String identificationNumber;
 
   @Column(name = "tattoo", length = 50, unique = true)
-  private String tattooNumber;
+  private String tattoo;
 
   @Column(name = "allergy", length = 100)
   private String allergy;

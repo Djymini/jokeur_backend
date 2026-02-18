@@ -1,7 +1,6 @@
 package com.ashleydev.jokeur_api.domain.enums.pets;
 
 import lombok.Getter;
-import org.aspectj.apache.bcel.classfile.Unknown;
 
 @Getter
 public enum PetSex {

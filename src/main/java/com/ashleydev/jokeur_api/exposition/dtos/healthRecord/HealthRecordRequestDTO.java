@@ -29,7 +29,7 @@ public record HealthRecordRequestDTO(
 
   @Size(max = 20, message = "identificationNumber must not exceed 20 characters") String id,
 
-  @Size(max = 50, message = "tattooNumber must not exceed 50 characters") String tattooNumber,
+  @Size(max = 50, message = "tattooNumber must not exceed 50 characters") String tattoo,
 
   @Size(max = 100, message = "allergy must not exceed 100 characters") String allergy
 ) {}

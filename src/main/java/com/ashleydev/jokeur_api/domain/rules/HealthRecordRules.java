@@ -45,7 +45,7 @@ public class HealthRecordRules {
       throw new HealthRecordValidationException("identificationNumber cannot be blank.");
     }
 
-    if (dto.tattooNumber() != null && dto.tattooNumber().isBlank()) {
+    if (dto.tattoo() != null && dto.tattoo().isBlank()) {
       throw new HealthRecordValidationException("tattooNumber cannot be blank.");
     }
 
@@ -76,7 +76,7 @@ public class HealthRecordRules {
       throw new HealthRecordValidationException("identificationNumber cannot be blank.");
     }
 
-    if (dto.getTattooNumber() != null && dto.getTattooNumber().isBlank()) {
+    if (dto.getTattoo() != null && dto.getTattoo().isBlank()) {
       throw new HealthRecordValidationException("tattooNumber cannot be blank.");
     }
 

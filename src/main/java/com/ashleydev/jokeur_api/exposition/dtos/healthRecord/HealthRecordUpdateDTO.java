@@ -32,7 +32,7 @@ public class HealthRecordUpdateDTO {
   private String id;
 
   @Size(max = 50, message = "tattooNumber must not exceed 50 characters")
-  private String tattooNumber;
+  private String tattoo;
 
   @Size(max = 100, message = "allergy must not exceed 100 characters")
   private String allergy;
@@ -46,7 +46,7 @@ public class HealthRecordUpdateDTO {
       currentWeight != null ||
       color != null ||
       id != null ||
-      tattooNumber != null ||
+              tattoo != null ||
       allergy != null
     );
   }
