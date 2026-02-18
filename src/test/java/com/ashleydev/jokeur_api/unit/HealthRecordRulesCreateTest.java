@@ -2,8 +2,8 @@ package com.ashleydev.jokeur_api.unit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.ashleydev.jokeur_api.domain.enums.AnimalType;
-import com.ashleydev.jokeur_api.domain.enums.PetSex;
+import com.ashleydev.jokeur_api.domain.enums.pets.AnimalType;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetSex;
 import com.ashleydev.jokeur_api.domain.rules.HealthRecordRules;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordValidationException;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;

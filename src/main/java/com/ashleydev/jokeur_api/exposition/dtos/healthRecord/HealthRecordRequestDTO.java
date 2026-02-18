@@ -1,9 +1,9 @@
 package com.ashleydev.jokeur_api.exposition.dtos.healthRecord;
 
-import com.ashleydev.jokeur_api.domain.enums.AnimalType;
-import com.ashleydev.jokeur_api.domain.enums.PetBreed;
-import com.ashleydev.jokeur_api.domain.enums.PetColor;
-import com.ashleydev.jokeur_api.domain.enums.PetSex;
+import com.ashleydev.jokeur_api.domain.enums.pets.AnimalType;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetBreed;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetColor;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetSex;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;

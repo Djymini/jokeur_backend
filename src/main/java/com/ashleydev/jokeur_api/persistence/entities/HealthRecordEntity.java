@@ -1,9 +1,9 @@
 package com.ashleydev.jokeur_api.persistence.entities;
 
-import com.ashleydev.jokeur_api.domain.enums.AnimalType;
-import com.ashleydev.jokeur_api.domain.enums.PetBreed;
-import com.ashleydev.jokeur_api.domain.enums.PetColor;
-import com.ashleydev.jokeur_api.domain.enums.PetSex;
+import com.ashleydev.jokeur_api.domain.enums.pets.AnimalType;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetBreed;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetColor;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetSex;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
