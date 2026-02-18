@@ -18,7 +18,7 @@ public record RegisterUserRequestDTO(
         user.setFirstname(firstname);
         user.setEmail(email);
         user.setRole(Role.OWNER);
-        // On ne SET pas le mot de passe dans le Mapper
+        // On ne SET pas le mdp dans le Mapper
         return user;
     }
 }
