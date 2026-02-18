@@ -29,10 +29,10 @@ public class AnimalFormOptionsTest {
 
     @Test
     void shouldContainAllColors() {
-        assertThat(AnimalFormOptions.COLORS).hasSize(6);
+        assertThat(AnimalFormOptions.COLORS).hasSize(7);
         assertThat(AnimalFormOptions.COLORS)
                 .extracting(Option::code)
-                .containsExactly("BLACK", "WHITE", "BROWN", "GINGER", "GREY", "MIXED");
+                .containsExactly("BLACK", "WHITE", "BROWN", "GINGER", "GREY", "OTHER", "MIXED");
     }
 
     @Test
@@ -43,19 +43,19 @@ public class AnimalFormOptionsTest {
 
         assertThat(breeds.get("DOG"))
                 .extracting(Option::code)
-                .contains("LABRADOR", "BULLDOG", "GERMAN_SHEPHERD");
+                .contains("LABRADOR", "BULLDOG", "GERMAN_SHEPHERD", "UNKNOWN");
 
         assertThat(breeds.get("CAT"))
                 .extracting(Option::code)
-                .contains("SIAMESE", "MAINE_COON", "EUROPEAN", "BRITISH_SHORTHAIR");
+                .contains("SIAMESE", "MAINE_COON", "EUROPEAN", "BRITISH_SHORTHAIR", "UNKNOWN");
     }
 
     @Test
-    void shouldExcludeOtherFromBreedsByAnimalType() {
+    void shouldIncludeUnknownInAllBreedLists() {
         Map<String, List<Option>> breeds = AnimalFormOptions.BREEDS_BY_ANIMAL_TYPE;
 
         breeds.values().forEach(list ->
-                assertThat(list).extracting(Option::code).doesNotContain("OTHER")
+                assertThat(list).extracting(Option::code).contains("UNKNOWN")
         );
     }
 }

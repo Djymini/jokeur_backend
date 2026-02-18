@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/form-options")
 @CrossOrigin(origins = "http://localhost:4200")
-
 public class FormOptionsController {
 
-    @GetMapping
-    public FormOptionsResponseDTO getFormOptions() {
-        return new FormOptionsResponseDTO(
-                AnimalFormOptions.ANIMAL_TYPES,
-                AnimalFormOptions.SEXES,
-                AnimalFormOptions.COLORS,
-                AnimalFormOptions.BREEDS_BY_ANIMAL_TYPE
-        );
-    }
+  @GetMapping
+  public FormOptionsResponseDTO getFormOptions() {
+    return new FormOptionsResponseDTO(
+      AnimalFormOptions.ANIMAL_TYPES,
+      AnimalFormOptions.SEXES,
+      AnimalFormOptions.COLORS,
+      AnimalFormOptions.BREEDS_BY_ANIMAL_TYPE
+    );
+  }
 }

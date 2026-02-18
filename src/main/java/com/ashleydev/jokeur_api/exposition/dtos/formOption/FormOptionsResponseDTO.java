@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 public record FormOptionsResponseDTO(
-        List<Option> animalTypes,
-        List<Option> sexes,
-        List<Option> colors,
-        Map<String, List<Option>> breedsByAnimalType
+  List<Option> animalTypes,
+  List<Option> sexes,
+  List<Option> colors,
+  Map<String, List<Option>> breedsByAnimalType
 ) {}

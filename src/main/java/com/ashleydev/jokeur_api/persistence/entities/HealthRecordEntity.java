@@ -31,7 +31,7 @@ public class HealthRecordEntity {
   private String petName;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "breed", length = 50)
+  @Column(name = "breed", nullable = false, length = 50)
   private PetBreed breed;
 
   @Enumerated(EnumType.STRING)
@@ -45,7 +45,7 @@ public class HealthRecordEntity {
   private BigDecimal currentWeight;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "color", length = 20)
+  @Column(name = "color", nullable = false, length = 20)
   private PetColor color;
 
   @Column(name = "identification_number", unique = true, length = 20)

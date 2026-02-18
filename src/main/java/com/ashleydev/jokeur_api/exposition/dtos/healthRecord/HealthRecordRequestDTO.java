@@ -15,7 +15,7 @@ public record HealthRecordRequestDTO(
 
   @NotNull(message = "animalType is required") AnimalType animalType,
 
-  PetBreed breed,
+  @NotNull(message = "breed is required") PetBreed breed,
 
   @NotNull(message = "sex is required") PetSex sex,
 
@@ -25,7 +25,7 @@ public record HealthRecordRequestDTO(
   @Digits(integer = 2, fraction = 2, message = "currentWeight format is invalid (max 2 digits + 2 decimals)")
   BigDecimal currentWeight,
 
-  PetColor color,
+  @NotNull(message = "color is required") PetColor color,
 
   @Size(max = 20, message = "identificationNumber must not exceed 20 characters") String id,
 

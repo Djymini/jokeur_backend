@@ -4,13 +4,17 @@ import lombok.Getter;
 
 @Getter
 public enum PetColor {
-    BLACK("Noir"),
-    WHITE("Blanc"),
-    BROWN("Marron"),
-    GINGER("Roux"),
-    GREY("Gris"),
-    MIXED("Bicolore / Tricolore");
+  BLACK("Noir"),
+  WHITE("Blanc"),
+  BROWN("Marron"),
+  GINGER("Roux"),
+  GREY("Gris"),
+  OTHER("Autre"),
+  MIXED("Bicolore / Tricolore");
 
-    private final String label;
-    PetColor(String label) { this.label = label; }
+  private final String label;
+
+  PetColor(String label) {
+    this.label = label;
+  }
 }

@@ -46,7 +46,7 @@ public class HealthRecordUpdateDTO {
       currentWeight != null ||
       color != null ||
       id != null ||
-              tattoo != null ||
+      tattoo != null ||
       allergy != null
     );
   }

@@ -29,7 +29,7 @@ class FormOptionsControllerIntegrationTest {
         assertThat(response).isNotNull();
         assertThat(response.animalTypes()).hasSize(2);
         assertThat(response.sexes()).hasSize(3);
-        assertThat(response.colors()).hasSize(6);
+        assertThat(response.colors()).hasSize(7);
         assertThat(response.breedsByAnimalType()).containsKeys("DOG", "CAT");
         assertThat(response.breedsByAnimalType().get("DOG")).isNotEmpty();
         assertThat(response.breedsByAnimalType().get("CAT")).isNotEmpty();
