@@ -14,7 +14,7 @@ public interface ReminderRepository extends JpaRepository<ReminderEntity, Long> 
   @Query(
     """
     SELECT r FROM ReminderEntity r
-    WHERE r.healthRecord.owner.id = :idOwner
+    WHERE r.owner.id = :idOwner
     and r.reminderDate between CURRENT_DATE and :maxIntervalDate
     order by r.reminderDate asc
     """

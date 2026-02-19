@@ -8,6 +8,8 @@ import com.ashleydev.jokeur_api.exceptions.measure.MeasureTypeNotValidateExcepti
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
+import com.ashleydev.jokeur_api.exceptions.reminder.ReminderNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.vaccin.VaccinNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -102,5 +104,15 @@ public class GlobalExceptionHandler {
     body.put("error", "MEASURE_TYPE_NOT_VALIDATE");
     body.put("message", ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+  }
+
+  @ExceptionHandler(VaccinNotFoundException.class)
+  public ResponseEntity<String> handleVaccinNotFound(VaccinNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(ReminderNotFoundException.class)
+  public ResponseEntity<String> handleReminderNotFound(ReminderNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
   }
 }
