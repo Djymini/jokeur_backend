@@ -30,9 +30,9 @@ public class OwnerEntity {
   @Column(name = "phone_number", length = 13)
   private String phoneNumber;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<ReminderEntity> reminders;
+  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JsonManagedReference
+  private List<ReminderEntity> reminders;
 
   @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<HealthRecordEntity> healthRecords;
