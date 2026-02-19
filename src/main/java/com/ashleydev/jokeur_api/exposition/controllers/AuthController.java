@@ -64,5 +64,4 @@ public class AuthController {
         LoginUserResponseDTO response = LoginUserResponseDTO.fromEntity(token, authenticatedUser);
         return ResponseEntity.ok(response);
     }
-
 }
