@@ -23,7 +23,7 @@ public class HealthRecordMapper {
     entity.setCurrentWeight(dto.currentWeight());
     entity.setColor(dto.color());
     entity.setIdentificationNumber(dto.id());
-    entity.setTattooNumber(dto.tattooNumber());
+    entity.setTattoo(dto.tattoo());
     entity.setAllergy(dto.allergy());
     return entity;
   }
@@ -53,7 +53,7 @@ public class HealthRecordMapper {
       entity.getCurrentWeight(),
       entity.getColor().name(),
       entity.getIdentificationNumber(),
-      entity.getTattooNumber(),
+      entity.getTattoo(),
       entity.getAllergy(),
       entity.getImage(),
       entity.getImageType(),

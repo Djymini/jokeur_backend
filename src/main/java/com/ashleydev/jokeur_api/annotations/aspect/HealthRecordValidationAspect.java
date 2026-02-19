@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -14,13 +15,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class HealthRecordValidationAspect {
 
-  private HealthRecordRepository healthRecordRepository;
+    @Autowired
+    private HealthRecordRepository healthRecordRepository;
 
   @Before("@annotation(validateAnnotation)")
   public void validate(JoinPoint joinPoint, ValidateHealthRecord validateAnnotation) {
     Object[] args = joinPoint.getArgs();
     String fieldName = validateAnnotation.idField();
-
     Long id = extractId(joinPoint, args, fieldName);
 
     if (id != null && !healthRecordRepository.existsById(id)) {

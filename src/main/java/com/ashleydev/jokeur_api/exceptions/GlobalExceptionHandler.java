@@ -9,12 +9,11 @@ import com.ashleydev.jokeur_api.exceptions.owner.OwnerEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
 import com.ashleydev.jokeur_api.exceptions.reminder.ReminderNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.user.UserEmailAlreadyUsedException;
+import com.ashleydev.jokeur_api.exceptions.user.UserNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccinNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.ashleydev.jokeur_api.exceptions.user.UserEmailAlreadyUsedException;
-import com.ashleydev.jokeur_api.exceptions.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -129,24 +128,24 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
   }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFoundException ex) {
-        Map<String, String> body = new HashMap<>();
-        body.put("error", "USER_NOT_FOUND");
-        body.put("message", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
-    }
+  @ExceptionHandler(UserNotFoundException.class)
+  public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFoundException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "USER_NOT_FOUND");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+  }
 
-    @ExceptionHandler(UserEmailAlreadyUsedException.class)
-    public ResponseEntity<Map<String, String>> handleUserEmailAlreadyUsed(UserEmailAlreadyUsedException ex) {
-        Map<String, String> body = new HashMap<>();
-        body.put("error", "USER_EMAIL_ALREADY_USED");
-        body.put("message", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
-    }
+  @ExceptionHandler(UserEmailAlreadyUsedException.class)
+  public ResponseEntity<Map<String, String>> handleUserEmailAlreadyUsed(UserEmailAlreadyUsedException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "USER_EMAIL_ALREADY_USED");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<String> handleNotFoundError(NoHandlerFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur 404 : Le chemin que vous avez demandé n'existe pas.");
-    }
+  @ExceptionHandler(NoHandlerFoundException.class)
+  public ResponseEntity<String> handleNotFoundError(NoHandlerFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur 404 : Le chemin que vous avez demandé n'existe pas.");
+  }
 }

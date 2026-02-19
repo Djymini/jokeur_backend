@@ -1,4 +1,5 @@
 package com.ashleydev.jokeur_api.exposition.controllers;
+
 import com.ashleydev.jokeur_api.exposition.dtos.LoginUserRequestDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.LoginUserResponseDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.RegisterUserRequestDTO;
@@ -21,47 +22,40 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+  @Autowired
+  private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+  @Autowired
+  private JwtUtil jwtUtil;
 
-    @PostMapping("/register")
-    public ResponseEntity<RegisterUserResponseDTO> registerUser(@RequestBody RegisterUserRequestDTO request) {
-        if (userRepository.existsByEmail(request.email())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new RegisterUserResponseDTO("Cet email est déjà utilisé !"));
-        }
-
-        UserEntity user = request.toEntity();
-        // 👇 On SET le mot de passe depuis le Controller, pas depuis le Mapper
-        user.setPassword(passwordEncoder.encode(request.password()));
-        userRepository.save(user);
-
-        return ResponseEntity.ok(new RegisterUserResponseDTO("Utilisateur inscrit avec succès !"));
+  @PostMapping("/register")
+  public ResponseEntity<RegisterUserResponseDTO> registerUser(@RequestBody RegisterUserRequestDTO request) {
+    if (userRepository.existsByEmail(request.email())) {
+      return ResponseEntity.badRequest().body(new RegisterUserResponseDTO("Cet email est déjà utilisé !"));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginUserResponseDTO> authenticatedUser(@RequestBody LoginUserRequestDTO request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.email(),
-                        request.password()
-                )
-        );
+    UserEntity user = request.toEntity();
+    // 👇 On SET le mot de passe depuis le Controller, pas depuis le Mapper
+    user.setPassword(passwordEncoder.encode(request.password()));
+    userRepository.save(user);
 
-        UserEntity authenticatedUser = (UserEntity) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(authenticatedUser);
+    return ResponseEntity.ok(new RegisterUserResponseDTO("Utilisateur inscrit avec succès !"));
+  }
 
-        LoginUserResponseDTO response = LoginUserResponseDTO.fromEntity(token, authenticatedUser);
-        return ResponseEntity.ok(response);
-    }
+  @PostMapping("/login")
+  public ResponseEntity<LoginUserResponseDTO> authenticatedUser(@RequestBody LoginUserRequestDTO request) {
+    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+
+    UserEntity authenticatedUser = (UserEntity) authentication.getPrincipal();
+    String token = jwtUtil.generateToken(authenticatedUser);
+
+    LoginUserResponseDTO response = LoginUserResponseDTO.fromEntity(token, authenticatedUser);
+    return ResponseEntity.ok(response);
+  }
 }
