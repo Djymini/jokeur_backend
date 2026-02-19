@@ -50,7 +50,7 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
 
   boolean existsById(Long id);
 
-  void deleteById(Long healthRecordNumber);
+  void deleteById(Long id);
 
   @Query(
     """

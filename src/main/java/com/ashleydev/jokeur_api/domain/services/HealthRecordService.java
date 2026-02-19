@@ -41,7 +41,7 @@ public class HealthRecordService {
     return HealthRecordMapper.toDto(saved, measures);
   }
 
-  public HealthRecordResponseDto getByHealthRecordNumber(Long id) {
+  public HealthRecordResponseDto getByHealthRecordId(Long id) {
     HealthRecordEntity entity = healthRecordRepository.findById(id).orElseThrow(() -> new HealthRecordNotFoundException(id));
 
     List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordId(entity.getId());
@@ -58,12 +58,10 @@ public class HealthRecordService {
     return healthRecordRepository.findMyAnimalsDtosByOwnerId(ownerId);
   }
 
-  public HealthRecordResponseDto updatePartial(Long healthRecordNumber, HealthRecordUpdateDTO dto) {
+  public HealthRecordResponseDto updatePartial(Long id, HealthRecordUpdateDTO dto) {
     healthRecordRules.validateUpdate(dto);
 
-    HealthRecordEntity entity = healthRecordRepository
-      .findById(healthRecordNumber)
-      .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordNumber));
+    HealthRecordEntity entity = healthRecordRepository.findById(id).orElseThrow(() -> new HealthRecordNotFoundException(id));
 
     if (dto.getPetName() != null) entity.setPetName(dto.getPetName());
     if (dto.getBreed() != null) entity.setBreed(dto.getBreed());
@@ -81,11 +79,11 @@ public class HealthRecordService {
     return HealthRecordMapper.toDto(healthRecordRepository.save(entity), measures);
   }
 
-  public void deleteByHealthRecordNumber(Long healthRecordNumber) {
-    if (!healthRecordRepository.existsById(healthRecordNumber)) {
-      throw new HealthRecordNotFoundException(healthRecordNumber);
+  public void deleteByHealthRecordId(Long id) {
+    if (!healthRecordRepository.existsById(id)) {
+      throw new HealthRecordNotFoundException(id);
     }
-    healthRecordRepository.deleteById(healthRecordNumber);
+    healthRecordRepository.deleteById(id);
   }
 
   /**
