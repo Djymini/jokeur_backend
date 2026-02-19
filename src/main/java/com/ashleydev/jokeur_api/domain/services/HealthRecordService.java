@@ -70,7 +70,7 @@ public class HealthRecordService {
     if (dto.getCurrentWeight() != null) entity.setCurrentWeight(dto.getCurrentWeight());
     if (dto.getColor() != null) entity.setColor(dto.getColor());
     if (dto.getId() != null) entity.setIdentificationNumber(dto.getId());
-    if (dto.getTattooNumber() != null) entity.setTattooNumber(dto.getTattooNumber());
+    if (dto.getTattoo() != null) entity.setTattoo(dto.getTattoo());
     if (dto.getAllergy() != null) entity.setAllergy(dto.getAllergy());
 
     List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordId(entity.getId());

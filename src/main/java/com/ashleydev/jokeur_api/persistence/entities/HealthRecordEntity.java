@@ -1,9 +1,9 @@
 package com.ashleydev.jokeur_api.persistence.entities;
 
-import com.ashleydev.jokeur_api.domain.enums.AnimalType;
-import com.ashleydev.jokeur_api.domain.enums.PetBreed;
-import com.ashleydev.jokeur_api.domain.enums.PetColor;
-import com.ashleydev.jokeur_api.domain.enums.PetSex;
+import com.ashleydev.jokeur_api.domain.enums.pets.AnimalType;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetBreed;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetColor;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetSex;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -31,7 +31,7 @@ public class HealthRecordEntity {
   private String petName;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "breed", length = 50)
+  @Column(name = "breed", nullable = false, length = 50)
   private PetBreed breed;
 
   @Enumerated(EnumType.STRING)
@@ -45,14 +45,14 @@ public class HealthRecordEntity {
   private BigDecimal currentWeight;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "color", length = 20)
+  @Column(name = "color", nullable = false, length = 20)
   private PetColor color;
 
   @Column(name = "identification_number", unique = true, length = 20)
   private String identificationNumber;
 
   @Column(name = "tattoo", length = 50, unique = true)
-  private String tattooNumber;
+  private String tattoo;
 
   @Column(name = "allergy", length = 100)
   private String allergy;

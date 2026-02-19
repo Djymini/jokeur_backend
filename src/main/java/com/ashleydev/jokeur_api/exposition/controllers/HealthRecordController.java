@@ -3,7 +3,6 @@ package com.ashleydev.jokeur_api.exposition.controllers;
 import com.ashleydev.jokeur_api.domain.services.HealthRecordService;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.*;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ public class HealthRecordController {
   private final HealthRecordService healthRecordService;
 
   @GetMapping
-  public ResponseEntity<List<HealthRecordResponseDto>> getAllAnimals(@PathParam(value = "idOwner") Long idOwner) {
+  public ResponseEntity<List<HealthRecordResponseDto>> getAllAnimals(@RequestParam(value = "idOwner", required = false) Long idOwner) {
     List<HealthRecordResponseDto> response = healthRecordService.getAllAnimals(idOwner);
     return ResponseEntity.ok(response);
   }
