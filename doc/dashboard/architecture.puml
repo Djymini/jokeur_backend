@@ -1,0 +1,69 @@
+@startuml
+!include <C4/C4_Container>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+
+
+Person(user, "Utilisateur", "Propriétaire d'animaux")
+
+System_Boundary(back, "Backend Jokeur API") {
+    Container(angular, "Application Angular", "TypeScript, Angular", "Interface utilisateur pour la gestion des animaux et rendez-vous")
+
+    Container(api, "API REST", "Java, Spring Boot", "Point d'entrée pour les requêtes IHM")
+
+    Container_Boundary(scheduler, "Scheduler") {
+        Component(rssScheduler, "RssScheduler", "Spring Scheduled", "Planification de l'import RSS toutes les 24h")
+    }
+
+    Container_Boundary(controllers, "REST Controllers") {
+        Component(healthRecordCtrl, "HealthRecordController", "Gestion des carnets de santé")
+        Component(appointmentCtrl, "AppointmentController", "Gestion des rendez-vous")
+        Component(notificationCtrl, "NotificationController", "Gestion des Actualités")
+        Component(reminderCtrl, "ReminderController", "Gestion des rappels")
+    }
+
+    Container_Boundary(services, "Services") {
+        Component(healthRecordSvc, "HealthRecordService","Logique métier des carnets de santé")
+        Component(appointmentSvc, "AppointmentService", "Logique métier des rendez-vous")
+        Component(notificationRssSvc, "NotificationRssService", "Import RSS et gestion notifications")
+        Component(reminderSvc, "ReminderService", "Logique métier des rappels")
+    }
+
+    Container_Boundary(rules, "Règles") {
+        Component(notificationRules, "NotificationRssRules", "Règles", "Filtrage des articles RSS (chat/chien, santé)")
+    }
+
+    Container_Boundary(mappers, "Mappers") {
+         Component(Mapper,"Mapper", "healthRecordMapper, appointmentMapper, notificationMapper, reminderMapper", "Conversion Entity <=> DTO")
+    }
+
+    ContainerDb(db, "Base de données", "MySQL", "DB_Jokeur")
+}
+
+System_Ext(rss, "Flux RSS", "Sources d'articles sur la santé animale.fr")
+
+Rel(user, angular,"HTTPS")
+Rel(angular, api, "Appels API REST", "JSON/HTTPS")
+
+Rel(healthRecordCtrl, healthRecordSvc, "Utilise")
+Rel(appointmentCtrl, appointmentSvc, "Utilise")
+Rel(notificationCtrl, notificationRssSvc, "Utilise")
+Rel(reminderCtrl, reminderSvc, "Utilise")
+
+Rel(notificationRssSvc, notificationRules, "Filtre")
+
+Rel(healthRecordSvc, Mapper, "2.toDto")
+Rel(appointmentSvc, Mapper, "2.toDto")
+Rel(notificationRssSvc, Mapper, "toDto/toEntity")
+Rel(reminderSvc, Mapper, "2.toDto")
+
+Rel(rssScheduler, notificationRssSvc, "Déclenche", "toutes les 24h")
+Rel(notificationRssSvc, rss, "Lit", "flux")
+
+Rel(healthRecordSvc, db, "1.findOwnersAnimals", "healthRecordRepository")
+Rel(appointmentSvc, db, "1.getAppointement", "AppointementRepository")
+Rel(notificationRssSvc, db, "getNotifications/save", "NotificationRepository")
+Rel(reminderSvc, db, "1.findByOwnerId", "ReminderRepository")
+
+@enduml

@@ -2,6 +2,7 @@ package com.ashleydev.jokeur_api.domain.services;
 
 import com.ashleydev.jokeur_api.config.JokeurProperties;
 import com.ashleydev.jokeur_api.domain.rules.NotificationRssRules;
+import com.ashleydev.jokeur_api.exceptions.rss.RssReadException;
 import com.ashleydev.jokeur_api.exposition.dtos.notification.NotificationResponseDto;
 import com.ashleydev.jokeur_api.mappers.NotificationMapper;
 import com.ashleydev.jokeur_api.persistence.entities.NotificationEntity;
@@ -38,11 +39,11 @@ public class NotificationRssService {
     List<SyndEntry> entries = readFeed(jokeurProperties.getRssUrl());
 
     entries
-      .stream() // parcourir le flux rss
+      .stream()
       .filter((e -> !isArticlePresent(e)))
-      .filter(NotificationRssRules::articleAboutAnimal) // filtrer avec Rule les item qui nous intéresse
-      .map(NotificationMapper::toEntity) // transformer en entity chaque item retenu
-      .forEach(notificationRepository::save); // on enregistre chaque élement retenu
+      .filter(NotificationRssRules::articleAboutAnimal)
+      .map(NotificationMapper::toEntity)
+      .forEach(notificationRepository::save);
   }
 
   private boolean isArticlePresent(SyndEntry entry) {
@@ -58,7 +59,7 @@ public class NotificationRssService {
       SyndFeed feed = input.build(new XmlReader(url));
       return feed.getEntries();
     } catch (Exception e) {
-      throw new RuntimeException("Erreur lecture RSS", e);
+      throw new RssReadException("Erreur lecture RSS", e);
     }
   }
 }
