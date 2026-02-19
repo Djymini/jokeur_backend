@@ -43,6 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SPRING_PROFILES_ACTIVE: integration
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_EXPIRATION_MS: ${{ secrets.JWT_EXPIRATION }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -62,7 +64,7 @@ jobs:
             ${{ runner.os }}-maven
 
       - name: Run integration tests
-        run: mvn test -Pintegration-tests -Djwt.secret="${{ secrets.JWT_SECRET }}" -Djwt.expiration="${{ secrets.JWT_EXPIRATION }}"
+        run: mvn test -Pintegration-tests
 
   e2e-tests:
     name: E2E Tests
@@ -70,6 +72,8 @@ jobs:
     if: github.event_name == 'pull_request' && ((github.base_ref == 'staging' && github.head_ref == 'development') || (github.base_ref == 'production' && github.head_ref == 'staging'))
     env:
       SPRING_PROFILES_ACTIVE: e2e
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_EXPIRATION_MS: ${{ secrets.JWT_EXPIRATION }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -81,4 +85,4 @@ jobs:
           java-version: 21
 
       - name: Run E2E tests
-        run: mvn test -Pe2e-tests -Djwt.secret="${{ secrets.JWT_SECRET }}" -Djwt.expiration="${{ secrets.JWT_EXPIRATION }}"
+        run: mvn test -Pe2e-tests
