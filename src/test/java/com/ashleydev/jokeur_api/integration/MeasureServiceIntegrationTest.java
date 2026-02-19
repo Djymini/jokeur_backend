@@ -1,6 +1,10 @@
 package com.ashleydev.jokeur_api.integration;
 
 import com.ashleydev.jokeur_api.domain.enums.*;
+import com.ashleydev.jokeur_api.domain.enums.pets.AnimalType;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetBreed;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetColor;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetSex;
 import com.ashleydev.jokeur_api.domain.services.HealthRecordService;
 import com.ashleydev.jokeur_api.domain.services.MeasureService;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;

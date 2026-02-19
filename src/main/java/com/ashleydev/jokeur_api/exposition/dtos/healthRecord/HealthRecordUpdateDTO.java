@@ -1,8 +1,8 @@
 package com.ashleydev.jokeur_api.exposition.dtos.healthRecord;
 
-import com.ashleydev.jokeur_api.domain.enums.PetBreed;
-import com.ashleydev.jokeur_api.domain.enums.PetColor;
-import com.ashleydev.jokeur_api.domain.enums.PetSex;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetBreed;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetColor;
+import com.ashleydev.jokeur_api.domain.enums.pets.PetSex;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -32,7 +32,7 @@ public class HealthRecordUpdateDTO {
   private String id;
 
   @Size(max = 50, message = "tattooNumber must not exceed 50 characters")
-  private String tattooNumber;
+  private String tattoo;
 
   @Size(max = 100, message = "allergy must not exceed 100 characters")
   private String allergy;
@@ -46,7 +46,7 @@ public class HealthRecordUpdateDTO {
       currentWeight != null ||
       color != null ||
       id != null ||
-      tattooNumber != null ||
+      tattoo != null ||
       allergy != null
     );
   }
