@@ -12,10 +12,10 @@ public interface AppoinmentRepository extends JpaRepository<AppointmentEntity, L
   @Query(
     """
         Select app from AppointmentEntity app
-        where app.healthRecord.owner.id = :idOwner
+        where app.healthRecord.user.id = :userId
         and app.dateTime >= CURRENT_TIMESTAMP
         order by app.dateTime asc
     """
   )
-  List<AppointmentEntity> getAllAppointement(@Param("idOwner") Long idOwner);
+  List<AppointmentEntity> getAllAppointement(@Param("userId") Long userId);
 }

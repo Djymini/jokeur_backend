@@ -18,8 +18,8 @@ public class AppointmentController {
   private final AppointmentService appointmentService;
 
   @GetMapping
-  public ResponseEntity<List<AppointmentResponseDto>> getAppointmenet(@PathParam(value = "idOwner") Long idOwner) {
-    List<AppointmentResponseDto> response = appointmentService.getAllAppointement(idOwner);
+  public ResponseEntity<List<AppointmentResponseDto>> getAppointmenet(@PathParam(value = "userId") Long userId) {
+    List<AppointmentResponseDto> response = appointmentService.getAllAppointement(userId);
     return ResponseEntity.ok(response);
   }
 }

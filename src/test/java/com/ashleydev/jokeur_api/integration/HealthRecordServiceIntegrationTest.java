@@ -10,9 +10,10 @@ import com.ashleydev.jokeur_api.domain.services.HealthRecordService;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
-import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
+import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
+import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
-import com.ashleydev.jokeur_api.persistence.repositories.owner.OwnerRepository;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,49 +29,51 @@ import org.springframework.transaction.annotation.Transactional;
 class HealthRecordServiceIntegrationTest {
 
     private final HealthRecordService healthRecordService;
-    private final OwnerRepository ownerRepository;
+    private final UserRepository userRepository;
     private final HealthRecordRepository healthRecordRepository;
 
-    private Long ownerId;
+    private Long userId;
 
     @Autowired
     HealthRecordServiceIntegrationTest(
             HealthRecordService healthRecordService,
-            OwnerRepository ownerRepository,
+            UserRepository userRepository,
             HealthRecordRepository healthRecordRepository
     ) {
         this.healthRecordService = healthRecordService;
-        this.ownerRepository = ownerRepository;
+        this.userRepository = userRepository;
         this.healthRecordRepository = healthRecordRepository;
     }
 
     @BeforeEach
     void setUp() {
         healthRecordRepository.deleteAll();
-        ownerRepository.deleteAll();
+        userRepository.deleteAll();
 
-        OwnerEntity owner = new OwnerEntity();
-        owner.setEmail("owner@test.com");
-        owner.setName("Owner Test");
-        owner.setPhoneNumber("0600000000");
-        ownerId = ownerRepository.save(owner).getId();
+        UserEntity user = new UserEntity();
+        user.setEmail("owner@test.com");
+        user.setFirstname("Owner");
+        user.setName("Test");
+        user.setPhoneNumber("0600000000");
+        user.setPassword("P@ssword1234");
+        userId = userRepository.save(user).getId();
     }
 
     @Test
     void create_shouldPersist_andReturnResponse() {
-        HealthRecordRequestDTO dto = validCreateDto(ownerId);
+        HealthRecordRequestDTO dto = validCreateDto(userId);
 
         HealthRecordResponseDto saved = healthRecordService.create(dto);
 
         assertNotNull(saved.id());
-        assertEquals(ownerId, saved.id());
+        assertEquals(userId, saved.id());
         assertEquals("Naya", saved.petName());
 
         assertTrue(healthRecordRepository.existsById(saved.id()));
     }
 
     @Test
-    void create_shouldThrow_whenOwnerNotFound() {
+    void create_shouldThrow_whenUserNotFound() {
         HealthRecordRequestDTO dto = validCreateDto(999999L);
 
         assertThrows(OwnerNotFoundException.class, () -> healthRecordService.create(dto));
@@ -78,22 +81,22 @@ class HealthRecordServiceIntegrationTest {
 
     @Test
     void getByHealthRecordId_shouldReturnData_whenExists() {
-        HealthRecordResponseDto created = healthRecordService.create(validCreateDto(ownerId));
+        HealthRecordResponseDto created = healthRecordService.create(validCreateDto(userId));
 
         HealthRecordResponseDto found =
                 healthRecordService.getByHealthRecordId(created.id());
 
         assertEquals(created.id(), found.id());
-        assertEquals(ownerId, found.id());
+        assertEquals(userId, found.id());
         assertEquals("Naya", found.petName());
     }
 
     @Test
-    void getDashboardByOwner_shouldReturnDashboardDtos() {
-        healthRecordService.create(validCreateDto(ownerId, "Naya"));
-        healthRecordService.create(validCreateDto(ownerId, "Milo"));
+    void getDashboardByUser_shouldReturnDashboardDtos() {
+        healthRecordService.create(validCreateDto(userId, "Naya"));
+        healthRecordService.create(validCreateDto(userId, "Milo"));
 
-        var dashboard = healthRecordService.getDashboardByOwner(ownerId);
+        var dashboard = healthRecordService.getDashboardByUser(userId);
 
         assertNotNull(dashboard);
         assertEquals(2, dashboard.size());
@@ -107,11 +110,11 @@ class HealthRecordServiceIntegrationTest {
     }
 
     @Test
-    void getMyAnimalsByOwner_shouldReturnMyAnimalsDtos() {
-        healthRecordService.create(validCreateDto(ownerId, "Naya"));
-        healthRecordService.create(validCreateDto(ownerId, "Milo"));
+    void getMyAnimalsByUser_shouldReturnMyAnimalsDtos() {
+        healthRecordService.create(validCreateDto(userId, "Naya"));
+        healthRecordService.create(validCreateDto(userId, "Milo"));
 
-        var myAnimals = healthRecordService.getMyAnimalsByOwner(ownerId);
+        var myAnimals = healthRecordService.getMyAnimalsByUser(userId);
 
         assertNotNull(myAnimals);
         assertEquals(2, myAnimals.size());
@@ -122,9 +125,9 @@ class HealthRecordServiceIntegrationTest {
         assertTrue(myAnimals.stream().allMatch(a -> a.sex() != null));
     }
 
-    private HealthRecordRequestDTO validCreateDto(Long ownerId) {
+    private HealthRecordRequestDTO validCreateDto(Long userId) {
         return new HealthRecordRequestDTO(
-                ownerId,
+                userId,
                 "Naya",
                 AnimalType.values()[0],
                 PetBreed.LABRADOR,
@@ -138,9 +141,9 @@ class HealthRecordServiceIntegrationTest {
         );
     }
 
-    private HealthRecordRequestDTO validCreateDto(Long ownerId, String petName) {
+    private HealthRecordRequestDTO validCreateDto(Long userId, String petName) {
         return new HealthRecordRequestDTO(
-                ownerId,
+                userId,
                 petName,
                 AnimalType.values()[0],
                 PetBreed.PERSIAN,

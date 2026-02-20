@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record HealthRecordRequestDTO(
-  @NotNull(message = "ownerId is required") Long ownerId,
+  @NotNull(message = "userId is required") Long userId,
 
   @NotBlank(message = "petName is required") @Size(max = 50, message = "petName must not exceed 50 characters") String petName,
 

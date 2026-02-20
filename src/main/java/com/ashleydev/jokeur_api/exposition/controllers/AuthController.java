@@ -41,7 +41,6 @@ public class AuthController {
     }
 
     UserEntity user = request.toEntity();
-    // 👇 On SET le mot de passe depuis le Controller, pas depuis le Mapper
     user.setPassword(passwordEncoder.encode(request.password()));
     userRepository.save(user);
 

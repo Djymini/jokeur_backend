@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class HealthRecordValidationAspect {
 
-    @Autowired
-    private HealthRecordRepository healthRecordRepository;
+  @Autowired
+  private HealthRecordRepository healthRecordRepository;
 
   @Before("@annotation(validateAnnotation)")
   public void validate(JoinPoint joinPoint, ValidateHealthRecord validateAnnotation) {

@@ -21,11 +21,11 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
         hr.petName
       )
       from HealthRecordEntity hr
-      where hr.owner.id = :ownerId
+      where hr.user.id = :userId
       order by hr.petName asc
     """
   )
-  List<HealthRecordDashboardDTO> findDashboardDtosByOwnerId(@Param("ownerId") Long ownerId);
+  List<HealthRecordDashboardDTO> findDashboardDtosByUserId(@Param("userId") Long userId);
 
   // ---- My Animals
 
@@ -40,11 +40,11 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
         hr.currentWeight
       )
       from HealthRecordEntity hr
-      where hr.owner.id = :ownerId
+      where hr.user.id = :userId
       order by hr.petName asc
     """
   )
-  List<HealthRecordMyAnimalsDTO> findMyAnimalsDtosByOwnerId(@Param("ownerId") Long ownerId);
+  List<HealthRecordMyAnimalsDTO> findMyAnimalsDtosByUserId(@Param("userId") Long userId);
 
   Optional<HealthRecordEntity> findById(Long id);
 
@@ -55,8 +55,8 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
   @Query(
     """
     Select hr from HealthRecordEntity hr
-    where hr.owner.id = :idOwner
+    where hr.user.id = :idUser
     """
   )
-  List<HealthRecordEntity> findAllAnimals(@Param("idOwner") Long idOwner);
+  List<HealthRecordEntity> findAllAnimals(@Param("idUser") Long idUser);
 }

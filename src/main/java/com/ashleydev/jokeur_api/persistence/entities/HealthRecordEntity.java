@@ -68,8 +68,8 @@ public class HealthRecordEntity {
   private AnimalType animalType;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id_owner", nullable = false)
-  private OwnerEntity owner;
+  @JoinColumn(name = "user_id", nullable = false)
+  private UserEntity user;
 
   @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<AppointmentEntity> appointments;

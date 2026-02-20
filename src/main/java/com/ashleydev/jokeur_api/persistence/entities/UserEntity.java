@@ -1,8 +1,11 @@
 package com.ashleydev.jokeur_api.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 public class UserEntity extends BaseEntity implements UserDetails {
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = true, unique = true)
   private String pseudo;
 
   @Column(nullable = true, unique = false)
@@ -28,13 +31,20 @@ public class UserEntity extends BaseEntity implements UserDetails {
   private String firstname;
 
   @Column(nullable = true, unique = false)
-  private String phone;
+  private String phoneNumber;
 
   @Column(nullable = false, unique = true)
   private String email;
 
   @Column(nullable = false)
   private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ReminderEntity> reminders;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<HealthRecordEntity> healthRecords;
 
   @Enumerated(EnumType.STRING)
   private Role role;

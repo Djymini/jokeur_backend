@@ -38,7 +38,7 @@ public class ReminderEntity {
   private ReminderStatus status = ReminderStatus.PENDING;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "owner_id", nullable = false)
+  @JoinColumn(name = "user_id", nullable = false)
   @JsonBackReference
-  private OwnerEntity owner;
+  private UserEntity user;
 }

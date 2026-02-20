@@ -13,7 +13,7 @@ public class AppointmentService {
 
   private final AppoinmentRepository appoinmentRepository;
 
-  public List<AppointmentResponseDto> getAllAppointement(Long idOwner) {
-    return appoinmentRepository.getAllAppointement(idOwner).stream().map(AppointmentMapper::toDto).toList();
+  public List<AppointmentResponseDto> getAllAppointement(Long userId) {
+    return appoinmentRepository.getAllAppointement(userId).stream().map(AppointmentMapper::toDto).toList();
   }
 }
