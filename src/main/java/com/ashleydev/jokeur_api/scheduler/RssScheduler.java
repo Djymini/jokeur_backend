@@ -13,7 +13,8 @@ public class RssScheduler {
 
   private final NotificationRssService notificationRssService;
 
-  @Scheduled(cron = "0 0 */24 * * *") // toutes les 24+h
+    @Scheduled(cron = "0 */2 * * * *")
+  //@Scheduled(cron = "0 0 */24 * * *") // toutes les 24+h
   public void fetchRss() {
     notificationRssService.importRssNotifications();
   }
