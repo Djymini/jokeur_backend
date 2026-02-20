@@ -38,11 +38,24 @@ public class SecurityConfig {
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth ->
         auth
-          .requestMatchers("/auth/**", "/test/all", "/owners/**").permitAll()
-          .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+          .requestMatchers("/auth/**", "/test/all", "/owners/**")
+          .permitAll()
+          .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+          .permitAll()
           // .requestMatchers("/user/**").hasRole("OWNER")
-          .requestMatchers("/user/**", "/appointment/**", "/form-options/**", "/health-records/**", "/measures/**", "/notifications/**", "/reminder/**", "/vaccin/**").authenticated()
-          .requestMatchers("/admin/**").hasRole("ADMIN")
+          .requestMatchers(
+            "/user/**",
+            "/appointment/**",
+            "/form-options/**",
+            "/health-records/**",
+            "/measures/**",
+            "/notifications/**",
+            "/reminder/**",
+            "/vaccin/**"
+          )
+          .authenticated()
+          .requestMatchers("/admin/**")
+          .hasRole("ADMIN")
           .anyRequest()
           .authenticated()
       );

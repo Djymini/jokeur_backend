@@ -66,7 +66,7 @@ class HealthRecordServiceIntegrationTest {
         HealthRecordResponseDto saved = healthRecordService.create(dto);
 
         assertNotNull(saved.id());
-        assertEquals(userId, saved.id());
+        assertEquals(userId, saved.userId());
         assertEquals("Naya", saved.petName());
 
         assertTrue(healthRecordRepository.existsById(saved.id()));
@@ -87,7 +87,7 @@ class HealthRecordServiceIntegrationTest {
                 healthRecordService.getByHealthRecordId(created.id());
 
         assertEquals(created.id(), found.id());
-        assertEquals(userId, found.id());
+        assertEquals(userId, found.userId());
         assertEquals("Naya", found.petName());
     }
 

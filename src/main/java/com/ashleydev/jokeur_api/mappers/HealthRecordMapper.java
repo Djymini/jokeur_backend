@@ -46,6 +46,7 @@ public class HealthRecordMapper {
   public static HealthRecordResponseDto toDto(HealthRecordEntity entity, HealthRecordMeasuresResponseDTO measures) {
     return new HealthRecordResponseDto(
       entity.getId(),
+      entity.getUser().getId(),
       entity.getPetName(),
       entity.getBreed().name(),
       entity.getSex().name(),

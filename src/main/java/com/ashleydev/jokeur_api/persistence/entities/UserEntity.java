@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,12 +38,12 @@ public class UserEntity extends BaseEntity implements UserDetails {
   @Column(nullable = false)
   private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<ReminderEntity> reminders;
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JsonManagedReference
+  private List<ReminderEntity> reminders;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<HealthRecordEntity> healthRecords;
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<HealthRecordEntity> healthRecords;
 
   @Enumerated(EnumType.STRING)
   private Role role;

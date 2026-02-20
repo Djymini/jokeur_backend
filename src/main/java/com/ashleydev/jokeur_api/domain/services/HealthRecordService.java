@@ -30,8 +30,7 @@ public class HealthRecordService {
   public HealthRecordResponseDto create(HealthRecordRequestDTO dto) {
     healthRecordRules.validateCreate(dto);
 
-      UserEntity user = userRepository.findById(dto.userId()).orElseThrow(() -> new OwnerNotFoundException(dto.userId()));
-
+    UserEntity user = userRepository.findById(dto.userId()).orElseThrow(() -> new OwnerNotFoundException(dto.userId()));
 
     HealthRecordEntity entity = HealthRecordMapper.toEntity(dto, user);
     HealthRecordEntity saved = healthRecordRepository.save(entity);
