@@ -12,10 +12,10 @@ import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRespons
 import com.ashleydev.jokeur_api.exposition.dtos.measure.MeasureRequestDto;
 import com.ashleydev.jokeur_api.exposition.dtos.measure.MeasureResponseDto;
 import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
-import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
+import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
+import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureRepository;
-import com.ashleydev.jokeur_api.persistence.repositories.owner.OwnerRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,9 +43,9 @@ public class MeasureServiceIntegrationTest {
 
     @Autowired private MeasureRepository measureRepository;
     @Autowired private HealthRecordRepository healthRecordRepository;
-    @Autowired private OwnerRepository ownerRepository;
+    @Autowired private UserRepository userRepository;
 
-    private Long ownerId;
+    private Long userId;
     private HealthRecordResponseDto healthRecord;
     private MeasureRequestDto measure1;
     private MeasureRequestDto measure2;
@@ -60,17 +60,19 @@ public class MeasureServiceIntegrationTest {
     @BeforeEach
     void setUp() {
         healthRecordRepository.deleteAll();
-        ownerRepository.deleteAll();
+        userRepository.deleteAll();
         measureRepository.deleteAll();
 
-        OwnerEntity owner = new OwnerEntity();
-        owner.setEmail("owner@test.com");
-        owner.setName("Owner Test");
-        owner.setPhoneNumber("0600000000");
-        ownerId = ownerRepository.save(owner).getId();
+        UserEntity user = new UserEntity();
+        user.setEmail("owner@test.com");
+        user.setFirstname("Owner");
+        user.setName("Test");
+        user.setPhoneNumber("0600000000");
+        user.setPassword("P@ssword1234");
+        userId = userRepository.save(user).getId();
 
         HealthRecordRequestDTO healthRecordRequest = new HealthRecordRequestDTO(
-                ownerId,
+                userId,
                 "Naya",
                 AnimalType.values()[0],
                 PetBreed.LABRADOR,

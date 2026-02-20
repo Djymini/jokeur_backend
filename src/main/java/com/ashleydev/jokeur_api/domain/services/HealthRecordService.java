@@ -10,10 +10,10 @@ import com.ashleydev.jokeur_api.mappers.HealthRecordMapper;
 import com.ashleydev.jokeur_api.mappers.MeasureMapper;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
-import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
+import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
+import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureRepository;
-import com.ashleydev.jokeur_api.persistence.repositories.owner.OwnerRepository;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,15 +24,15 @@ public class HealthRecordService {
 
   private final HealthRecordRepository healthRecordRepository;
   private final MeasureRepository measureRepository;
-  private final OwnerRepository ownerRepository;
+  private final UserRepository userRepository;
   private final HealthRecordRules healthRecordRules;
 
   public HealthRecordResponseDto create(HealthRecordRequestDTO dto) {
     healthRecordRules.validateCreate(dto);
 
-    OwnerEntity owner = ownerRepository.findById(dto.ownerId()).orElseThrow(() -> new OwnerNotFoundException(dto.ownerId()));
+    UserEntity user = userRepository.findById(dto.userId()).orElseThrow(() -> new OwnerNotFoundException(dto.userId()));
 
-    HealthRecordEntity entity = HealthRecordMapper.toEntity(dto, owner);
+    HealthRecordEntity entity = HealthRecordMapper.toEntity(dto, user);
     HealthRecordEntity saved = healthRecordRepository.save(entity);
 
     List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordId(saved.getId());
@@ -50,12 +50,12 @@ public class HealthRecordService {
     return HealthRecordMapper.toDto(entity, measures);
   }
 
-  public List<HealthRecordDashboardDTO> getDashboardByOwner(Long ownerId) {
-    return healthRecordRepository.findDashboardDtosByOwnerId(ownerId);
+  public List<HealthRecordDashboardDTO> getDashboardByUser(Long userId) {
+    return healthRecordRepository.findDashboardDtosByUserId(userId);
   }
 
-  public List<HealthRecordMyAnimalsDTO> getMyAnimalsByOwner(Long ownerId) {
-    return healthRecordRepository.findMyAnimalsDtosByOwnerId(ownerId);
+  public List<HealthRecordMyAnimalsDTO> getMyAnimalsByUser(Long userId) {
+    return healthRecordRepository.findMyAnimalsDtosByUserId(userId);
   }
 
   public HealthRecordResponseDto updatePartial(Long id, HealthRecordUpdateDTO dto) {
@@ -86,14 +86,9 @@ public class HealthRecordService {
     healthRecordRepository.deleteById(id);
   }
 
-  /**
-   * permet de récupèrer les information d'un animal pour alimenter la page dashbaoard et page animal
-   * @param idOwner
-   * @return
-   */
-  public List<HealthRecordResponseDto> getAllAnimals(Long idOwner) {
+  public List<HealthRecordResponseDto> getAllAnimals(Long userId) {
     return healthRecordRepository
-      .findAllAnimals(idOwner)
+      .findAllAnimals(userId)
       .stream()
       .map(entity -> {
         List<MeasureEntity> measures = measureRepository.findByHealthRecordId(entity.getId());

@@ -16,8 +16,8 @@ public class HealthRecordRules {
       throw new HealthRecordValidationException("HealthRecordRequestDTO is required.");
     }
 
-    if (dto.ownerId() == null) {
-      throw new HealthRecordValidationException("ownerId is required.");
+    if (dto.userId() == null) {
+      throw new HealthRecordValidationException("userId is required.");
     }
 
     if (dto.petName() == null || dto.petName().isBlank()) {

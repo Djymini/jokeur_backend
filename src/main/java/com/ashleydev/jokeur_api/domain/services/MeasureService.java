@@ -1,8 +1,8 @@
 package com.ashleydev.jokeur_api.domain.services;
 
+import com.ashleydev.jokeur_api.annotations.ValidateHealthRecord;
 import com.ashleydev.jokeur_api.domain.enums.MeasureType;
 import com.ashleydev.jokeur_api.domain.rules.MeasureRules;
-import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.measure.MeasureDeleteFailedException;
 import com.ashleydev.jokeur_api.exceptions.measure.MeasureNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.measure.MeasureUpdateNotChangeValueException;
@@ -27,12 +27,9 @@ public class MeasureService {
   @Autowired
   private HealthRecordRepository healthRecordRepository;
 
+  @ValidateHealthRecord
   public MeasureResponseDto create(MeasureRequestDto request) {
     MeasureRules.validateType(request.measureType());
-
-    if (!healthRecordRepository.existsById(request.healthRecordId())) {
-      throw new HealthRecordNotFoundException(request.healthRecordId());
-    }
 
     HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
     MeasureEntity newEntity = MeasureMapper.toEntity(request, healthRecord);
