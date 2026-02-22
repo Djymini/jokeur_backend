@@ -18,8 +18,8 @@ public class ReminderController {
   private final ReminderService reminderService;
 
   @GetMapping
-  public ResponseEntity<List<ReminderResponseDto>> getReminders(@PathParam(value = "idOwner") Long idOwner) {
-    List<ReminderResponseDto> response = reminderService.getReminders(idOwner);
+  public ResponseEntity<List<ReminderResponseDto>> getReminders(@PathParam(value = "userId") Long userId) {
+    List<ReminderResponseDto> response = reminderService.getReminders(userId);
     return ResponseEntity.ok(response);
   }
 }

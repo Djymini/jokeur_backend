@@ -6,15 +6,15 @@ import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequest
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
 import com.ashleydev.jokeur_api.exposition.dtos.measure.HealthRecordMeasuresResponseDTO;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
-import com.ashleydev.jokeur_api.persistence.entities.OwnerEntity;
+import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordDashboardView;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordMyAnimalsView;
 
 public class HealthRecordMapper {
 
-  public static HealthRecordEntity toEntity(HealthRecordRequestDTO dto, OwnerEntity owner) {
+  public static HealthRecordEntity toEntity(HealthRecordRequestDTO dto, UserEntity user) {
     HealthRecordEntity entity = new HealthRecordEntity();
-    entity.setOwner(owner);
+    entity.setUser(user);
     entity.setPetName(dto.petName());
     entity.setAnimalType(dto.animalType());
     entity.setBreed(dto.breed());
@@ -46,6 +46,7 @@ public class HealthRecordMapper {
   public static HealthRecordResponseDto toDto(HealthRecordEntity entity, HealthRecordMeasuresResponseDTO measures) {
     return new HealthRecordResponseDto(
       entity.getId(),
+      entity.getUser().getId(),
       entity.getPetName(),
       entity.getBreed().name(),
       entity.getSex().name(),

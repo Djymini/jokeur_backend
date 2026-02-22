@@ -14,12 +14,11 @@ public interface ReminderRepository extends JpaRepository<ReminderEntity, Long> 
   @Query(
     """
     SELECT r FROM ReminderEntity r
-    WHERE r.healthRecord.owner.id = :idOwner
+    WHERE r.user.id = :userId
     and r.status = "PENDING"
     and r.reminderDate between CURRENT_DATE and :maxIntervalDate
     order by r.reminderDate asc
     """
   )
-  List<ReminderEntity> findPendingReminder(@Param("idOwner") Long idOwner, @Param("maxIntervalDate") LocalDate maxIntervalDate);
+  List<ReminderEntity> findPendingReminder(@Param("userId") Long userId, @Param("maxIntervalDate") LocalDate maxIntervalDate);
 }
-

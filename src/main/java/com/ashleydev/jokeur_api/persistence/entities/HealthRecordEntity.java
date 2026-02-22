@@ -4,7 +4,6 @@ import com.ashleydev.jokeur_api.domain.enums.pets.AnimalType;
 import com.ashleydev.jokeur_api.domain.enums.pets.PetBreed;
 import com.ashleydev.jokeur_api.domain.enums.pets.PetColor;
 import com.ashleydev.jokeur_api.domain.enums.pets.PetSex;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -69,12 +68,8 @@ public class HealthRecordEntity {
   private AnimalType animalType;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id_owner", nullable = false)
-  private OwnerEntity owner;
-
-  @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JsonManagedReference
-  private List<ReminderEntity> reminders;
+  @JoinColumn(name = "user_id", nullable = false)
+  private UserEntity user;
 
   @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<AppointmentEntity> appointments;

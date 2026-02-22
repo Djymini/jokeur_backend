@@ -27,7 +27,7 @@ class HealthRecordRulesCreateTest {
     }
 
     @Test
-    void validateCreate_shouldThrow_whenOwnerIdIsNull() {
+    void validateCreate_shouldThrow_whenUserIdIsNull() {
         HealthRecordRequestDTO dto = createDto(
                 null, "Naya", AnimalType.values()[0], PetSex.values()[0],
                 LocalDate.now().minusYears(2), new BigDecimal("4.2"),
@@ -37,7 +37,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordValidationException ex =
                 assertThrows(HealthRecordValidationException.class, () -> rules.validateCreate(dto));
 
-        assertEquals("ownerId is required.", ex.getMessage());
+        assertEquals("userId is required.", ex.getMessage());
     }
 
     @Test
@@ -190,7 +190,7 @@ class HealthRecordRulesCreateTest {
 
 
     private HealthRecordRequestDTO createDto(
-            Long ownerId,
+            Long userId,
             String petName,
             AnimalType animalType,
             PetSex sex,
@@ -201,7 +201,7 @@ class HealthRecordRulesCreateTest {
             String allergy
     ) {
         return new HealthRecordRequestDTO(
-                ownerId,
+                userId,
                 petName,
                 animalType,
                 null,

@@ -18,8 +18,8 @@ public class HealthRecordController {
   private final HealthRecordService healthRecordService;
 
   @GetMapping
-  public ResponseEntity<List<HealthRecordResponseDto>> getAllAnimals(@RequestParam(value = "idOwner", required = false) Long idOwner) {
-    List<HealthRecordResponseDto> response = healthRecordService.getAllAnimals(idOwner);
+  public ResponseEntity<List<HealthRecordResponseDto>> getAllAnimals(@RequestParam(value = "userId", required = false) Long userId) {
+    List<HealthRecordResponseDto> response = healthRecordService.getAllAnimals(userId);
     return ResponseEntity.ok(response);
   }
 
@@ -35,13 +35,13 @@ public class HealthRecordController {
   }
 
   @GetMapping("/dashboard")
-  public List<HealthRecordDashboardDTO> dashboard(@RequestParam Long ownerId) {
-    return healthRecordService.getDashboardByOwner(ownerId);
+  public List<HealthRecordDashboardDTO> dashboard(@RequestParam Long userId) {
+    return healthRecordService.getDashboardByUser(userId);
   }
 
   @GetMapping("/my-animals")
-  public List<HealthRecordMyAnimalsDTO> myAnimals(@RequestParam Long ownerId) {
-    return healthRecordService.getMyAnimalsByOwner(ownerId);
+  public List<HealthRecordMyAnimalsDTO> myAnimals(@RequestParam Long userId) {
+    return healthRecordService.getMyAnimalsByUser(userId);
   }
 
   @PatchMapping("/{id}")

@@ -16,8 +16,8 @@ public class ReminderService {
 
   private final ReminderRepository reminderRepository;
 
-  public List<ReminderResponseDto> getReminders(Long idOwner) {
+  public List<ReminderResponseDto> getReminders(Long userId) {
     LocalDate maxIntervalDate = LocalDate.now().plusMonths(REMINDER_MONTH_INTERVAL);
-    return reminderRepository.findPendingReminder(idOwner, maxIntervalDate).stream().map(ReminderMapper::toDto).toList();
+    return reminderRepository.findPendingReminder(userId, maxIntervalDate).stream().map(ReminderMapper::toDto).toList();
   }
 }

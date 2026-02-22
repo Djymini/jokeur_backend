@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 public record HealthRecordResponseDto(
   Long id,
+  Long userId,
   String petName,
   String breed,
   String sex,
