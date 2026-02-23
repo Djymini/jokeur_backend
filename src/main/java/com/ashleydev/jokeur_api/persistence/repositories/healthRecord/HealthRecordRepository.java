@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity, Long> {
-  // ---- Dashboard
+    boolean existsByTattoo(String tattoo);
+
+    // ---- Dashboard
 
   @Query(
     """

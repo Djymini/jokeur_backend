@@ -3,6 +3,7 @@ package com.ashleydev.jokeur_api.exceptions;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordUpdateEmptyException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordValidationException;
+import com.ashleydev.jokeur_api.exceptions.healthRecord.TattooAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.measure.MeasureNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.measure.MeasureTypeNotValidateException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerEmailAlreadyUsedException;
@@ -39,6 +40,14 @@ public class GlobalExceptionHandler {
       });
 
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
+
+  @ExceptionHandler(TattooAlreadyUsedException.class)
+  public ResponseEntity<Map<String, String>> handleTattooAlreadyUsed(TattooAlreadyUsedException ex) {
+      Map<String, String> body = new HashMap<>();
+      body.put("error", "TATTOO_ALREADY_USED");
+      body.put("message", ex.getMessage());
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
   }
 
   @ExceptionHandler(OwnerNotFoundException.class)

@@ -18,7 +18,7 @@ class HealthRecordRulesCreateTest {
 
     @BeforeEach
     void setUp() {
-        rules = new HealthRecordRules();
+        rules = new HealthRecordRules(null);
     }
 
     @Test
