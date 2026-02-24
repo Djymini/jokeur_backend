@@ -135,7 +135,7 @@ class HealthRecordServiceIntegrationTest {
                 LocalDate.now().minusYears(2),
                 new BigDecimal("4.20"),
                 PetColor.BLACK,
-                "CHIP123",
+                "CHIP12313",
                 null,
                 null
         );

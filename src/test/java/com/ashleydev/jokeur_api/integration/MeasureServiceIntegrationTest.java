@@ -80,7 +80,7 @@ public class MeasureServiceIntegrationTest {
                 LocalDate.now().minusYears(2),
                 new BigDecimal("4.20"),
                 PetColor.BLACK,
-                "CHIP123",
+                "CHIP12312",
                 null,
                 null
         );

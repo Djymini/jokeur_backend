@@ -29,7 +29,7 @@ public class HealthRecordUpdateDTO {
   private PetColor color;
 
   @Size(max = 20, message = "id must not exceed 20 characters")
-  private String id;
+  private String identificationNumber;
 
   @Size(max = 50, message = "tattooNumber must not exceed 50 characters")
   private String tattoo;
@@ -45,7 +45,7 @@ public class HealthRecordUpdateDTO {
       birthDate != null ||
       currentWeight != null ||
       color != null ||
-      id != null ||
+      identificationNumber != null ||
       tattoo != null ||
       allergy != null
     );

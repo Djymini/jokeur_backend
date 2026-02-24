@@ -2,26 +2,25 @@ package com.ashleydev.jokeur_api.domain.rules;
 
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordUpdateEmptyException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordValidationException;
+import com.ashleydev.jokeur_api.exceptions.healthRecord.IdentificationNumberAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.TattooAlreadyUsedException;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordRequestDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordUpdateDTO;
+import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HealthRecordRules {
-    private final HealthRecordRepository healthRecordRepository;
 
+  private final HealthRecordRepository healthRecordRepository;
 
+  public HealthRecordRules(HealthRecordRepository healthRecordRepository) {
+    this.healthRecordRepository = healthRecordRepository;
+  }
 
-    public HealthRecordRules(HealthRecordRepository healthRecordRepository) {
-        this.healthRecordRepository = healthRecordRepository;
-    }
-
-    public void validateCreate(HealthRecordRequestDTO dto) {
+  public void validateCreate(HealthRecordRequestDTO dto) {
     if (dto == null) {
       throw new HealthRecordValidationException("HealthRecordRequestDTO is required.");
     }
@@ -51,7 +50,7 @@ public class HealthRecordRules {
       throw new HealthRecordValidationException("currentWeight must be > 0.");
     }
 
-    if (dto.id() != null && dto.id().isBlank()) {
+    if (dto.identificationNumber() != null && dto.identificationNumber().isBlank()) {
       throw new HealthRecordValidationException("identificationNumber cannot be blank.");
     }
 
@@ -59,9 +58,13 @@ public class HealthRecordRules {
       throw new HealthRecordValidationException("tattooNumber cannot be blank.");
     }
 
-        if (dto.tattoo() != null && healthRecordRepository.existsByTattoo(dto.tattoo())) {
-            throw new TattooAlreadyUsedException(dto.tattoo());
-        }
+    if (dto.tattoo() != null && healthRecordRepository.existsByTattoo(dto.tattoo())) {
+      throw new TattooAlreadyUsedException(dto.tattoo());
+    }
+
+    if (dto.identificationNumber() != null && healthRecordRepository.existsByIdentificationNumber(dto.identificationNumber())) {
+      throw new IdentificationNumberAlreadyUsedException(dto.identificationNumber());
+    }
 
     if (dto.allergy() != null && dto.allergy().isBlank()) {
       throw new HealthRecordValidationException("allergy cannot be blank.");
@@ -86,7 +89,7 @@ public class HealthRecordRules {
       throw new HealthRecordValidationException("currentWeight must be > 0.");
     }
 
-    if (dto.getId() != null && dto.getId().isBlank()) {
+    if (dto.getIdentificationNumber() != null && dto.getIdentificationNumber().isBlank()) {
       throw new HealthRecordValidationException("identificationNumber cannot be blank.");
     }
 
