@@ -9,7 +9,7 @@ public enum PetBreed {
   GOLDEN_RETRIEVER("Golden Retriever", AnimalType.DOG),
   BULLDOG("Bulldog", AnimalType.DOG),
   MIXED("Croisé", AnimalType.DOG),
-  SHIH_TZU("Shih Tzu", AnimalType.CAT),
+  SHIH_TZU("Shih Tzu", AnimalType.DOG),
   PERSIAN("Persan", AnimalType.CAT),
   EUROPEAN("Européen", AnimalType.CAT),
   MAINE_COON("Maine Coon", AnimalType.CAT),
