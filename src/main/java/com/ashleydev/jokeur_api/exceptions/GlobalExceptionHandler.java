@@ -1,5 +1,6 @@
 package com.ashleydev.jokeur_api.exceptions;
 
+import com.ashleydev.jokeur_api.exceptions.annotation.AspectExtractIdImpossibleException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordUpdateEmptyException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordValidationException;
@@ -147,5 +148,10 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseEntity<String> handleNotFoundError(NoHandlerFoundException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur 404 : Le chemin que vous avez demandé n'existe pas.");
+  }
+
+  @ExceptionHandler(AspectExtractIdImpossibleException.class)
+  public ResponseEntity<String> handleAspectExttractIdImpossible(AspectExtractIdImpossibleException ex) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Le server a rencontré un problème lors de la vérification de votre requête");
   }
 }
