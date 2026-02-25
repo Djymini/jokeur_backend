@@ -15,6 +15,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +28,8 @@ public class NotificationRssService {
   private final NotificationRepository notificationRepository;
   private final JokeurProperties jokeurProperties;
 
-  public List<NotificationResponseDto> getAllNotifications() {
-    return notificationRepository.getNotifications().stream().map(NotificationMapper::toDto).toList();
+  public Page<NotificationResponseDto> getAllNotifications(Pageable pageable) {
+    return notificationRepository.findAllByOrderByPublishedAtDesc(pageable).map(NotificationMapper::toDto);
   }
 
   /******************************** Traitement Scheduler *************************** */

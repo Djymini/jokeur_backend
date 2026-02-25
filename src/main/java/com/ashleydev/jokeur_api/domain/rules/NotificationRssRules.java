@@ -10,7 +10,6 @@ public class NotificationRssRules {
    * @return vrai si l'article qui respect les critère de regle 1,2,3
    */
   public static boolean articleAboutAnimal(SyndEntry entry) {
-
     if (entry == null) {
       return false;
     }

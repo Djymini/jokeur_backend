@@ -8,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +34,11 @@ class NotificationRssServiceIntegrationTest {
     void setUp() {
         notificationRepository.deleteAll();
     }
+    Pageable pageable = PageRequest.of(0, 10);
 
     @Test
     void testGetAllNotifications_with_empty_bdd() {
-        // When
-        List<NotificationResponseDto> notifications = notificationRssService.getAllNotifications();
-
-        // Then
+        Page<NotificationResponseDto> notifications = notificationRssService.getAllNotifications(pageable);
         assertNotNull(notifications);
         assertTrue(notifications.isEmpty());
     }
@@ -50,23 +51,21 @@ class NotificationRssServiceIntegrationTest {
         notificationRepository.save(n1);
         notificationRepository.save(n2);
 
+        Page<NotificationResponseDto> notifications = notificationRssService.getAllNotifications(pageable);
 
-        List<NotificationResponseDto> notifications = notificationRssService.getAllNotifications();
-
-        // Then
-        assertEquals(2, notifications.size());
+        assertEquals(2, notifications.getContent().size());
+        assertEquals(2, notifications.getTotalElements());
+        assertEquals(0, notifications.getNumber());
     }
 
     @Test
     void testFindByLink_when_article_existing() {
-        // Given
+
         NotificationEntity notification = createNotification("Test", "https://example.com/test");
         notificationRepository.save(notification);
 
-        // When
         Optional<NotificationEntity> found = notificationRepository.findByLink("https://example.com/test");
 
-        // Then
         assertTrue(found.isPresent());
         assertEquals("Test", found.get().getTitle());
     }

@@ -18,5 +18,5 @@ public interface AppoinmentRepository extends JpaRepository<AppointmentEntity, L
         order by app.dateTime asc
     """
   )
-  Page<AppointmentEntity> getAllAppointement(@Param("idOwner") Long idOwner, Pageable pageable);
+  Page<AppointmentEntity> getAllAppointement(@Param("userId") Long userId, Pageable pageable);
 }
