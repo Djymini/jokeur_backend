@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -111,6 +112,14 @@ public class GlobalExceptionHandler {
     body.put("error", "INTERNAL_SERVER_ERROR");
     body.put("message", "Unexpected error.");
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<Map<String, String>> handleBadExeption(BadCredentialsException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "INVALID_INFORMATION");
+    body.put("message", "Information invalid.");
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
   }
 
   @ExceptionHandler(OwnerUpdateEmptyException.class)

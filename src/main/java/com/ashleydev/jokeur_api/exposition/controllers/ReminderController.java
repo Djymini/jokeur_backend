@@ -3,8 +3,10 @@ package com.ashleydev.jokeur_api.exposition.controllers;
 import com.ashleydev.jokeur_api.domain.services.ReminderService;
 import com.ashleydev.jokeur_api.exposition.dtos.ReminderResponseDto;
 import jakarta.websocket.server.PathParam;
-import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +20,11 @@ public class ReminderController {
   private final ReminderService reminderService;
 
   @GetMapping
-  public ResponseEntity<List<ReminderResponseDto>> getReminders(@PathParam(value = "userId") Long userId) {
-    List<ReminderResponseDto> response = reminderService.getReminders(userId);
+  public ResponseEntity<Page<ReminderResponseDto>> getReminders(
+    @PathParam(value = "userId") Long userId,
+    @PageableDefault(sort = "id") Pageable pageable
+  ) {
+    Page<ReminderResponseDto> response = reminderService.getReminders(userId, pageable);
     return ResponseEntity.ok(response);
   }
 }

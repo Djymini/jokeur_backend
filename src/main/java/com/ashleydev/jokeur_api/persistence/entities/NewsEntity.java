@@ -11,7 +11,7 @@ import lombok.*;
 @Setter
 @Builder
 @Table(name = "notification", uniqueConstraints = @UniqueConstraint(columnNames = "link"))
-public class NotificationEntity {
+public class NewsEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
