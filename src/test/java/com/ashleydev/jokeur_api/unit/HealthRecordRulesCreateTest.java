@@ -18,7 +18,7 @@ class HealthRecordRulesCreateTest {
 
     @BeforeEach
     void setUp() {
-        rules = new HealthRecordRules();
+        rules = new HealthRecordRules(null);
     }
 
     @Test
@@ -143,7 +143,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordRequestDTO dto = createDto(
                 1L, "Naya", AnimalType.values()[0], PetSex.values()[0],
                 LocalDate.now().minusYears(2), new BigDecimal("4.2"),
-                "CHIP123", null, " "
+                null, null, " "
         );
 
         HealthRecordValidationException ex =
@@ -157,7 +157,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordRequestDTO dto = createDto(
                 1L, "Naya", AnimalType.values()[0], PetSex.values()[0],
                 LocalDate.now().minusYears(2), new BigDecimal("4.2"),
-                "CHIP123", null, null
+                null, null, null
         );
 
         assertDoesNotThrow(() -> rules.validateCreate(dto));
@@ -167,8 +167,8 @@ class HealthRecordRulesCreateTest {
     void validateCreate_shouldThrow_whenPetNameIsNull() {
         HealthRecordRequestDTO dto = createDto(
                 1L, null, AnimalType.values()[0], PetSex.values()[0],
-                LocalDate.now().minusYears(2), new BigDecimal("4.2"),
-                "CHIP123", null, null
+                LocalDate.now().minusYears(2), null,
+                null, null, null
         );
 
         HealthRecordValidationException ex =
@@ -182,7 +182,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordRequestDTO dto = createDto(
                 1L, "Naya", AnimalType.values()[0], PetSex.values()[0],
                 LocalDate.now().minusYears(2), null,
-                "CHIP123", null, null
+                null, null, null
         );
 
         assertDoesNotThrow(() -> rules.validateCreate(dto));

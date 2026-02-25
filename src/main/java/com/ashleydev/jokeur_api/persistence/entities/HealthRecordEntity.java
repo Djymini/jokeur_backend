@@ -40,7 +40,7 @@ public class HealthRecordEntity {
   @Column(name = "birth_date")
   private LocalDate birthDate;
 
-  @Column(name = "current_weight", precision = 4, scale = 2)
+  @Column(name = "current_weight", precision = 5, scale = 2)
   private BigDecimal currentWeight;
 
   @Enumerated(EnumType.STRING)
