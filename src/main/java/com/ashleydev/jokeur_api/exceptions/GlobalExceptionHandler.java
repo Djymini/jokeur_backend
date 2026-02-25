@@ -22,6 +22,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
@@ -80,6 +81,14 @@ public class GlobalExceptionHandler {
     body.put("error", "HEALTH_RECORD_VALIDATION_ERROR");
     body.put("message", ex.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+  }
+
+  @ExceptionHandler(AuthenticationException.class)
+  public ResponseEntity<Map<String, String>> handleAuthentication(AuthenticationException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "UNAUTHORIZED");
+    body.put("message", "Email ou mot de passe incorrect");
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
   }
 
   @ExceptionHandler(Exception.class)
