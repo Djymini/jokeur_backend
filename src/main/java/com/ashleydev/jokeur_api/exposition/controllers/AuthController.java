@@ -37,17 +37,12 @@ public class AuthController {
 
   @PostMapping("/register")
   public ResponseEntity<RegisterUserResponseDTO> registerUser(@RequestBody RegisterUserRequestDTO dto) {
-
     if (userRepository.existsByEmail(dto.email())) {
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(new RegisterUserResponseDTO("Cet email est déjà utilisé"));
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(new RegisterUserResponseDTO("Cet email est déjà utilisé"));
     }
 
     if (userRepository.existsByPseudo(dto.username())) {
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(new RegisterUserResponseDTO("Ce pseudo est déjà utilisé."));
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(new RegisterUserResponseDTO("Ce pseudo est déjà utilisé."));
     }
 
     UserEntity user = dto.toEntity();
