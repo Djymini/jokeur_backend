@@ -37,6 +37,6 @@ public class MeasureController {
   @DeleteMapping("/{healthRecordId}/{id}")
   public ResponseEntity<String> deleteMeasureOfHealthRecordById(@PathVariable Long healthRecordId, @PathVariable Long id) {
     String response = measureService.delete(healthRecordId, id);
-    return ResponseEntity.status(HttpStatus.GONE).body(response);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
   }
 }
