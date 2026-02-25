@@ -14,12 +14,15 @@ import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
 import com.ashleydev.jokeur_api.exceptions.reminder.ReminderNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.user.UserEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.user.UserNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.user.UserPseudoAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccinNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccineDeleteFailedException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
@@ -101,12 +104,28 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
   }
 
+  @ExceptionHandler(AuthenticationException.class)
+  public ResponseEntity<Map<String, String>> handleAuthentication(AuthenticationException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "UNAUTHORIZED");
+    body.put("message", "Email ou mot de passe incorrect");
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+  }
+
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Map<String, String>> handleUnexpected(Exception ex) {
     Map<String, String> body = new HashMap<>();
     body.put("error", "INTERNAL_SERVER_ERROR");
     body.put("message", "Unexpected error.");
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<Map<String, String>> handleBadExeption(BadCredentialsException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "INVALID_INFORMATION");
+    body.put("message", "Information invalid.");
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
   }
 
   @ExceptionHandler(OwnerUpdateEmptyException.class)
@@ -170,6 +189,14 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Map<String, String>> handleUserEmailAlreadyUsed(UserEmailAlreadyUsedException ex) {
     Map<String, String> body = new HashMap<>();
     body.put("error", "USER_EMAIL_ALREADY_USED");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  }
+
+  @ExceptionHandler(UserPseudoAlreadyUsedException.class)
+  public ResponseEntity<Map<String, String>> handleUserEmailAlreadyUsed(UserPseudoAlreadyUsedException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "USER_PSEUDO_ALREADY_USED");
     body.put("message", ex.getMessage());
     return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
   }

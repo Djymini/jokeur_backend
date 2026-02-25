@@ -1,11 +1,12 @@
 package com.ashleydev.jokeur_api.domain.services;
 
 import com.ashleydev.jokeur_api.config.JokeurProperties;
-import com.ashleydev.jokeur_api.domain.rules.NotificationRssRules;
-import com.ashleydev.jokeur_api.exposition.dtos.notification.NotificationResponseDto;
-import com.ashleydev.jokeur_api.mappers.NotificationMapper;
-import com.ashleydev.jokeur_api.persistence.entities.NotificationEntity;
-import com.ashleydev.jokeur_api.persistence.repositories.NotificationRepository;
+import com.ashleydev.jokeur_api.domain.rules.NewsRssRules;
+import com.ashleydev.jokeur_api.exceptions.rss.RssReadException;
+import com.ashleydev.jokeur_api.exposition.dtos.notification.NewsResponseDto;
+import com.ashleydev.jokeur_api.mappers.NewsMapper;
+import com.ashleydev.jokeur_api.persistence.entities.NewsEntity;
+import com.ashleydev.jokeur_api.persistence.repositories.NewsRepository;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
@@ -14,19 +15,21 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
 @Transactional
-public class NotificationRssService {
+public class NewsRssService {
 
-  private final NotificationRepository notificationRepository;
+  private final NewsRepository newsRepository;
   private final JokeurProperties jokeurProperties;
 
-  public List<NotificationResponseDto> getAllNotifications() {
-    return notificationRepository.getNotifications().stream().map(NotificationMapper::toDto).toList();
+  public Page<NewsResponseDto> getAllNews(Pageable pageable) {
+    return newsRepository.findAllByOrderByPublishedAtDesc(pageable).map(NewsMapper::toDto);
   }
 
   /******************************** Traitement Scheduler *************************** */
@@ -34,20 +37,20 @@ public class NotificationRssService {
   /**
    * cette methode permet de syncroniser la table notification avec flux rss
    */
-  public void importRssNotifications() {
+  public void importRssNews() {
     List<SyndEntry> entries = readFeed(jokeurProperties.getRssUrl());
 
     entries
-      .stream() // parcourir le flux rss
+      .stream()
       .filter((e -> !isArticlePresent(e)))
-      .filter(NotificationRssRules::articleAboutAnimal) // filtrer avec Rule les item qui nous intéresse
-      .map(NotificationMapper::toEntity) // transformer en entity chaque item retenu
-      .forEach(notificationRepository::save); // on enregistre chaque élement retenu
+      .filter(NewsRssRules::articleAboutAnimal)
+      .map(NewsMapper::toEntity)
+      .forEach(newsRepository::save);
   }
 
   private boolean isArticlePresent(SyndEntry entry) {
     String link = entry.getLink();
-    Optional<NotificationEntity> notificationEntity = notificationRepository.findByLink(link);
+    Optional<NewsEntity> notificationEntity = newsRepository.findByLink(link);
     return notificationEntity.isPresent();
   }
 
@@ -58,7 +61,7 @@ public class NotificationRssService {
       SyndFeed feed = input.build(new XmlReader(url));
       return feed.getEntries();
     } catch (Exception e) {
-      throw new RuntimeException("Erreur lecture RSS", e);
+      throw new RssReadException("Erreur lecture RSS", e);
     }
   }
 }

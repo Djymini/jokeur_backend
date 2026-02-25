@@ -4,11 +4,11 @@ import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndEntryImpl;
 import org.junit.jupiter.api.Test;
 
-import static com.ashleydev.jokeur_api.domain.rules.NotificationRssRules.articleAboutAnimal;
+import static com.ashleydev.jokeur_api.domain.rules.NewsRssRules.articleAboutAnimal;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class NotificationRssRulesTest {
+class NewsRssRulesTest {
 
 
     @Test
