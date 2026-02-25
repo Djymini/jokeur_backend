@@ -56,11 +56,9 @@ public class HealthRecordController {
     healthRecordService.deleteByHealthRecordId(id);
   }
 
-    @PostMapping("/{id}/photo")
-    public ResponseEntity<HealthRecordResponseDto> uploadPhoto(
-            @PathVariable Long id,
-            @RequestParam("file") MultipartFile file) {
-        HealthRecordResponseDto response = healthRecordService.uploadPhoto(id, file);
-        return ResponseEntity.ok(response);
-    }
+  @PostMapping("/{id}/photo")
+  public ResponseEntity<HealthRecordResponseDto> uploadPhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+    HealthRecordResponseDto response = healthRecordService.uploadPhoto(id, file);
+    return ResponseEntity.ok(response);
+  }
 }

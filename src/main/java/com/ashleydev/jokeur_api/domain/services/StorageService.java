@@ -14,23 +14,23 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class StorageService {
 
-    @Value("${app.upload.dir}")
-    private String uploadDir;
+  @Value("${app.upload.dir}")
+  private String uploadDir;
 
-    public String store(MultipartFile file, Long healthRecordId) throws IOException {
-        String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
-        String filename = UUID.randomUUID() + "." + extension;
-        String relativePath = "animals/" + healthRecordId + "/" + filename;
+  public String store(MultipartFile file, Long healthRecordId) throws IOException {
+    String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+    String filename = UUID.randomUUID() + "." + extension;
+    String relativePath = "animals/" + healthRecordId + "/" + filename;
 
-        Path targetPath = Paths.get(uploadDir).resolve(relativePath);
-        Files.createDirectories(targetPath.getParent());
-        Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+    Path targetPath = Paths.get(uploadDir).resolve(relativePath);
+    Files.createDirectories(targetPath.getParent());
+    Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
-        return relativePath;
-    }
+    return relativePath;
+  }
 
-    public void delete(String photoKey) throws IOException {
-        Path path = Paths.get(uploadDir).resolve(photoKey);
-        Files.deleteIfExists(path);
-    }
+  public void delete(String photoKey) throws IOException {
+    Path path = Paths.get(uploadDir).resolve(photoKey);
+    Files.deleteIfExists(path);
+  }
 }
