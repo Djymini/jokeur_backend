@@ -11,6 +11,7 @@ import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
 import com.ashleydev.jokeur_api.exceptions.reminder.ReminderNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.user.UserEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.user.UserNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.user.UserPseudoAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccinNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
@@ -140,6 +141,14 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Map<String, String>> handleUserEmailAlreadyUsed(UserEmailAlreadyUsedException ex) {
     Map<String, String> body = new HashMap<>();
     body.put("error", "USER_EMAIL_ALREADY_USED");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  }
+
+  @ExceptionHandler(UserPseudoAlreadyUsedException.class)
+  public ResponseEntity<Map<String, String>> handleUserEmailAlreadyUsed(UserPseudoAlreadyUsedException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "USER_PSEUDO_ALREADY_USED");
     body.put("message", ex.getMessage());
     return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
   }

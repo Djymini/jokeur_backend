@@ -8,6 +8,7 @@ import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,26 +36,35 @@ public class AuthController {
   private JwtUtil jwtUtil;
 
   @PostMapping("/register")
-  public ResponseEntity<RegisterUserResponseDTO> registerUser(@RequestBody RegisterUserRequestDTO request) {
-    if (userRepository.existsByEmail(request.email())) {
-      return ResponseEntity.badRequest().body(new RegisterUserResponseDTO("Cet email est déjà utilisé !"));
+  public ResponseEntity<RegisterUserResponseDTO> registerUser(@RequestBody RegisterUserRequestDTO dto) {
+
+    if (userRepository.existsByEmail(dto.email())) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new RegisterUserResponseDTO("Cet email est déjà utilisé"));
     }
 
-    UserEntity user = request.toEntity();
-    user.setPassword(passwordEncoder.encode(request.password()));
+    if (userRepository.existsByPseudo(dto.username())) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new RegisterUserResponseDTO("Ce pseudo est déjà utilisé."));
+    }
+
+    UserEntity user = dto.toEntity();
+    user.setPassword(passwordEncoder.encode(dto.password()));
     userRepository.save(user);
 
-    return ResponseEntity.ok(new RegisterUserResponseDTO("Utilisateur inscrit avec succès !"));
+    return ResponseEntity.ok(new RegisterUserResponseDTO("Utilisateur inscrit avec succès."));
   }
 
   @PostMapping("/login")
-  public ResponseEntity<LoginUserResponseDTO> authenticatedUser(@RequestBody LoginUserRequestDTO request) {
+  public ResponseEntity<LoginUserResponseDTO> authenticateUser(@RequestBody LoginUserRequestDTO request) {
     Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
-    UserEntity authenticatedUser = (UserEntity) authentication.getPrincipal();
-    String token = jwtUtil.generateToken(authenticatedUser);
+    UserEntity authenticateUser = (UserEntity) authentication.getPrincipal();
+    String token = jwtUtil.generateToken(authenticateUser);
 
-    LoginUserResponseDTO response = LoginUserResponseDTO.fromEntity(token, authenticatedUser);
+    LoginUserResponseDTO response = LoginUserResponseDTO.fromEntity(token, authenticateUser);
     return ResponseEntity.ok(response);
   }
 }
