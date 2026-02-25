@@ -62,32 +62,33 @@ public class VaccineService {
     return VaccinMapper.toDto(newVaccin);
   }
 
-    @ValidateHealthRecord
-    @ValidateVaccine
-    public VaccineResponseDto update(VaccineDetailRequestDto request) {
-      if (reminderRepository.existsById(request.reminder().id()))
-          throw new ReminderNotFoundException("Le rappel " +request.reminder().id()+ " n'existe pas");
+  @ValidateHealthRecord
+  @ValidateVaccine
+  public VaccineResponseDto update(VaccineDetailRequestDto request) {
+    if (reminderRepository.existsById(request.reminder().id())) throw new ReminderNotFoundException(
+      "Le rappel " + request.reminder().id() + " n'existe pas"
+    );
 
-      ReminderEntity newReminder = reminderRepository.findById(request.reminder().id()).get();
-      newReminder.setDescription(request.reminder().description());
-      newReminder.setReminderDate(request.reminder().reminderDate());
+    ReminderEntity newReminder = reminderRepository.findById(request.reminder().id()).get();
+    newReminder.setDescription(request.reminder().description());
+    newReminder.setReminderDate(request.reminder().reminderDate());
 
-      HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
+    HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
 
-      VaccineEntity response = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, newReminder));
+    VaccineEntity response = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, newReminder));
 
-      return VaccinMapper.toDto(response);
-   }
+    return VaccinMapper.toDto(response);
+  }
 
   @ValidateHealthRecord
   @ValidateVaccine
   public String delete(Long id) {
     vaccineRepository.deleteById(id);
 
-      if (vaccineRepository.existsById(id)) {
-          throw new VaccineDeleteFailedException("Vaccine : " + id + " is not deleted");
-      }
+    if (vaccineRepository.existsById(id)) {
+      throw new VaccineDeleteFailedException("Vaccine : " + id + " is not deleted");
+    }
 
-      return "Vaccine : " + id + " is deleted";
+    return "Vaccine : " + id + " is deleted";
   }
 }

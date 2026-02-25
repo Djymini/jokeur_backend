@@ -15,10 +15,9 @@ import com.ashleydev.jokeur_api.exceptions.reminder.ReminderNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.user.UserEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.user.UserNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccinNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.vaccin.VaccineDeleteFailedException;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.ashleydev.jokeur_api.exceptions.vaccin.VaccineDeleteFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -131,20 +130,20 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
   }
 
-    @ExceptionHandler(MeasureDeleteFailedException.class)
-    public ResponseEntity<String> handleMeasureDeleteFailed(MeasureDeleteFailedException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
-    }
+  @ExceptionHandler(MeasureDeleteFailedException.class)
+  public ResponseEntity<String> handleMeasureDeleteFailed(MeasureDeleteFailedException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
+  }
 
   @ExceptionHandler(VaccinNotFoundException.class)
   public ResponseEntity<String> handleVaccinNotFound(VaccinNotFoundException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
   }
 
-    @ExceptionHandler(VaccineDeleteFailedException.class)
-    public ResponseEntity<String> handleVaccineDeleteFailed(VaccineDeleteFailedException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
-    }
+  @ExceptionHandler(VaccineDeleteFailedException.class)
+  public ResponseEntity<String> handleVaccineDeleteFailed(VaccineDeleteFailedException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
+  }
 
   @ExceptionHandler(ReminderNotFoundException.class)
   public ResponseEntity<String> handleReminderNotFound(ReminderNotFoundException ex) {

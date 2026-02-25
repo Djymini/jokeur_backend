@@ -13,7 +13,7 @@ public class VaccinMapper {
     VaccineEntity entity = new VaccineEntity();
     entity.setName(dto.name());
     entity.setDescription(dto.description());
-      entity.setVaccinator(dto.vaccinator());
+    entity.setVaccinator(dto.vaccinator());
     entity.setVaccineDate(dto.vaccinDate());
     entity.setHealthRecordEntity(healthRecord);
     entity.setReminderEntity(reminderEntity);
@@ -21,24 +21,24 @@ public class VaccinMapper {
     return entity;
   }
 
-    public static VaccineEntity toEntity(VaccineDetailRequestDto dto, HealthRecordEntity healthRecord, ReminderEntity reminderEntity) {
-        VaccineEntity entity = new VaccineEntity();
-        entity.setName(dto.name());
-        entity.setDescription(dto.description());
-        entity.setVaccinator(dto.vaccinator());
-        entity.setVaccineDate(dto.vaccinDate());
-        entity.setHealthRecordEntity(healthRecord);
-        entity.setReminderEntity(reminderEntity);
+  public static VaccineEntity toEntity(VaccineDetailRequestDto dto, HealthRecordEntity healthRecord, ReminderEntity reminderEntity) {
+    VaccineEntity entity = new VaccineEntity();
+    entity.setName(dto.name());
+    entity.setDescription(dto.description());
+    entity.setVaccinator(dto.vaccinator());
+    entity.setVaccineDate(dto.vaccinDate());
+    entity.setHealthRecordEntity(healthRecord);
+    entity.setReminderEntity(reminderEntity);
 
-        return entity;
-    }
+    return entity;
+  }
 
   public static VaccineResponseDto toDto(VaccineEntity entity) {
     return new VaccineResponseDto(
       entity.getId(),
       entity.getName(),
       entity.getDescription(),
-            entity.getVaccinator(),
+      entity.getVaccinator(),
       entity.getVaccineDate(),
       entity.getHealthRecordEntity().getId(),
       ReminderMapper.toDto(entity.getReminderEntity())
