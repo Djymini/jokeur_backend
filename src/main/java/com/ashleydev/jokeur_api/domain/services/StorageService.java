@@ -1,5 +1,7 @@
 package com.ashleydev.jokeur_api.domain.services;
 
+import com.ashleydev.jokeur_api.domain.rules.StorageRules;
+import com.ashleydev.jokeur_api.exceptions.storage.FileStorageException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,23 +16,37 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class StorageService {
 
-  @Value("${app.upload.dir}")
-  private String uploadDir;
+    private final StorageRules storageRules;
 
-  public String store(MultipartFile file, Long healthRecordId) throws IOException {
-    String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
-    String filename = UUID.randomUUID() + "." + extension;
-    String relativePath = "animals/" + healthRecordId + "/" + filename;
+    @Value("${app.upload.dir}")
+    private String uploadDir;
 
-    Path targetPath = Paths.get(uploadDir).resolve(relativePath);
-    Files.createDirectories(targetPath.getParent());
-    Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+    public StorageService(StorageRules storageRules) {
+        this.storageRules = storageRules;
+    }
 
-    return relativePath;
-  }
+    public String store(MultipartFile file, Long healthRecordId) {
+        storageRules.validateFile(file);
 
-  public void delete(String photoKey) throws IOException {
-    Path path = Paths.get(uploadDir).resolve(photoKey);
-    Files.deleteIfExists(path);
-  }
+        try {
+            String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+            String filename = UUID.randomUUID() + "." + extension;
+            String relativePath = "animals/" + healthRecordId + "/" + filename;
+            Path targetPath = Paths.get(uploadDir).resolve(relativePath);
+            Files.createDirectories(targetPath.getParent());
+            Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+            return relativePath;
+        } catch (IOException e) {
+            throw new FileStorageException("Error while saving file", e);
+        }
+    }
+
+    public void delete(String photoKey) {
+        try {
+            Path path = Paths.get(uploadDir).resolve(photoKey);
+            Files.deleteIfExists(path);
+        } catch (IOException e) {
+            throw new FileStorageException("Error while deleting file", e);
+        }
+    }
 }

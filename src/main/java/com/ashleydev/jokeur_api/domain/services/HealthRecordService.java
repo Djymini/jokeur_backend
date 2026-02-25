@@ -14,7 +14,6 @@ import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureRepository;
-import java.io.IOException;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -102,23 +101,21 @@ public class HealthRecordService {
       .toList();
   }
 
-  public HealthRecordResponseDto uploadPhoto(Long id, MultipartFile file) {
-    HealthRecordEntity entity = healthRecordRepository.findById(id).orElseThrow(() -> new HealthRecordNotFoundException(id));
+    public HealthRecordResponseDto uploadPhoto(Long id, MultipartFile file) {
+        HealthRecordEntity entity = healthRecordRepository.findById(id)
+                .orElseThrow(() -> new HealthRecordNotFoundException(id));
 
-    try {
-      if (entity.getPhotoKey() != null) {
-        storageService.delete(entity.getPhotoKey());
-      }
-      String photoKey = storageService.store(file, id);
-      entity.setPhotoKey(photoKey);
-    } catch (IOException e) {
-      throw new RuntimeException("Erreur lors de l'upload de la photo", e);
+        if (entity.getPhotoKey() != null) {
+            storageService.delete(entity.getPhotoKey());
+        }
+
+        String photoKey = storageService.store(file, id);
+        entity.setPhotoKey(photoKey);
+
+        HealthRecordEntity saved = healthRecordRepository.save(entity);
+        List<MeasureEntity> measures = measureRepository.findByHealthRecordId(saved.getId());
+        HealthRecordMeasuresResponseDTO measuresDto = MeasureMapper.toHealthRecordDto(measures);
+
+        return HealthRecordMapper.toDto(saved, measuresDto);
     }
-
-    HealthRecordEntity saved = healthRecordRepository.save(entity);
-    List<MeasureEntity> measures = measureRepository.findByHealthRecordId(saved.getId());
-    HealthRecordMeasuresResponseDTO measuresDto = MeasureMapper.toHealthRecordDto(measures);
-
-    return HealthRecordMapper.toDto(saved, measuresDto);
-  }
 }
