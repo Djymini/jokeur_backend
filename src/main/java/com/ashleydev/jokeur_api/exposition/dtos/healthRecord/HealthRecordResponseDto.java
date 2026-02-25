@@ -19,5 +19,6 @@ public record HealthRecordResponseDto(
   byte[] image,
   String imageType,
   String AnimalType,
+  String photoKey,
   HealthRecordMeasuresResponseDTO measures
 ) {}

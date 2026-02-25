@@ -38,6 +38,9 @@ public class HealthRecordEntity {
   @Column(name = "sex", nullable = false, length = 12)
   private PetSex sex;
 
+  @Column(name = "photoKey")
+  private String photoKey;
+
   @Column(name = "birth_date")
   private LocalDate birthDate;
 

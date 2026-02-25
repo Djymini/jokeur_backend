@@ -59,6 +59,7 @@ public class HealthRecordMapper {
       entity.getImage(),
       entity.getImageType(),
       entity.getAnimalType().name(),
+            entity.getPhotoKey(),
       measures
     );
   }
