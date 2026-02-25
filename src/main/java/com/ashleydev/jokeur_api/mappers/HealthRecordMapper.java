@@ -22,7 +22,7 @@ public class HealthRecordMapper {
     entity.setBirthDate(dto.birthDate());
     entity.setCurrentWeight(dto.currentWeight());
     entity.setColor(dto.color());
-    entity.setIdentificationNumber(dto.id());
+    entity.setIdentificationNumber(dto.identificationNumber());
     entity.setTattoo(dto.tattoo());
     entity.setAllergy(dto.allergy());
     return entity;

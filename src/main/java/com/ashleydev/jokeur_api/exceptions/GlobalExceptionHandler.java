@@ -1,9 +1,11 @@
 package com.ashleydev.jokeur_api.exceptions;
 
 import com.ashleydev.jokeur_api.exceptions.annotation.AspectExtractIdImpossibleException;
+import com.ashleydev.jokeur_api.exceptions.healthRecord.*;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordUpdateEmptyException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordValidationException;
+import com.ashleydev.jokeur_api.exceptions.measure.MeasureDeleteFailedException;
 import com.ashleydev.jokeur_api.exceptions.measure.MeasureNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.measure.MeasureTypeNotValidateException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerEmailAlreadyUsedException;
@@ -15,6 +17,8 @@ import com.ashleydev.jokeur_api.exceptions.user.UserNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccinNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.ashleydev.jokeur_api.exceptions.vaccin.VaccineDeleteFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -40,6 +44,22 @@ public class GlobalExceptionHandler {
       });
 
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+  }
+
+  @ExceptionHandler(IdentificationNumberAlreadyUsedException.class)
+  public ResponseEntity<Map<String, String>> handleIdentificationNumberAlreadyUsed(IdentificationNumberAlreadyUsedException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "IDENTIFICATION_NUMBER_ALREADY_USED");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  }
+
+  @ExceptionHandler(TattooAlreadyUsedException.class)
+  public ResponseEntity<Map<String, String>> handleTattooAlreadyUsed(TattooAlreadyUsedException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "TATTOO_ALREADY_USED");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
   }
 
   @ExceptionHandler(OwnerNotFoundException.class)
@@ -111,10 +131,20 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
   }
 
+    @ExceptionHandler(MeasureDeleteFailedException.class)
+    public ResponseEntity<String> handleMeasureDeleteFailed(MeasureDeleteFailedException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
+    }
+
   @ExceptionHandler(VaccinNotFoundException.class)
   public ResponseEntity<String> handleVaccinNotFound(VaccinNotFoundException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
   }
+
+    @ExceptionHandler(VaccineDeleteFailedException.class)
+    public ResponseEntity<String> handleVaccineDeleteFailed(VaccineDeleteFailedException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
+    }
 
   @ExceptionHandler(ReminderNotFoundException.class)
   public ResponseEntity<String> handleReminderNotFound(ReminderNotFoundException ex) {

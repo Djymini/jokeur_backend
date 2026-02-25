@@ -5,6 +5,8 @@ import com.ashleydev.jokeur_api.annotations.ValidateVaccine;
 import com.ashleydev.jokeur_api.domain.enums.ReminderType;
 import com.ashleydev.jokeur_api.exceptions.reminder.ReminderNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccinNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.vaccin.VaccineDeleteFailedException;
+import com.ashleydev.jokeur_api.exposition.dtos.vaccine.VaccineDetailRequestDto;
 import com.ashleydev.jokeur_api.exposition.dtos.vaccine.VaccineRequestDto;
 import com.ashleydev.jokeur_api.exposition.dtos.vaccine.VaccineResponseDto;
 import com.ashleydev.jokeur_api.mappers.VaccinMapper;
@@ -49,21 +51,43 @@ public class VaccineService {
   }
 
   @ValidateHealthRecord
-  public VaccineResponseDto add(VaccineRequestDto request) {
+  public VaccineResponseDto create(VaccineRequestDto request) {
     HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
     ReminderEntity newReminder = new ReminderEntity();
     newReminder.setType(ReminderType.VACCINE);
     newReminder.setDescription(request.description());
     newReminder.setReminderDate(request.vaccinReminderDate());
     newReminder.setUser(healthRecord.getUser());
-    ReminderEntity savedReminder = reminderRepository.save(newReminder);
-    VaccineEntity newVaccin = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, savedReminder));
+    VaccineEntity newVaccin = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, newReminder));
     return VaccinMapper.toDto(newVaccin);
   }
 
+    @ValidateHealthRecord
+    @ValidateVaccine
+    public VaccineResponseDto update(VaccineDetailRequestDto request) {
+      if (reminderRepository.existsById(request.reminder().id()))
+          throw new ReminderNotFoundException("Le rappel " +request.reminder().id()+ " n'existe pas");
+
+      ReminderEntity newReminder = reminderRepository.findById(request.reminder().id()).get();
+      newReminder.setDescription(request.reminder().description());
+      newReminder.setReminderDate(request.reminder().reminderDate());
+
+      HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
+
+      VaccineEntity response = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, newReminder));
+
+      return VaccinMapper.toDto(response);
+   }
+
   @ValidateHealthRecord
   @ValidateVaccine
-  public void delete(Long id, Long healthRecordId) {
+  public String delete(Long id) {
     vaccineRepository.deleteById(id);
+
+      if (vaccineRepository.existsById(id)) {
+          throw new VaccineDeleteFailedException("Vaccine : " + id + " is not deleted");
+      }
+
+      return "Vaccine : " + id + " is deleted";
   }
 }

@@ -22,6 +22,9 @@ public class VaccineEntity {
   @Column(name = "description", length = 500)
   private String description;
 
+    @Column(name = "vaccinator", length = 120)
+    private String vaccinator;
+
   @Column(name = "vaccine_date", nullable = false, updatable = false)
   private LocalDate vaccineDate;
 
@@ -29,7 +32,12 @@ public class VaccineEntity {
   @JoinColumn(name = "health_record_id", nullable = false)
   private HealthRecordEntity healthRecordEntity;
 
-  @OneToOne(fetch = FetchType.LAZY, optional = false)
+  @OneToOne(
+          fetch = FetchType.LAZY,
+          optional = false,
+          cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+          orphanRemoval = true
+  )
   @JoinColumn(name = "reminder_id", nullable = false)
   private ReminderEntity reminderEntity;
 

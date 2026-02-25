@@ -1,7 +1,7 @@
 package com.ashleydev.jokeur_api.exposition.controllers;
 
 import com.ashleydev.jokeur_api.domain.services.ReminderService;
-import com.ashleydev.jokeur_api.exposition.dtos.ReminderResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.reminder.ReminderResponseDto;
 import jakarta.websocket.server.PathParam;
 import java.util.List;
 import lombok.AllArgsConstructor;

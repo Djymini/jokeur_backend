@@ -69,7 +69,7 @@ public class HealthRecordService {
     if (dto.getBirthDate() != null) entity.setBirthDate(dto.getBirthDate());
     if (dto.getCurrentWeight() != null) entity.setCurrentWeight(dto.getCurrentWeight());
     if (dto.getColor() != null) entity.setColor(dto.getColor());
-    if (dto.getId() != null) entity.setIdentificationNumber(dto.getId());
+    if (dto.getIdentificationNumber() != null) entity.setIdentificationNumber(dto.getIdentificationNumber());
     if (dto.getTattoo() != null) entity.setTattoo(dto.getTattoo());
     if (dto.getAllergy() != null) entity.setAllergy(dto.getAllergy());
 
