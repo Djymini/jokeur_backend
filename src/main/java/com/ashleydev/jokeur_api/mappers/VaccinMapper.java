@@ -1,14 +1,14 @@
 package com.ashleydev.jokeur_api.mappers;
 
-import com.ashleydev.jokeur_api.exposition.dtos.vaccin.VaccinRequestDto;
-import com.ashleydev.jokeur_api.exposition.dtos.vaccin.VaccinResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.vaccine.VaccineRequestDto;
+import com.ashleydev.jokeur_api.exposition.dtos.vaccine.VaccineResponseDto;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.ReminderEntity;
 import com.ashleydev.jokeur_api.persistence.entities.VaccineEntity;
 
 public class VaccinMapper {
 
-  public static VaccineEntity toEntity(VaccinRequestDto dto, HealthRecordEntity healthRecordh, ReminderEntity reminderEntity) {
+  public static VaccineEntity toEntity(VaccineRequestDto dto, HealthRecordEntity healthRecordh, ReminderEntity reminderEntity) {
     VaccineEntity entity = new VaccineEntity();
     entity.setName(dto.name());
     entity.setDescription(dto.description());
@@ -19,8 +19,8 @@ public class VaccinMapper {
     return entity;
   }
 
-  public static VaccinResponseDto toDto(VaccineEntity entity) {
-    return new VaccinResponseDto(
+  public static VaccineResponseDto toDto(VaccineEntity entity) {
+    return new VaccineResponseDto(
       entity.getId(),
       entity.getName(),
       entity.getDescription(),

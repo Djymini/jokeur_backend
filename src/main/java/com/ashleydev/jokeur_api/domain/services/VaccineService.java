@@ -5,8 +5,8 @@ import com.ashleydev.jokeur_api.annotations.ValidateVaccine;
 import com.ashleydev.jokeur_api.domain.enums.ReminderType;
 import com.ashleydev.jokeur_api.exceptions.reminder.ReminderNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccinNotFoundException;
-import com.ashleydev.jokeur_api.exposition.dtos.vaccin.VaccinRequestDto;
-import com.ashleydev.jokeur_api.exposition.dtos.vaccin.VaccinResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.vaccine.VaccineRequestDto;
+import com.ashleydev.jokeur_api.exposition.dtos.vaccine.VaccineResponseDto;
 import com.ashleydev.jokeur_api.mappers.VaccinMapper;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.ReminderEntity;
@@ -32,13 +32,13 @@ public class VaccineService {
   private HealthRecordRepository healthRecordRepository;
 
   @ValidateHealthRecord
-  public List<VaccinResponseDto> getAllByHealthRecordId(Long healthRecordId) {
-    List<VaccinResponseDto> vaccinResponseList = new ArrayList<>();
+  public List<VaccineResponseDto> getAllByHealthRecordId(Long healthRecordId) {
+    List<VaccineResponseDto> vaccinResponseList = new ArrayList<>();
     List<VaccineEntity> vaccineEntityList = vaccineRepository.findAllByHealthRecordI(healthRecordId);
     return vaccineRepository.findAllByHealthRecordI(healthRecordId).stream().map(VaccinMapper::toDto).toList();
   }
 
-  public VaccinResponseDto getById(Long id) {
+  public VaccineResponseDto getById(Long id) {
     if (!vaccineRepository.existsById(id)) throw new VaccinNotFoundException(id);
     VaccineEntity vaccineEntity = vaccineRepository.findById(id).get();
     if (!reminderRepository.existsById(vaccineEntity.getReminderEntity().getId())) throw new ReminderNotFoundException(
@@ -49,7 +49,7 @@ public class VaccineService {
   }
 
   @ValidateHealthRecord
-  public VaccinResponseDto add(VaccinRequestDto request) {
+  public VaccineResponseDto add(VaccineRequestDto request) {
     HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
     ReminderEntity newReminder = new ReminderEntity();
     newReminder.setType(ReminderType.VACCINE);
