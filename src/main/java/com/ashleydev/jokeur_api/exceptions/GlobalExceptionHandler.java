@@ -12,6 +12,7 @@ import com.ashleydev.jokeur_api.exceptions.owner.OwnerEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
 import com.ashleydev.jokeur_api.exceptions.reminder.ReminderNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.storage.FileStorageException;
 import com.ashleydev.jokeur_api.exceptions.user.UserEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.user.UserNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.user.UserPseudoAlreadyUsedException;
@@ -114,12 +115,11 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(FileStorageException.class)
   public ResponseEntity<Map<String, String>> handleFileStorage(FileStorageException ex) {
-      Map<String, String> body = new HashMap<>();
-      body.put("error", "FILE_STORAGE_ERROR");
-      body.put("message", ex.getMessage());
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "FILE_STORAGE_ERROR");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
   }
-
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Map<String, String>> handleUnexpected(Exception ex) {

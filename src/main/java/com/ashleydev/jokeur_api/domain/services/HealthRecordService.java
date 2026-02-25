@@ -101,21 +101,20 @@ public class HealthRecordService {
       .toList();
   }
 
-    public HealthRecordResponseDto uploadPhoto(Long id, MultipartFile file) {
-        HealthRecordEntity entity = healthRecordRepository.findById(id)
-                .orElseThrow(() -> new HealthRecordNotFoundException(id));
+  public HealthRecordResponseDto uploadPhoto(Long id, MultipartFile file) {
+    HealthRecordEntity entity = healthRecordRepository.findById(id).orElseThrow(() -> new HealthRecordNotFoundException(id));
 
-        if (entity.getPhotoKey() != null) {
-            storageService.delete(entity.getPhotoKey());
-        }
-
-        String photoKey = storageService.store(file, id);
-        entity.setPhotoKey(photoKey);
-
-        HealthRecordEntity saved = healthRecordRepository.save(entity);
-        List<MeasureEntity> measures = measureRepository.findByHealthRecordId(saved.getId());
-        HealthRecordMeasuresResponseDTO measuresDto = MeasureMapper.toHealthRecordDto(measures);
-
-        return HealthRecordMapper.toDto(saved, measuresDto);
+    if (entity.getPhotoKey() != null) {
+      storageService.delete(entity.getPhotoKey());
     }
+
+    String photoKey = storageService.store(file, id);
+    entity.setPhotoKey(photoKey);
+
+    HealthRecordEntity saved = healthRecordRepository.save(entity);
+    List<MeasureEntity> measures = measureRepository.findByHealthRecordId(saved.getId());
+    HealthRecordMeasuresResponseDTO measuresDto = MeasureMapper.toHealthRecordDto(measures);
+
+    return HealthRecordMapper.toDto(saved, measuresDto);
+  }
 }
