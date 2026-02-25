@@ -31,7 +31,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordRequestDTO dto = createDto(
                 null, "Naya", AnimalType.values()[0], PetSex.values()[0],
                 LocalDate.now().minusYears(2), new BigDecimal("4.2"),
-                "CHIP1231", null, null
+                "CHIP123", null, null
         );
 
         HealthRecordValidationException ex =
@@ -45,7 +45,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordRequestDTO dto = createDto(
                 1L, "   ", AnimalType.values()[0], PetSex.values()[0],
                 LocalDate.now().minusYears(2), new BigDecimal("4.2"),
-                "CHIP1232", null, null
+                "CHIP123", null, null
         );
 
         HealthRecordValidationException ex =
@@ -59,7 +59,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordRequestDTO dto = createDto(
                 1L, "Naya", null, PetSex.values()[0],
                 LocalDate.now().minusYears(2), new BigDecimal("4.2"),
-                "CHIP1233", null, null
+                "CHIP123", null, null
         );
 
         HealthRecordValidationException ex =
@@ -73,7 +73,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordRequestDTO dto = createDto(
                 1L, "Naya", AnimalType.values()[0], null,
                 LocalDate.now().minusYears(2), new BigDecimal("4.2"),
-                "CHIP1234", null, null
+                "CHIP123", null, null
         );
 
         HealthRecordValidationException ex =
@@ -87,7 +87,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordRequestDTO dto = createDto(
                 1L, "Naya", AnimalType.values()[0], PetSex.values()[0],
                 LocalDate.now().plusDays(1), new BigDecimal("4.2"),
-                "CHIP1235", null, null
+                "CHIP123", null, null
         );
 
         HealthRecordValidationException ex =
@@ -101,7 +101,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordRequestDTO dto = createDto(
                 1L, "Naya", AnimalType.values()[0], PetSex.values()[0],
                 LocalDate.now().minusYears(2), BigDecimal.ZERO,
-                "CHIP1236", null, null
+                "CHIP123", null, null
         );
 
         HealthRecordValidationException ex =
@@ -129,7 +129,7 @@ class HealthRecordRulesCreateTest {
         HealthRecordRequestDTO dto = createDto(
                 1L, "Naya", AnimalType.values()[0], PetSex.values()[0],
                 LocalDate.now().minusYears(2), new BigDecimal("4.2"),
-                "CHIP1237", " ", null
+                "CHIP123", " ", null
         );
 
         HealthRecordValidationException ex =
