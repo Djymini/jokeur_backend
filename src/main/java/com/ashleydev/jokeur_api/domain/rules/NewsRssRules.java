@@ -2,7 +2,7 @@ package com.ashleydev.jokeur_api.domain.rules;
 
 import com.rometools.rome.feed.synd.SyndEntry;
 
-public class NotificationRssRules {
+public class NewsRssRules {
 
   /**
    * cette methode filtre un article suivant les critère (chat, chien) et fait partie de categorie article de santé pour les animeaux

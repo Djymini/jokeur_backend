@@ -1,7 +1,7 @@
 package com.ashleydev.jokeur_api.exposition.controllers;
 
-import com.ashleydev.jokeur_api.domain.services.NotificationRssService;
-import com.ashleydev.jokeur_api.exposition.dtos.notification.NotificationResponseDto;
+import com.ashleydev.jokeur_api.domain.services.NewsRssService;
+import com.ashleydev.jokeur_api.exposition.dtos.notification.NewsResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,14 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/news")
-public class NotificationController {
+public class NewsController {
 
-  private NotificationRssService notificationRssService;
+  private NewsRssService newsRssService;
 
   @GetMapping
-  public Page<NotificationResponseDto> getAllNotifications(
-    @PageableDefault(size = 10, sort = "publishedAt", direction = Sort.Direction.DESC) Pageable pageable
-  ) {
-    return notificationRssService.getAllNotifications(pageable);
+  public Page<NewsResponseDto> getAllNews(@PageableDefault(size = 10, sort = "publishedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    return newsRssService.getAllNews(pageable);
   }
 }

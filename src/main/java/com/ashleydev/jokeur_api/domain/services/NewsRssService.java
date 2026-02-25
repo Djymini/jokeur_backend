@@ -1,12 +1,12 @@
 package com.ashleydev.jokeur_api.domain.services;
 
 import com.ashleydev.jokeur_api.config.JokeurProperties;
-import com.ashleydev.jokeur_api.domain.rules.NotificationRssRules;
+import com.ashleydev.jokeur_api.domain.rules.NewsRssRules;
 import com.ashleydev.jokeur_api.exceptions.rss.RssReadException;
-import com.ashleydev.jokeur_api.exposition.dtos.notification.NotificationResponseDto;
-import com.ashleydev.jokeur_api.mappers.NotificationMapper;
-import com.ashleydev.jokeur_api.persistence.entities.NotificationEntity;
-import com.ashleydev.jokeur_api.persistence.repositories.NotificationRepository;
+import com.ashleydev.jokeur_api.exposition.dtos.notification.NewsResponseDto;
+import com.ashleydev.jokeur_api.mappers.NewsMapper;
+import com.ashleydev.jokeur_api.persistence.entities.NewsEntity;
+import com.ashleydev.jokeur_api.persistence.repositories.NewsRepository;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
@@ -23,13 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @AllArgsConstructor
 @Transactional
-public class NotificationRssService {
+public class NewsRssService {
 
-  private final NotificationRepository notificationRepository;
+  private final NewsRepository newsRepository;
   private final JokeurProperties jokeurProperties;
 
-  public Page<NotificationResponseDto> getAllNotifications(Pageable pageable) {
-    return notificationRepository.findAllByOrderByPublishedAtDesc(pageable).map(NotificationMapper::toDto);
+  public Page<NewsResponseDto> getAllNews(Pageable pageable) {
+    return newsRepository.findAllByOrderByPublishedAtDesc(pageable).map(NewsMapper::toDto);
   }
 
   /******************************** Traitement Scheduler *************************** */
@@ -37,20 +37,20 @@ public class NotificationRssService {
   /**
    * cette methode permet de syncroniser la table notification avec flux rss
    */
-  public void importRssNotifications() {
+  public void importRssNews() {
     List<SyndEntry> entries = readFeed(jokeurProperties.getRssUrl());
 
     entries
       .stream()
       .filter((e -> !isArticlePresent(e)))
-      .filter(NotificationRssRules::articleAboutAnimal)
-      .map(NotificationMapper::toEntity)
-      .forEach(notificationRepository::save);
+      .filter(NewsRssRules::articleAboutAnimal)
+      .map(NewsMapper::toEntity)
+      .forEach(newsRepository::save);
   }
 
   private boolean isArticlePresent(SyndEntry entry) {
     String link = entry.getLink();
-    Optional<NotificationEntity> notificationEntity = notificationRepository.findByLink(link);
+    Optional<NewsEntity> notificationEntity = newsRepository.findByLink(link);
     return notificationEntity.isPresent();
   }
 

@@ -107,8 +107,8 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<Map<String, String>> handleBadExeption(BadCredentialsException ex) {
     Map<String, String> body = new HashMap<>();
-    body.put("error", "INVALID_LOGIN");
-    body.put("message", "Login invalid.");
+    body.put("error", "INVALID_INFORMATION");
+    body.put("message", "Information invalid.");
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
   }
 
