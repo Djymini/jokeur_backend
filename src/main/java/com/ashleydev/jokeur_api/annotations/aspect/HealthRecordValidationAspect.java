@@ -22,7 +22,8 @@ public class HealthRecordValidationAspect extends ValidationAspectBase {
   public void validate(JoinPoint joinPoint, ValidateHealthRecord validateAnnotation) {
     Object[] args = joinPoint.getArgs();
     String fieldName = validateAnnotation.idField();
-    Long id = extractId(args, fieldName);
+    System.out.println("HealthRecordRepository test : " + fieldName);
+    Long id = extractId(joinPoint, args, fieldName);
 
     if (id != null && !healthRecordRepository.existsById(id)) {
       throw new HealthRecordNotFoundException(id);

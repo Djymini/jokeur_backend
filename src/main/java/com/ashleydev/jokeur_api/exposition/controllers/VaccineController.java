@@ -37,7 +37,7 @@ public class VaccineController {
 
   @DeleteMapping("/{healthRecordId}/{id}")
   public ResponseEntity<String> deleteMeasureOfHealthRecordById(@PathVariable Long healthRecordId, @PathVariable Long id) {
-    String response = vaccineService.delete(id);
+    String response = vaccineService.delete(id, healthRecordId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
   }
 }

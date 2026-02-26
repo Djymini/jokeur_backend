@@ -23,6 +23,7 @@ public class VaccinMapper {
 
   public static VaccineEntity toEntity(VaccineDetailRequestDto dto, HealthRecordEntity healthRecord, ReminderEntity reminderEntity) {
     VaccineEntity entity = new VaccineEntity();
+    entity.setId(dto.id());
     entity.setName(dto.name());
     entity.setDescription(dto.description());
     entity.setVaccinator(dto.vaccinator());

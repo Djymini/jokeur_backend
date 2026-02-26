@@ -3,6 +3,7 @@ package com.ashleydev.jokeur_api.domain.services;
 import com.ashleydev.jokeur_api.annotations.ValidateHealthRecord;
 import com.ashleydev.jokeur_api.annotations.ValidateVaccine;
 import com.ashleydev.jokeur_api.domain.enums.ReminderType;
+import com.ashleydev.jokeur_api.domain.rules.VaccineRules;
 import com.ashleydev.jokeur_api.exceptions.reminder.ReminderNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccinNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccineDeleteFailedException;
@@ -43,9 +44,6 @@ public class VaccineService {
   public VaccineResponseDto getById(Long id) {
     if (!vaccineRepository.existsById(id)) throw new VaccinNotFoundException(id);
     VaccineEntity vaccineEntity = vaccineRepository.findById(id).get();
-    if (!reminderRepository.existsById(vaccineEntity.getReminderEntity().getId())) throw new ReminderNotFoundException(
-      "Le vaccin ne possède pas de rappel"
-    );
 
     return VaccinMapper.toDto(vaccineEntity);
   }
@@ -55,7 +53,7 @@ public class VaccineService {
     HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
     ReminderEntity newReminder = new ReminderEntity();
     newReminder.setType(ReminderType.VACCINE);
-    newReminder.setDescription(request.description());
+    newReminder.setDescription(VaccineRules.formatReminderVaccineDescription(request.name()));
     newReminder.setReminderDate(request.vaccinReminderDate());
     newReminder.setUser(healthRecord.getUser());
     VaccineEntity newVaccin = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, newReminder));
@@ -65,7 +63,7 @@ public class VaccineService {
   @ValidateHealthRecord
   @ValidateVaccine
   public VaccineResponseDto update(VaccineDetailRequestDto request) {
-    if (reminderRepository.existsById(request.reminder().id())) throw new ReminderNotFoundException(
+    if (!reminderRepository.existsById(request.reminder().id())) throw new ReminderNotFoundException(
       "Le rappel " + request.reminder().id() + " n'existe pas"
     );
 
@@ -80,9 +78,9 @@ public class VaccineService {
     return VaccinMapper.toDto(response);
   }
 
-  @ValidateHealthRecord
   @ValidateVaccine
-  public String delete(Long id) {
+  @ValidateHealthRecord
+  public String delete(Long id, Long healthRecordId) {
     vaccineRepository.deleteById(id);
 
     if (vaccineRepository.existsById(id)) {
