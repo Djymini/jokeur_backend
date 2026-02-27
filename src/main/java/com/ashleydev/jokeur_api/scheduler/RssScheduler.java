@@ -13,7 +13,9 @@ public class RssScheduler {
 
   private final NewsRssService newsRssService;
 
-  @Scheduled(cron = "0 0 */12 * * *")
+  // "0 0/30 8-10 * * *" = 8:00, 8:30, 9:00, 9:30 and 10 o'clock every day.
+  @Scheduled(cron = "0 0/10 6-23 * * *")
+  // SAUV : @Scheduled(cron = "0 0 */12 * * *")
   public void fetchRss() {
     newsRssService.importRssNews();
   }
