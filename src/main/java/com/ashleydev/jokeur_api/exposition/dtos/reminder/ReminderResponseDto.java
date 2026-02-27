@@ -1,4 +1,4 @@
-package com.ashleydev.jokeur_api.exposition.dtos;
+package com.ashleydev.jokeur_api.exposition.dtos.reminder;
 
 import com.ashleydev.jokeur_api.domain.enums.ReminderStatus;
 import com.ashleydev.jokeur_api.domain.enums.ReminderType;

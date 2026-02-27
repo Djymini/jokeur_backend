@@ -1,6 +1,6 @@
 package com.ashleydev.jokeur_api.domain.services;
 
-import com.ashleydev.jokeur_api.exposition.dtos.ReminderResponseDto;
+import com.ashleydev.jokeur_api.exposition.dtos.reminder.ReminderResponseDto;
 import com.ashleydev.jokeur_api.mappers.ReminderMapper;
 import com.ashleydev.jokeur_api.persistence.repositories.ReminderRepository;
 import java.time.LocalDate;

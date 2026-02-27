@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class HealthRecordValidationAspect {
+public class HealthRecordValidationAspect extends ValidationAspectBase {
 
   @Autowired
   private HealthRecordRepository healthRecordRepository;
@@ -22,22 +22,11 @@ public class HealthRecordValidationAspect {
   public void validate(JoinPoint joinPoint, ValidateHealthRecord validateAnnotation) {
     Object[] args = joinPoint.getArgs();
     String fieldName = validateAnnotation.idField();
+    System.out.println("HealthRecordRepository test : " + fieldName);
     Long id = extractId(joinPoint, args, fieldName);
 
     if (id != null && !healthRecordRepository.existsById(id)) {
       throw new HealthRecordNotFoundException(id);
     }
-  }
-
-  private Long extractId(JoinPoint joinPoint, Object[] args, String fieldName) {
-    for (Object arg : args) {
-      if (arg instanceof Long) return (Long) arg;
-
-      try {
-        var field = arg.getClass().getMethod(fieldName);
-        return (Long) field.invoke(arg);
-      } catch (Exception e) {}
-    }
-    return null;
   }
 }

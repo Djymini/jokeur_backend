@@ -1,6 +1,11 @@
 package com.ashleydev.jokeur_api.exceptions;
 
+import com.ashleydev.jokeur_api.exceptions.annotation.AspectExtractIdImpossibleException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.*;
+import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordUpdateEmptyException;
+import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordValidationException;
+import com.ashleydev.jokeur_api.exceptions.measure.MeasureDeleteFailedException;
 import com.ashleydev.jokeur_api.exceptions.measure.MeasureNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.measure.MeasureTypeNotValidateException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerEmailAlreadyUsedException;
@@ -11,6 +16,7 @@ import com.ashleydev.jokeur_api.exceptions.user.UserEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.user.UserNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.user.UserPseudoAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.vaccin.VaccinNotFoundException;
+import com.ashleydev.jokeur_api.exceptions.vaccin.VaccineDeleteFailedException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -143,9 +149,19 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
   }
 
+  @ExceptionHandler(MeasureDeleteFailedException.class)
+  public ResponseEntity<String> handleMeasureDeleteFailed(MeasureDeleteFailedException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
+  }
+
   @ExceptionHandler(VaccinNotFoundException.class)
   public ResponseEntity<String> handleVaccinNotFound(VaccinNotFoundException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(VaccineDeleteFailedException.class)
+  public ResponseEntity<String> handleVaccineDeleteFailed(VaccineDeleteFailedException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
   }
 
   @ExceptionHandler(ReminderNotFoundException.class)
@@ -188,5 +204,10 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(NoHandlerFoundException.class)
   public ResponseEntity<String> handleNotFoundError(NoHandlerFoundException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur 404 : Le chemin que vous avez demandé n'existe pas.");
+  }
+
+  @ExceptionHandler(AspectExtractIdImpossibleException.class)
+  public ResponseEntity<String> handleAspectExttractIdImpossible(AspectExtractIdImpossibleException ex) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Le server a rencontré un problème lors de la vérification de votre requête");
   }
 }
