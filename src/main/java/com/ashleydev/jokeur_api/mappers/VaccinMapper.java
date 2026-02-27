@@ -14,7 +14,7 @@ public class VaccinMapper {
     entity.setName(dto.name());
     entity.setDescription(dto.description());
     entity.setVaccinator(dto.vaccinator());
-    entity.setVaccineDate(dto.vaccinDate());
+    entity.setVaccineDate(dto.vaccineDate());
     entity.setHealthRecordEntity(healthRecord);
     entity.setReminderEntity(reminderEntity);
 
@@ -27,7 +27,7 @@ public class VaccinMapper {
     entity.setName(dto.name());
     entity.setDescription(dto.description());
     entity.setVaccinator(dto.vaccinator());
-    entity.setVaccineDate(dto.vaccinDate());
+    entity.setVaccineDate(dto.vaccineDate());
     entity.setHealthRecordEntity(healthRecord);
     entity.setReminderEntity(reminderEntity);
 

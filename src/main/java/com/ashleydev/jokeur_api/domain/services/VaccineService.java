@@ -54,7 +54,7 @@ public class VaccineService {
     ReminderEntity newReminder = new ReminderEntity();
     newReminder.setType(ReminderType.VACCINE);
     newReminder.setDescription(VaccineRules.formatReminderVaccineDescription(request.name()));
-    newReminder.setReminderDate(request.vaccinReminderDate());
+    newReminder.setReminderDate(request.vaccineReminderDate());
     newReminder.setUser(healthRecord.getUser());
     VaccineEntity newVaccin = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, newReminder));
     return VaccinMapper.toDto(newVaccin);

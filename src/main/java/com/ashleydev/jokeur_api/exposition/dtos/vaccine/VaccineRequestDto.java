@@ -6,7 +6,7 @@ public record VaccineRequestDto(
   String name,
   String description,
   String vaccinator,
-  LocalDate vaccinDate,
-  LocalDate vaccinReminderDate,
+  LocalDate vaccineDate,
+  LocalDate vaccineReminderDate,
   Long healthRecordId
 ) {}

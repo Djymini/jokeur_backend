@@ -8,7 +8,7 @@ public record VaccineResponseDto(
   String name,
   String description,
   String vaccinator,
-  LocalDate vaccinDate,
+  LocalDate vaccineDate,
   Long healthRecordId,
   ReminderResponseDto reminder
 ) {}
