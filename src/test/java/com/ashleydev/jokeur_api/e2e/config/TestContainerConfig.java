@@ -6,7 +6,7 @@ import org.testcontainers.containers.MySQLContainer;
 
 public class TestContainerConfig {
     static final MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0")
-            .withDatabaseName("eshop_e2e")
+            .withDatabaseName("jokeur_db")
             .withUsername("root")
             .withPassword("root");
 
