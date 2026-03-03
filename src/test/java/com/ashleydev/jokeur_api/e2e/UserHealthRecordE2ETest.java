@@ -1,6 +1,8 @@
 package com.ashleydev.jokeur_api.e2e;
 
 import com.ashleydev.jokeur_api.e2e.config.TestContainerConfig;
+import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
+import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserHealthRecordE2ETest extends TestContainerConfig {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired private UserRepository userRepository;
+    @Autowired private HealthRecordRepository healthRecordRepository;
 
     @Test
     void shouldRegisterLoginAndCreateHealthRecord() throws Exception {
+        healthRecordRepository.deleteAll();
+        userRepository.deleteAll();
 
         mockMvc.perform(post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)

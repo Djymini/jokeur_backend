@@ -38,21 +38,22 @@ public class UserVaccinE2ETest extends TestContainerConfig {
         userRepository.deleteAll();
 
         mockMvc.perform(post("/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                        "username": "Edouard",
-                        "email": "test3@test.com",
-                        "password": "P@ssword1234",
-                        "firstname": "Edouard",
-                        "name": "Doe"
-                    }
-                    """)).andExpect(status().isOk());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                    {
+                                        "username": "John",
+                                        "email": "test@test.com",
+                                        "password": "P@ssword1234",
+                                        "firstname": "John",
+                                        "name": "Doe"
+                                    }
+                                """))
+                .andExpect(status().isOk());
 
         String authResponse = mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                { "email": "test3@test.com", "password": "P@ssword1234" }
+                                { "email": "test@test.com", "password": "P@ssword1234" }
                                 """))
                 .andReturn().getResponse().getContentAsString();
 
