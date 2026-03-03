@@ -3,8 +3,6 @@ package com.ashleydev.jokeur_api.e2e;
 import com.ashleydev.jokeur_api.e2e.config.TestContainerConfig;
 import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
-import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureRepository;
-import com.ashleydev.jokeur_api.persistence.repositories.vaccine.VaccineRepository;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,18 +27,14 @@ public class UserVaccinE2ETest extends TestContainerConfig {
     @Autowired
     private MockMvc mockMvc;
     @Autowired private UserRepository userRepository;
-    @Autowired private HealthRecordRepository hrRepository;
-    @Autowired private MeasureRepository measureRepository;
-    @Autowired private VaccineRepository vaccineRepository;
+    @Autowired private HealthRecordRepository healthRecordRepository;
 
     private String jwt;
     private String hrId;
 
     @BeforeEach
     void cleanAndSetup() throws Exception {
-        vaccineRepository.deleteAll();
-        measureRepository.deleteAll();
-        hrRepository.deleteAll();
+        healthRecordRepository.deleteAll();
         userRepository.deleteAll();
 
         mockMvc.perform(post("/auth/register")
