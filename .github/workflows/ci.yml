@@ -74,6 +74,7 @@ jobs:
       SPRING_PROFILES_ACTIVE: e2e
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       JWT_EXPIRATION_MS: ${{ secrets.JWT_EXPIRATION }}
+      CLIENT_URL_DEV: ${{ secrets.CLIENT_URL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
