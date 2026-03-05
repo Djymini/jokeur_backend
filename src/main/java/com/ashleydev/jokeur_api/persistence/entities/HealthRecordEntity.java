@@ -7,6 +7,7 @@ import com.ashleydev.jokeur_api.domain.enums.pets.PetSex;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -73,4 +74,7 @@ public class HealthRecordEntity {
 
   @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<AppointmentEntity> appointments;
+
+    @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SymptomHealthRecordEntity> symptoms = new ArrayList<>();
 }
