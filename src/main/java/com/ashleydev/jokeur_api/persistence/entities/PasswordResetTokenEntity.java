@@ -1,10 +1,10 @@
-package com.ashleydev.jokeur_api.persistence.entities;
+/* package com.ashleydev.jokeur_api.persistence.entities;
 
 import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-/* @Entity
+@Entity
 @Table(name = "password_reset_tokens")
 public class PasswordResetTokenEntity {
 

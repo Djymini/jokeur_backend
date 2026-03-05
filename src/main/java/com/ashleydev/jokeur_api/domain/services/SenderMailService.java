@@ -1,8 +1,8 @@
 package com.ashleydev.jokeur_api.domain.services;
 
 import com.ashleydev.jokeur_api.exposition.dtos.BrevoSendEmailRequest;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+/* import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets; */
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
