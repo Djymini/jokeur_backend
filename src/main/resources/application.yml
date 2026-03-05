@@ -2,7 +2,7 @@ brevo:
   apiKey: ${BREVO_API_KEY}
   senderEmail: "no-reply@ashleydev.fr"
   senderName: "Jokeur"
-  resetBaseUrl: "http://localhost:4200/forgot-password"
+  resetBaseUrl: "http://localhost:4200/reset-password"
 
 jokeur:
   rssUrl: https://www.animaux.fr/actualites/rss/

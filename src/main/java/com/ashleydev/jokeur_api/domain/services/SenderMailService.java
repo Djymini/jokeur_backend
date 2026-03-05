@@ -1,10 +1,9 @@
 package com.ashleydev.jokeur_api.domain.services;
 
 import com.ashleydev.jokeur_api.exposition.dtos.BrevoSendEmailRequest;
-/* import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets; */
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,8 +12,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Service
 public class SenderMailService {
 
-  @Autowired
-  private WebClient webClient;
+  private final WebClient webClient;
 
   @Value("${brevo.apiKey}")
   private String apiKey;
@@ -25,15 +23,16 @@ public class SenderMailService {
   @Value("${brevo.senderName}")
   private String senderName;
 
+  @Value("${brevo.resetBaseUrl}")
+  private String resetBaseUrl;
+
   public SenderMailService(WebClient brevoWebClient) {
     this.webClient = brevoWebClient;
   }
 
-  public void sendResetPasswordEmail(String toEmail) {
-    // String resetLink = "http://localhost:4200/reset-password?token=" +
-    // URLEncoder.encode(token, StandardCharsets.UTF_8);
+  public void sendResetPasswordEmail(String toEmail, String token) {
+    String resetLink = resetBaseUrl + "?token=" + URLEncoder.encode(token, StandardCharsets.UTF_8);
 
-    String resetLink = "http://localhost:4200/reset-password";
     String html = """
       <div style="font-family: Arial, sans-serif; line-height: 1.5;">
         <h2>Réinitialisation de votre mot de passe</h2>
@@ -46,8 +45,6 @@ public class SenderMailService {
             Réinitialiser mon mot de passe
           </a>
         </p>
-
-        <!-- <p>Ce lien est valable pendant <b>30 minutes</b>.</p> -->
 
         <p style="color:#6b7280;font-size: 13px;">
           Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer cet email.
