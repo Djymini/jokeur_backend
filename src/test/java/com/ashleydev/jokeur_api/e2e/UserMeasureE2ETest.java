@@ -79,6 +79,7 @@ public class UserMeasureE2ETest extends TestContainerConfig {
                 .andReturn().getResponse().getContentAsString();
 
         this.hrId = new JSONObject(hrResponse).getString("id");
+        System.out.println("hrId = " + this.hrId);
     }
 
     @Test
@@ -93,14 +94,14 @@ public class UserMeasureE2ETest extends TestContainerConfig {
             mockMvc.perform(post("/measures")
                             .contentType(MediaType.APPLICATION_JSON)
                             .header("Authorization", "Bearer " + jwt)
-                            .content("""
-                            {
-                              "value": %f,
-                              "measureType": "%s",
-                              "healthRecordId": %s,
-                              "creationDate": "2026-03-02"
-                            }
-                            """.formatted(values[i], types[i], hrId)))
+                            .content(String.format(java.util.Locale.US, """
+                        {
+                          "value": %f,
+                          "measureType": "%s",
+                          "healthRecordId": %s,
+                          "creationDate": "2026-03-02"
+                        }
+                        """, values[i], types[i], hrId)))
                     .andExpect(status().isCreated());
         }
 
