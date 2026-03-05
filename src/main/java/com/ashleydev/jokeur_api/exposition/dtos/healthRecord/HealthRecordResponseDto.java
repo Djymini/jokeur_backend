@@ -16,7 +16,7 @@ public record HealthRecordResponseDto(
   String identificationNumber,
   String tattoo,
   String allergy,
-  String AnimalType,
+  String animalType,
   String photoKey,
   HealthRecordMeasuresResponseDTO measures
 ) {}
