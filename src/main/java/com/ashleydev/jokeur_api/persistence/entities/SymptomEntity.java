@@ -1,12 +1,12 @@
 package com.ashleydev.jokeur_api.persistence.entities;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "symptom")
@@ -16,14 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 public class SymptomEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    @Column(name = "name", length = 100, nullable = false, unique = true)
-    private String name;
+  @Column(name = "name", length = 100, nullable = false, unique = true)
+  private String name;
 
-    @OneToMany(mappedBy = "symptom", fetch = FetchType.LAZY)
-    private List<SymptomHealthRecordEntity> healthRecords = new ArrayList<>();
+  @OneToMany(mappedBy = "symptom", fetch = FetchType.LAZY)
+  private List<SymptomHealthRecordEntity> healthRecords = new ArrayList<>();
 }

@@ -8,38 +8,30 @@ import com.ashleydev.jokeur_api.persistence.entities.SymptomHealthRecordEntity;
 
 public class SymptomHealthRecordMapper {
 
+  public static SymptomHealthRecordEntity toEntity(SymptomEntity symptom, HealthRecordEntity healthRecord, AddSymptomToHealthRecordDTO dto) {
+    SymptomHealthRecordEntity entity = new SymptomHealthRecordEntity();
+    entity.setSymptom(symptom);
+    entity.setHealthRecord(healthRecord);
+    entity.setStartDate(dto.startDate());
+    entity.setEndDate(dto.endDate());
+    entity.setObservation(dto.observation());
 
-    public static SymptomHealthRecordEntity toEntity(
-            SymptomEntity symptom,
-            HealthRecordEntity healthRecord,
-            AddSymptomToHealthRecordDTO dto
-    ) {
+    return entity;
+  }
 
-        SymptomHealthRecordEntity entity = new SymptomHealthRecordEntity();
-        entity.setSymptom(symptom);
-        entity.setHealthRecord(healthRecord);
-        entity.setStartDate(dto.startDate());
-        entity.setEndDate(dto.endDate());
-        entity.setObservation(dto.observation());
+  public static SymptomHealthRecordDTO toDto(SymptomHealthRecordEntity entity) {
+    if (entity == null) return null;
 
-        return entity;
-    }
+    SymptomEntity symptom = entity.getSymptom();
 
-    public static SymptomHealthRecordDTO toDto(SymptomHealthRecordEntity entity) {
-
-        if (entity == null) return null;
-
-        SymptomEntity symptom = entity.getSymptom();
-
-        return new SymptomHealthRecordDTO(
-                entity.getId(),
-                symptom != null ? symptom.getId() : null,
-                symptom != null ? symptom.getName() : null,
-                entity.getStartDate(),
-                entity.getEndDate(),
-                entity.getObservation(),
-                entity.isActive()
-
-        );
-    }
+    return new SymptomHealthRecordDTO(
+      entity.getId(),
+      symptom != null ? symptom.getId() : null,
+      symptom != null ? symptom.getName() : null,
+      entity.getStartDate(),
+      entity.getEndDate(),
+      entity.getObservation(),
+      entity.isActive()
+    );
+  }
 }

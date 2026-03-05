@@ -5,15 +5,9 @@ import com.ashleydev.jokeur_api.persistence.entities.SymptomEntity;
 
 public class SymptomMapper {
 
-    public static SymptomResponseDTO toDto(SymptomEntity entity) {
+  public static SymptomResponseDTO toDto(SymptomEntity entity) {
+    if (entity == null) return null;
 
-        if (entity == null) return null;
-
-        return new SymptomResponseDTO(
-                entity.getId(),
-                entity.getName()
-        );
-    }
-
-
+    return new SymptomResponseDTO(entity.getId(), entity.getName());
+  }
 }

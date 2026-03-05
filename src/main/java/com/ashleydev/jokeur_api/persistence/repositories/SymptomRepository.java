@@ -6,8 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SymptomRepository extends JpaRepository<SymptomEntity, Long> {
+  boolean existsByNameIgnoreCase(String name);
 
-    boolean existsByNameIgnoreCase(String name);
-
-    Page<SymptomEntity> findAll(Pageable pageable);
+  Page<SymptomEntity> findAll(Pageable pageable);
 }

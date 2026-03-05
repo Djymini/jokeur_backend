@@ -14,46 +14,44 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class SymptomService {
 
-    private final SymptomRepository symptomRepository;
-    private final SymptomRules symptomRules;
+  private final SymptomRepository symptomRepository;
+  private final SymptomRules symptomRules;
 
-    public SymptomResponseDTO createSymptom(String name){
-        symptomRules.checkNameNotExists(name);
+  public SymptomResponseDTO createSymptom(String name) {
+    symptomRules.checkNameNotExists(name);
 
-        SymptomEntity entity = new SymptomEntity();
-        entity.setName(name);
+    SymptomEntity entity = new SymptomEntity();
+    entity.setName(name);
 
-        SymptomEntity saved = symptomRepository.save(entity);
-        return SymptomMapper.toDto(saved);
-    }
+    SymptomEntity saved = symptomRepository.save(entity);
+    return SymptomMapper.toDto(saved);
+  }
 
-    public Page<SymptomResponseDTO> getAllSymptoms(Pageable pageable){
-        return symptomRepository.findAll(pageable).map(SymptomMapper::toDto);
-    }
+  public Page<SymptomResponseDTO> getAllSymptoms(Pageable pageable) {
+    return symptomRepository.findAll(pageable).map(SymptomMapper::toDto);
+  }
 
-    public SymptomResponseDTO getSymptomById(Long id){
-        symptomRules.checkExists(id);
+  public SymptomResponseDTO getSymptomById(Long id) {
+    symptomRules.checkExists(id);
 
-        SymptomEntity entity = symptomRepository.findById(id).orElseThrow();
-        return SymptomMapper.toDto(entity);
-    }
+    SymptomEntity entity = symptomRepository.findById(id).orElseThrow();
+    return SymptomMapper.toDto(entity);
+  }
 
-    public SymptomResponseDTO updateSymptom(Long id, String name){
-        symptomRules.checkExists(id);
-        symptomRules.checkNameNotExists(name);
+  public SymptomResponseDTO updateSymptom(Long id, String name) {
+    symptomRules.checkExists(id);
+    symptomRules.checkNameNotExists(name);
 
-        SymptomEntity entity = symptomRepository.findById(id).orElseThrow();
-        entity.setName(name);
-        SymptomEntity saved = symptomRepository.save(entity);
-        return SymptomMapper.toDto(saved);
-    }
+    SymptomEntity entity = symptomRepository.findById(id).orElseThrow();
+    entity.setName(name);
+    SymptomEntity saved = symptomRepository.save(entity);
+    return SymptomMapper.toDto(saved);
+  }
 
-    public void deleteSymptom(Long id){
-        symptomRules.checkExists(id);
-        symptomRules.checkNotUsed(id);
+  public void deleteSymptom(Long id) {
+    symptomRules.checkExists(id);
+    symptomRules.checkNotUsed(id);
 
-        symptomRepository.deleteById(id);
-    }
-
-
+    symptomRepository.deleteById(id);
+  }
 }
