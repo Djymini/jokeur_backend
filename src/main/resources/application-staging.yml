@@ -17,3 +17,8 @@ cors:
 logging:
   level:
     com.backend_project_template: INFO
+
+app:
+  upload:
+    dir: /app/uploads/
+    base-url: https://staging-api.jokeur.ashleydev.fr/uploads/

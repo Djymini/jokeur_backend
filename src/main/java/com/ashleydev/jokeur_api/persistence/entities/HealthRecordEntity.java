@@ -38,6 +38,9 @@ public class HealthRecordEntity {
   @Column(name = "sex", nullable = false, length = 12)
   private PetSex sex;
 
+  @Column(name = "photoKey")
+  private String photoKey;
+
   @Column(name = "birth_date")
   private LocalDate birthDate;
 
@@ -56,13 +59,6 @@ public class HealthRecordEntity {
 
   @Column(name = "allergy", length = 100)
   private String allergy;
-
-  @Lob
-  @Column(name = "image", columnDefinition = "MEDIUMBLOB")
-  private byte[] image;
-
-  @Column(name = "image_type")
-  private String imageType;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "animal_type", nullable = false, length = 20)

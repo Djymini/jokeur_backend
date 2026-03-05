@@ -1,6 +1,7 @@
 package com.ashleydev.jokeur_api.security;
 
 import com.ashleydev.jokeur_api.domain.services.UserDetailsService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -43,7 +42,7 @@ public class SecurityConfig {
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth ->
         auth
-          .requestMatchers("/auth/**", "/test/all", "/owners/**")
+          .requestMatchers("/auth/**", "/test/all", "/owners/**", "/uploads/**")
           .permitAll()
           .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
           .permitAll()
@@ -92,7 +91,7 @@ public class SecurityConfig {
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOrigins(List.of("http://localhost:4200", "https://jokeur.ashleydev.fr", "https://staging.jokeur.ashleydev.fr/"));
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);
