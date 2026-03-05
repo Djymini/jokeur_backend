@@ -56,9 +56,8 @@ public class HealthRecordMapper {
       entity.getIdentificationNumber(),
       entity.getTattoo(),
       entity.getAllergy(),
-      entity.getImage(),
-      entity.getImageType(),
       entity.getAnimalType().name(),
+      entity.getPhotoKey(),
       measures
     );
   }
