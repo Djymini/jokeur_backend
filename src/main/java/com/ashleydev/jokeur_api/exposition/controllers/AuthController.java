@@ -1,9 +1,8 @@
 package com.ashleydev.jokeur_api.exposition.controllers;
 
-import com.ashleydev.jokeur_api.exposition.dtos.LoginUserRequestDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.LoginUserResponseDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.RegisterUserRequestDTO;
-import com.ashleydev.jokeur_api.exposition.dtos.RegisterUserResponseDTO;
+import com.ashleydev.jokeur_api.domain.services.SenderMailService;
+import com.ashleydev.jokeur_api.exposition.dtos.*;
+import com.ashleydev.jokeur_api.exposition.dtos.vaccine.ForgotPasswordUserResponseDTO;
 import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.security.JwtUtil;
@@ -14,10 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -34,6 +30,9 @@ public class AuthController {
 
   @Autowired
   private JwtUtil jwtUtil;
+
+  @Autowired
+  private SenderMailService senderMailService;
 
   @PostMapping("/register")
   public ResponseEntity<RegisterUserResponseDTO> registerUser(@RequestBody RegisterUserRequestDTO dto) {
@@ -61,5 +60,14 @@ public class AuthController {
 
     LoginUserResponseDTO response = LoginUserResponseDTO.fromEntity(token, authenticateUser);
     return ResponseEntity.ok(response);
+  }
+
+  @PostMapping("/forgot-password")
+  public ResponseEntity<ForgotPasswordUserResponseDTO> forgotPasswordUser(@RequestBody ForgotPasswordUserRequestDTO dto) {
+    if (userRepository.existsByEmail(dto.email())) {
+      // envoyer l'email à faire
+      senderMailService.sendResetPasswordEmail(dto.email());
+    }
+    return ResponseEntity.noContent().build();
   }
 }
