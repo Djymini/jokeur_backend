@@ -47,7 +47,7 @@ public class SenderMailService {
           </a>
         </p>
 
-        <p>Ce lien est valable pendant <b>30 minutes</b>.</p>
+        <!-- <p>Ce lien est valable pendant <b>30 minutes</b>.</p> -->
 
         <p style="color:#6b7280;font-size: 13px;">
           Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer cet email.

@@ -7,6 +7,7 @@ import com.ashleydev.jokeur_api.domain.enums.pets.PetSex;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,6 +38,9 @@ public class HealthRecordEntity {
   @Column(name = "sex", nullable = false, length = 12)
   private PetSex sex;
 
+  @Column(name = "photoKey")
+  private String photoKey;
+
   @Column(name = "birth_date")
   private LocalDate birthDate;
 
@@ -56,13 +60,6 @@ public class HealthRecordEntity {
   @Column(name = "allergy", length = 100)
   private String allergy;
 
-  @Lob
-  @Column(name = "image", columnDefinition = "MEDIUMBLOB")
-  private byte[] image;
-
-  @Column(name = "image_type")
-  private String imageType;
-
   @Enumerated(EnumType.STRING)
   @Column(name = "animal_type", nullable = false, length = 20)
   private AnimalType animalType;
@@ -73,4 +70,10 @@ public class HealthRecordEntity {
 
   @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<AppointmentEntity> appointments;
+
+  @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<MeasureEntity> measures = new ArrayList<>();
+
+  @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<VaccineEntity> vaccines = new ArrayList<>();
 }

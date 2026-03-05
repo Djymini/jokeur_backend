@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/health-records")
@@ -53,5 +54,11 @@ public class HealthRecordController {
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteByHealthRecordId(@PathVariable Long id) {
     healthRecordService.deleteByHealthRecordId(id);
+  }
+
+  @PostMapping("/{id}/photo")
+  public ResponseEntity<HealthRecordResponseDto> uploadPhoto(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+    HealthRecordResponseDto response = healthRecordService.uploadPhoto(id, file);
+    return ResponseEntity.ok(response);
   }
 }
