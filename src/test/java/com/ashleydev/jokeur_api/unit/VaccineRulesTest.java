@@ -13,16 +13,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class VaccineRulesTest {
     private String vaccineName;
 
+    private String petName;
+
     @BeforeEach
     void setup() {
         vaccineName = "Test";
+        petName = "Testy";
     }
 
     @Test
     @DisplayName("Should return the good description")
     void shouldThrowIfTypeIsInvald() {
-        String test = VaccineRules.formatReminderVaccineDescription(vaccineName);
+        String test = VaccineRules.formatReminderVaccineDescription(vaccineName, petName);
 
-        assertThat(test).isEqualTo("Rappel pour le vaccin : " +vaccineName);
+        assertThat(test).isEqualTo("Rappel pour le vaccin : " + vaccineName + " de " + petName);
     }
 }
