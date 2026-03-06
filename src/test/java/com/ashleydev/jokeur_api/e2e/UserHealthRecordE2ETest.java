@@ -40,7 +40,7 @@ public class UserHealthRecordE2ETest extends TestContainerConfig {
                                         "password": "P@ssword1234",
                                         "firstname": "John",
                                         "name": "Doe"
-                                                     }
+                                     }
                                 """))
                 .andExpect(status().isOk());
 
