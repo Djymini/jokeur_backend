@@ -71,7 +71,7 @@ public class AuthController {
       .findByEmail(dto.email())
       .ifPresent(user -> {
         String rawToken = ResetTokenUtils.generateToken(); // token en clair pour l'email
-        String hash = ResetTokenUtils.sha256Hex(rawToken); // hash stocké en DB
+        String hash = ResetTokenUtils.sha256Hex(rawToken); // hash stocké en Database
 
         user.setResetTokenHash(hash);
         user.setResetTokenExpiresAt(LocalDateTime.now().plusMinutes(30));
