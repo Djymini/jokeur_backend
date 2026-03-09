@@ -1,6 +1,6 @@
 package com.ashleydev.jokeur_api.mappers;
 
-import com.ashleydev.jokeur_api.exposition.dtos.symptomhealthrecord.AddSymptomToHealthRecordDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.symptomhealthrecord.AddSymptomToHealthRecordRequestDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.symptomhealthrecord.SymptomHealthRecordDTO;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.SymptomEntity;
@@ -8,12 +8,11 @@ import com.ashleydev.jokeur_api.persistence.entities.SymptomHealthRecordEntity;
 
 public class SymptomHealthRecordMapper {
 
-  public static SymptomHealthRecordEntity toEntity(SymptomEntity symptom, HealthRecordEntity healthRecord, AddSymptomToHealthRecordDTO dto) {
+  public static SymptomHealthRecordEntity toEntity(SymptomEntity symptom, HealthRecordEntity healthRecord, AddSymptomToHealthRecordRequestDTO dto) {
     SymptomHealthRecordEntity entity = new SymptomHealthRecordEntity();
     entity.setSymptom(symptom);
     entity.setHealthRecord(healthRecord);
-    entity.setStartDate(dto.startDate());
-    entity.setEndDate(dto.endDate());
+    entity.setObservationDate(dto.observationDate());
     entity.setObservation(dto.observation());
 
     return entity;
@@ -28,7 +27,7 @@ public class SymptomHealthRecordMapper {
       entity.getId(),
       symptom != null ? symptom.getId() : null,
       symptom != null ? symptom.getName() : null,
-      entity.getStartDate(),
+      entity.getObservationDate(),
       entity.getEndDate(),
       entity.getObservation(),
       entity.isActive()

@@ -6,7 +6,7 @@ public record SymptomHealthRecordDTO(
   Long id,
   Long symptomId,
   String symptomName,
-  LocalDate startDate,
+  LocalDate observationDate,
   LocalDate endDate,
   String observation,
   Boolean active

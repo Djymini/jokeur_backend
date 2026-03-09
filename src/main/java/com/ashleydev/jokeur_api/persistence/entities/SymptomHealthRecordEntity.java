@@ -28,8 +28,8 @@ public class SymptomHealthRecordEntity {
   @JoinColumn(name = "health_record_id", nullable = false)
   private HealthRecordEntity healthRecord;
 
-  @Column(name = "start_date", nullable = false)
-  private LocalDate startDate;
+  @Column(name = "observation_date", nullable = false)
+  private LocalDate observationDate;
 
   @Column(name = "end_date")
   private LocalDate endDate;
