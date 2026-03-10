@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @SuppressWarnings("unused")
 public class HealthRecordController {
 
-  private final HealthRecordService healthRecordService;
+  private HealthRecordService healthRecordService; // titi
 
   @GetMapping
   public ResponseEntity<List<HealthRecordResponseDto>> getAllAnimals(@RequestParam(value = "userId", required = false) Long userId) {
