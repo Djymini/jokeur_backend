@@ -1,6 +1,10 @@
+brevo:
+  apiKey: ${BREVO_API_KEY}
+  senderEmail: "no-reply@ashleydev.fr"
+  senderName: "Jokeur"
+
 jokeur:
   rssUrl: https://www.animaux.fr/actualites/rss/
-
 
 spring:
   application:

@@ -117,7 +117,7 @@ public class VaccineServiceIntegrationTest {
         assertThat(persisted.getVaccinator()).isEqualTo(vaccine3.vaccinator());
         assertThat(persisted.getName()).isEqualTo(vaccine3.name());
 
-        assertThat(persisted.getReminderEntity().getDescription()).isEqualTo("Rappel pour le vaccin : " +vaccine3.name());
+        assertThat(persisted.getReminderEntity().getDescription()).isEqualTo("Rappel pour le vaccin : " +vaccine3.name() + " de " + healthRecord.petName());
         assertThat(persisted.getReminderEntity().getUser().getId()).isEqualTo(healthRecord.userId());
     }
 

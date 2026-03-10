@@ -53,7 +53,7 @@ public class VaccineService {
     HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
     ReminderEntity newReminder = new ReminderEntity();
     newReminder.setType(ReminderType.VACCINE);
-    newReminder.setDescription(VaccineRules.formatReminderVaccineDescription(request.name()));
+    newReminder.setDescription(VaccineRules.formatReminderVaccineDescription(request.name(), healthRecord.getPetName()));
     newReminder.setReminderDate(request.vaccineReminderDate());
     newReminder.setUser(healthRecord.getUser());
     VaccineEntity newVaccin = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, newReminder));
@@ -67,11 +67,11 @@ public class VaccineService {
       "Le rappel " + request.reminder().id() + " n'existe pas"
     );
 
-    ReminderEntity newReminder = reminderRepository.findById(request.reminder().id()).get();
-    newReminder.setDescription(request.reminder().description());
-    newReminder.setReminderDate(request.reminder().reminderDate());
-
     HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
+
+    ReminderEntity newReminder = reminderRepository.findById(request.reminder().id()).get();
+    newReminder.setReminderDate(request.reminder().reminderDate());
+    newReminder.setDescription(VaccineRules.formatReminderVaccineDescription(request.name(), healthRecord.getPetName()));
 
     VaccineEntity response = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, newReminder));
 
