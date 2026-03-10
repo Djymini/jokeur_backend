@@ -25,4 +25,15 @@ public class HealthRecordExportController {
       .contentType(MediaType.APPLICATION_PDF)
       .body(pdf);
   }
+
+  @PostMapping(value = "/{healthRecordId}/export/xlsx", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+  public ResponseEntity<byte[]> exportXlsx(@PathVariable Long healthRecordId, @RequestBody HealthRecordExportRequest request) {
+    byte[] xlsx = exportService.exportToXlsx(healthRecordId, request);
+    String filename = "sante_" + healthRecordId + "_" + request.getFrom() + "_" + request.getTo() + ".xlsx";
+
+    return ResponseEntity.ok()
+      .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+      .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+      .body(xlsx);
+  }
 }

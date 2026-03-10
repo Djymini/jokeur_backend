@@ -12,4 +12,5 @@ public class HealthRecordExportRequest {
   private LocalDate to;
   private List<MeasureType> measureTypes;
   private boolean includeVaccines;
+  private String format;
 }
