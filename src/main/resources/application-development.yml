@@ -1,6 +1,8 @@
 jokeur:
   rssUrl: https://www.animaux.fr/actualites/rss/
 
+brevo:
+  resetBaseUrl: "http://localhost:4200/reset-password"
 
 spring:
   datasource:
