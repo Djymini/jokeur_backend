@@ -4,7 +4,7 @@ import com.ashleydev.jokeur_api.domain.enums.ReminderStatus;
 import com.ashleydev.jokeur_api.domain.enums.ReminderType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +31,7 @@ public class ReminderEntity {
   private String description;
 
   @Column(name = "reminder_date")
-  private LocalDate reminderDate;
+  private LocalDateTime reminderDate;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false, length = 20)

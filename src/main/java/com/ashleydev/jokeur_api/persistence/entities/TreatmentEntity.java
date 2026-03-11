@@ -1,15 +1,15 @@
 package com.ashleydev.jokeur_api.persistence.entities;
 
+import com.ashleydev.jokeur_api.domain.enums.TreatmentFrequencyType;
 import jakarta.persistence.*;
-import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "vaccine")
-public class VaccineEntity {
+@Table(name = "treatment")
+public class TreatmentEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +22,9 @@ public class VaccineEntity {
   @Column(name = "description", length = 500)
   private String description;
 
-  @Column(name = "vaccinator", length = 120)
-  private String vaccinator;
-
-  @Column(name = "vaccine_date", nullable = false, updatable = false)
-  private LocalDate vaccineDate;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "frequency", nullable = false, length = 20)
+  private TreatmentFrequencyType frequency;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "health_record_id", nullable = false)
