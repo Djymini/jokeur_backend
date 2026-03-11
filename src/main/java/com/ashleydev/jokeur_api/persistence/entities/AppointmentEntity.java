@@ -27,6 +27,6 @@ public class AppointmentEntity {
   private LocalDateTime dateTime;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id_health_record", nullable = false)
-  private HealthRecordEntity healthRecord;
+  @JoinColumn(name = "id_user", nullable = false)
+  private UserEntity user;
 }

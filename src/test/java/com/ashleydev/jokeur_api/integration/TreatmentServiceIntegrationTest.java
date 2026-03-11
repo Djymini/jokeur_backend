@@ -194,7 +194,6 @@ public class TreatmentServiceIntegrationTest {
     @Test
     @Transactional
     void shouldThrowForBadUpdateRequest() {
-        TreatmentEntity persisted = treatmentRepository.findById(treatmentCreated1.id()).get();
         ReminderVaccineRequestDto newReminder = new ReminderVaccineRequestDto(1L, "new description for reminder", LocalDateTime.of(2026, 6, 6,9,30), ReminderStatus.PENDING);
         TreatmentDetailRequestDto invalidRequest1 = new TreatmentDetailRequestDto(999L, "Tester", "new desciption", TreatmentFrequencyType.MONTHLY, LocalDate.now(), LocalDate.of(2007, 12, 5), healthRecord.id(), newReminder);
         TreatmentDetailRequestDto invalidRequest2 = new TreatmentDetailRequestDto(1L, "Tester", "new desciption", TreatmentFrequencyType.MONTHLY, LocalDate.now(), LocalDate.of(2007, 12, 5), 999L, newReminder);

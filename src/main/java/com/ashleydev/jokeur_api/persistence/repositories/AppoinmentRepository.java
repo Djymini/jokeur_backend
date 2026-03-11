@@ -1,6 +1,7 @@
 package com.ashleydev.jokeur_api.persistence.repositories;
 
 import com.ashleydev.jokeur_api.persistence.entities.AppointmentEntity;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,10 +14,18 @@ public interface AppoinmentRepository extends JpaRepository<AppointmentEntity, L
   @Query(
     """
         Select app from AppointmentEntity app
-        where app.healthRecord.user.id  = :userId
+        where app.user.id  = :userId
         and app.dateTime >= CURRENT_TIMESTAMP
         order by app.dateTime asc
     """
   )
   Page<AppointmentEntity> getAllAppointement(@Param("userId") Long userId, Pageable pageable);
+
+  @Query(
+    """
+    SELECT app FROM AppointmentEntity app
+    WHERE app.user.id = :userId
+    """
+  )
+  List<AppointmentEntity> findAllByUserId(@Param("userId") Long userId);
 }

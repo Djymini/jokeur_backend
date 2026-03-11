@@ -1,8 +1,8 @@
 package com.ashleydev.jokeur_api.annotations.aspect;
 
-import com.ashleydev.jokeur_api.annotations.ValidateHealthRecord;
-import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
-import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
+import com.ashleydev.jokeur_api.annotations.ValidateAppointment;
+import com.ashleydev.jokeur_api.exceptions.appointment.AppointmentNotFoundException;
+import com.ashleydev.jokeur_api.persistence.repositories.AppoinmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,19 +13,19 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class HealthRecordValidationAspect extends ValidationAspectBase {
+public class AppointmentValidationAspect extends ValidationAspectBase {
 
   @Autowired
-  private HealthRecordRepository healthRecordRepository;
+  private AppoinmentRepository appoinmentRepository;
 
   @Before("@annotation(validateAnnotation)")
-  public void validate(JoinPoint joinPoint, ValidateHealthRecord validateAnnotation) {
+  public void validate(JoinPoint joinPoint, ValidateAppointment validateAnnotation) {
     Object[] args = joinPoint.getArgs();
     String fieldName = validateAnnotation.idField();
     Long id = extractId(joinPoint, args, fieldName);
 
-    if (id != null && !healthRecordRepository.existsById(id)) {
-      throw new HealthRecordNotFoundException(id);
+    if (id != null && !appoinmentRepository.existsById(id)) {
+      throw new AppointmentNotFoundException(id);
     }
   }
 }
