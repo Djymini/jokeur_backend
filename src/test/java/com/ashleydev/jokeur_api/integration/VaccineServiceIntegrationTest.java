@@ -59,7 +59,7 @@ public class VaccineServiceIntegrationTest {
     private VaccineResponseDto vaccineCreated1;
     private VaccineResponseDto vaccineCreated2;
     private VaccineResponseDto vaccineCreated3;
-    private  VaccineResponseDto vaccineCreated4;
+    private VaccineResponseDto vaccineCreated4;
 
 
 

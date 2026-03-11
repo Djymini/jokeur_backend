@@ -2,6 +2,7 @@ package com.ashleydev.jokeur_api.persistence.entities;
 
 import com.ashleydev.jokeur_api.domain.enums.TreatmentFrequencyType;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +26,12 @@ public class TreatmentEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "frequency", nullable = false, length = 20)
   private TreatmentFrequencyType frequency;
+
+  @Column(name = "begin_date", nullable = false, updatable = false)
+  private LocalDate beginDate;
+
+  @Column(name = "end_date")
+  private LocalDate endDate;
 
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "health_record_id", nullable = false)

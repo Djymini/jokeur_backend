@@ -55,7 +55,8 @@ public class SecurityConfig {
             "/measures/**",
             "/notifications/**",
             "/reminder/**",
-            "/vaccin/**"
+            "/vaccines/**",
+            "/treatments/**"
           )
           .authenticated()
           .requestMatchers("/admin/**")
