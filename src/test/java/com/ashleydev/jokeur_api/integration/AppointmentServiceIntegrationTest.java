@@ -32,6 +32,7 @@ public class AppointmentServiceIntegrationTest {
     @Autowired private UserRepository userRepository;
 
     private Long userId;
+    private Long duration = 30L;
 
     private AppointmentRequestDto appointment1;
     private AppointmentRequestDto appointment2;
@@ -56,11 +57,10 @@ public class AppointmentServiceIntegrationTest {
         user.setPassword("P@ssword1234");
         userId = userRepository.save(user).getId();
 
-
-        appointment1 = new AppointmentRequestDto("Rendez-vous Véterinaire", LocalDateTime.of(2026, 12, 12,9,30), userId);
-        appointment2 = new AppointmentRequestDto("Rendez-vous Véterinaire", LocalDateTime.of(2026, 12, 12,9,30), userId);
-        appointment3 = new AppointmentRequestDto("Rendez-vous Véterinaire", LocalDateTime.of(2026, 12, 12,9,30), userId);
-        appointment4 = new AppointmentRequestDto("Rendez-vous Véterinaire", LocalDateTime.of(2026, 12, 12,9,30), userId);
+        appointment1 = new AppointmentRequestDto("Rendez-vous Véterinaire", LocalDateTime.of(2026, 12, 12,9,30), duration, userId);
+        appointment2 = new AppointmentRequestDto("Rendez-vous Véterinaire", LocalDateTime.of(2026, 12, 12,9,30), duration, userId);
+        appointment3 = new AppointmentRequestDto("Rendez-vous Véterinaire", LocalDateTime.of(2026, 12, 12,9,30), duration, userId);
+        appointment4 = new AppointmentRequestDto("Rendez-vous Véterinaire", LocalDateTime.of(2026, 12, 12,9,30), duration, userId);
 
         appointmentCreated1 = appointmentService.create(appointment1);
         appointmentCreated2 = appointmentService.create(appointment2);
@@ -84,7 +84,7 @@ public class AppointmentServiceIntegrationTest {
     @Test
     @Transactional
     void shouldThrowForBadCreation() {
-        AppointmentRequestDto appointmentInvalid = new AppointmentRequestDto("Rendez-vous Véterinaire", LocalDateTime.of(2026, 12, 12,9,30), 999L);
+        AppointmentRequestDto appointmentInvalid = new AppointmentRequestDto("Rendez-vous Véterinaire", LocalDateTime.of(2026, 12, 12,9,30), duration, 999L);
 
         Exception exception1 = assertThrows(RuntimeException.class,
                 () -> appointmentService.create(appointmentInvalid));
@@ -116,7 +116,7 @@ public class AppointmentServiceIntegrationTest {
     @Transactional
     void shouldGetUpdate() {
         AppointmentEntity persisted = appoinmentRepository.findById(appointmentCreated1.id()).get();
-        AppointmentRequestDto request = new AppointmentRequestDto("Rendez-vous changé", LocalDateTime.of(2026, 12, 12,9,30), userId);
+        AppointmentRequestDto request = new AppointmentRequestDto("Rendez-vous changé", LocalDateTime.of(2026, 12, 12,9,30), duration, userId);
 
         appointmentService.update(request, appointmentCreated1.id());
         AppointmentResponseDto test = appointmentService.getById(appointmentCreated1.id());
@@ -129,8 +129,8 @@ public class AppointmentServiceIntegrationTest {
     @Test
     @Transactional
     void shouldThrowForBadUpdateRequest() {
-        AppointmentRequestDto request = new AppointmentRequestDto("Rendez-vous changé", LocalDateTime.of(2026, 12, 12,9,30), userId);
-        AppointmentRequestDto invalidRequest1 = new AppointmentRequestDto("Rendez-vous changé", LocalDateTime.of(2026, 12, 12,9,30), 999L);
+        AppointmentRequestDto request = new AppointmentRequestDto("Rendez-vous changé", LocalDateTime.of(2026, 12, 12,9,30), duration, userId);
+        AppointmentRequestDto invalidRequest1 = new AppointmentRequestDto("Rendez-vous changé", LocalDateTime.of(2026, 12, 12,9,30), duration, 999L);
 
         Exception ex = assertThrows(RuntimeException.class,
                 () -> appointmentService.update(request, 999L));

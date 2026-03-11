@@ -26,6 +26,9 @@ public class AppointmentEntity {
   @Column(name = "date_time", nullable = false)
   private LocalDateTime dateTime;
 
+  @Column(name = "duration", nullable = false)
+  private Long duration;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "id_user", nullable = false)
   private UserEntity user;

@@ -68,6 +68,7 @@ public class UserAppointmentE2ETest extends TestContainerConfig {
                                 {
                                     "reason": "Rendez-vous Vétérinaire",
                                     "dateTime": "2026-03-11T14:47",
+                                    "duration": 30,
                                     "userId": %s
                                 }
                             """.formatted(userId)))
@@ -86,6 +87,7 @@ public class UserAppointmentE2ETest extends TestContainerConfig {
                                 {
                                     "reason": "Rendez-vous Vétérinaire",
                                     "dateTime": "2026-03-11T14:47",
+                                    "duration": 30,
                                     "userId": %s
                                 }
                             """.formatted(userId)))
@@ -100,6 +102,7 @@ public class UserAppointmentE2ETest extends TestContainerConfig {
                                 {
                                     "reason": "Rendez-vous changé",
                                     "dateTime": "2026-03-11T14:47",
+                                    "duration": 30,
                                     "userId": %s
                                 }
                             """.formatted(userId)))
@@ -118,6 +121,7 @@ public class UserAppointmentE2ETest extends TestContainerConfig {
                                 {
                                     "reason": "Rendez-vous Vétérinaire",
                                     "dateTime": "2026-03-11T14:47",
+                                    "duration": 30,
                                     "userId": %s
                                 }
                             """.formatted(userId)))
