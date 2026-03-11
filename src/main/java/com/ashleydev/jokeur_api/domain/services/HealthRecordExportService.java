@@ -2,6 +2,8 @@ package com.ashleydev.jokeur_api.domain.services;
 
 import com.ashleydev.jokeur_api.HealthRecordExportRequest;
 import com.ashleydev.jokeur_api.domain.enums.MeasureType;
+import com.ashleydev.jokeur_api.domain.rules.HealthRecordExportRules;
+import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
 import com.ashleydev.jokeur_api.persistence.entities.VaccineEntity;
@@ -9,7 +11,6 @@ import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthReco
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -30,189 +31,162 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 @RequiredArgsConstructor
 public class HealthRecordExportService {
 
-    private static final int COL_DATE = 0;
-    private static final int COL_VALUE = 1;
-    private static final int COL_UNIT = 2;
-    private static final int COL_NAME = 1;
-    private static final int COL_VACCINATOR = 2;
-    private static final int COL_DESCRIPTION = 3;
+  private final HealthRecordRepository healthRecordRepository;
+  private final SpringTemplateEngine templateEngine;
+  private final HealthRecordExportRules exportRules;
 
-    private final HealthRecordRepository healthRecordRepository;
-    private final SpringTemplateEngine templateEngine;
+  @Transactional
+  public byte[] exportToPdf(Long healthRecordId, HealthRecordExportRequest request) {
+    HealthRecordEntity healthRecord = healthRecordRepository
+      .findById(healthRecordId)
+      .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordId));
 
-    @Transactional
-    public byte[] exportToPdf(Long healthRecordId, HealthRecordExportRequest request) {
-        HealthRecordEntity healthRecord = healthRecordRepository
-                .findById(healthRecordId)
-                .orElseThrow(() -> new RuntimeException("Health record introuvable"));
+    Map<MeasureType, List<MeasureEntity>> measuresByType = null;
+    if (exportRules.hasMeasureTypes(request)) {
+      measuresByType = exportRules.filterMeasuresByTypeAndDateRange(healthRecord.getMeasures(), request);
+    }
 
-        Map<MeasureType, List<MeasureEntity>> measuresByType = null;
+    List<VaccineEntity> vaccines = null;
+    if (request.isIncludeVaccines()) {
+      vaccines = exportRules.filterVaccinesSortedByDate(healthRecord.getVaccines());
+    }
 
-        if (request.getMeasureTypes() != null && !request.getMeasureTypes().isEmpty()) {
-            measuresByType = request
-                    .getMeasureTypes()
-                    .stream()
-                    .collect(
-                            Collectors.toMap(
-                                    measureType -> measureType,
-                                    measureType ->
-                                            healthRecord
-                                                    .getMeasures()
-                                                    .stream()
-                                                    .filter(measure -> measure.getMeasureType() == measureType)
-                                                    .filter(measure -> !measure.getCreationDate().isBefore(request.getFrom()) && !measure.getCreationDate().isAfter(request.getTo()))
-                                                    .sorted((measureA, measureB) -> measureA.getCreationDate().compareTo(measureB.getCreationDate()))
-                                                    .collect(Collectors.toList())
-                            )
-                    );
+    Context ctx = new Context();
+    ctx.setVariable("healthRecord", healthRecord);
+    ctx.setVariable("measuresByType", measuresByType);
+    ctx.setVariable("vaccines", vaccines);
+    ctx.setVariable("from", request.getFrom());
+    ctx.setVariable("to", request.getTo());
+
+    String html = templateEngine.process("export/health-record-export", ctx);
+
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+      ITextRenderer renderer = new ITextRenderer();
+      renderer.setDocumentFromString(html);
+      renderer.layout();
+      renderer.createPDF(baos);
+      return baos.toByteArray();
+    } catch (Exception exception) {
+      throw new RuntimeException("Erreur lors de la génération du PDF", exception);
+    }
+  }
+
+  @Transactional
+  public byte[] exportToXlsx(Long healthRecordId, HealthRecordExportRequest request) {
+    HealthRecordEntity healthRecord = healthRecordRepository
+      .findById(healthRecordId)
+      .orElseThrow(() -> new HealthRecordNotFoundException(healthRecordId));
+
+    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+      byte[] result = buildXlsx(healthRecord, request);
+      baos.write(result);
+      return baos.toByteArray();
+    } catch (Exception exception) {
+      throw new RuntimeException("Erreur lors de la génération du fichier Excel", exception);
+    }
+  }
+
+  private byte[] buildXlsx(HealthRecordEntity healthRecord, HealthRecordExportRequest request) {
+    try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+      CellStyle headerStyle = buildHeaderStyle(workbook);
+
+      if (exportRules.hasMeasureTypes(request)) {
+        Map<MeasureType, List<MeasureEntity>> measuresByType = exportRules.filterMeasuresByTypeAndDateRange(healthRecord.getMeasures(), request);
+
+        for (MeasureType measureType : request.getMeasureTypes()) {
+          List<MeasureEntity> measures = measuresByType.get(measureType);
+          Sheet sheet = workbook.createSheet(resolveMeasureLabel(measureType));
+
+          Row headerRow = sheet.createRow(0);
+          writeHeaderCell(headerRow, new HeaderCell("Date", 0), headerStyle);
+          writeHeaderCell(headerRow, new HeaderCell("Valeur", 1), headerStyle);
+          writeHeaderCell(headerRow, new HeaderCell("Unité", 2), headerStyle);
+
+          int rowIndex = 1;
+          for (MeasureEntity measure : measures) {
+            Row row = sheet.createRow(rowIndex++);
+            row.createCell(0).setCellValue(measure.getCreationDate().toString());
+            row.createCell(1).setCellValue(measure.getMeasureValue());
+            row.createCell(2).setCellValue(resolveMeasureUnit(measureType));
+          }
+
+          sheet.autoSizeColumn(0);
+          sheet.autoSizeColumn(1);
+          sheet.autoSizeColumn(2);
+        }
+      }
+
+      if (request.isIncludeVaccines()) {
+        List<VaccineEntity> vaccines = exportRules.filterVaccinesSortedByDate(healthRecord.getVaccines());
+
+        Sheet vaccinesSheet = workbook.createSheet("Vaccins");
+
+        Row headerRow = vaccinesSheet.createRow(0);
+        writeHeaderCell(headerRow, new HeaderCell("Date", 0), headerStyle);
+        writeHeaderCell(headerRow, new HeaderCell("Nom", 1), headerStyle);
+        writeHeaderCell(headerRow, new HeaderCell("Vaccinateur", 2), headerStyle);
+        writeHeaderCell(headerRow, new HeaderCell("Description", 3), headerStyle);
+
+        int rowIndex = 1;
+        for (VaccineEntity vaccine : vaccines) {
+          Row row = vaccinesSheet.createRow(rowIndex++);
+          row.createCell(0).setCellValue(vaccine.getVaccineDate().toString());
+          row.createCell(1).setCellValue(nullSafe(vaccine.getName()));
+          row.createCell(2).setCellValue(nullSafe(vaccine.getVaccinator()));
+          row.createCell(3).setCellValue(nullSafe(vaccine.getDescription()));
         }
 
-        List<VaccineEntity> vaccines = null;
-        if (request.isIncludeVaccines()) {
-            vaccines = healthRecord
-                    .getVaccines()
-                    .stream()
-                    .sorted((vaccineA, vaccineB) -> vaccineA.getVaccineDate().compareTo(vaccineB.getVaccineDate()))
-                    .collect(Collectors.toList());
-        }
+        vaccinesSheet.autoSizeColumn(0);
+        vaccinesSheet.autoSizeColumn(1);
+        vaccinesSheet.autoSizeColumn(2);
+        vaccinesSheet.autoSizeColumn(3);
+      }
 
-        Context ctx = new Context();
-        ctx.setVariable("healthRecord", healthRecord);
-        ctx.setVariable("measuresByType", measuresByType);
-        ctx.setVariable("vaccines", vaccines);
-        ctx.setVariable("from", request.getFrom());
-        ctx.setVariable("to", request.getTo());
-
-        String html = templateEngine.process("export/health-record-export", ctx);
-
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            ITextRenderer renderer = new ITextRenderer();
-            renderer.setDocumentFromString(html);
-            renderer.layout();
-            renderer.createPDF(baos);
-            return baos.toByteArray();
-        } catch (Exception exception) {
-            throw new RuntimeException("Erreur lors de la génération du PDF", exception);
-        }
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      workbook.write(out);
+      return out.toByteArray();
+    } catch (Exception exception) {
+      throw new RuntimeException("Erreur lors de la génération du fichier Excel", exception);
     }
+  }
 
-    @Transactional
-    public byte[] exportToXlsx(Long healthRecordId, HealthRecordExportRequest request) {
-        HealthRecordEntity healthRecord = healthRecordRepository
-                .findById(healthRecordId)
-                .orElseThrow(() -> new RuntimeException("Health record introuvable"));
+  private CellStyle buildHeaderStyle(Workbook workbook) {
+    CellStyle style = workbook.createCellStyle();
+    Font font = workbook.createFont();
+    font.setBold(true);
+    style.setFont(font);
+    style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+    style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+    return style;
+  }
 
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            XSSFWorkbook workbook = new XSSFWorkbook();
-            CellStyle headerStyle = buildHeaderStyle(workbook);
+  private void writeHeaderCell(Row row, HeaderCell cell, CellStyle style) {
+    Cell c = row.createCell(cell.column());
+    c.setCellValue(cell.value());
+    c.setCellStyle(style);
+  }
 
-            if (request.getMeasureTypes() != null && !request.getMeasureTypes().isEmpty()) {
-                for (MeasureType measureType : request.getMeasureTypes()) {
-                    List<MeasureEntity> measures = healthRecord
-                            .getMeasures()
-                            .stream()
-                            .filter(measure -> measure.getMeasureType() == measureType)
-                            .filter(measure -> !measure.getCreationDate().isBefore(request.getFrom()) && !measure.getCreationDate().isAfter(request.getTo()))
-                            .sorted((measureA, measureB) -> measureA.getCreationDate().compareTo(measureB.getCreationDate()))
-                            .collect(Collectors.toList());
+  private String resolveMeasureLabel(MeasureType measureType) {
+    return switch (measureType) {
+      case WEIGHT -> "Poids";
+      case BPM -> "Fréquence cardiaque";
+      case RESPIRATORY_RATE -> "Fréquence respiratoire";
+      case TEMPERATURE -> "Température";
+    };
+  }
 
-                    Sheet sheet = workbook.createSheet(resolveMeasureLabel(measureType));
-                    writeMeasureHeaders(sheet.createRow(0), headerStyle);
+  private String resolveMeasureUnit(MeasureType measureType) {
+    return switch (measureType) {
+      case WEIGHT -> "kg";
+      case BPM -> "bpm";
+      case RESPIRATORY_RATE -> "rpm";
+      case TEMPERATURE -> "°C";
+    };
+  }
 
-                    int rowIndex = 1;
-                    for (MeasureEntity measure : measures) {
-                        Row row = sheet.createRow(rowIndex++);
-                        row.createCell(COL_DATE).setCellValue(measure.getCreationDate().toString());
-                        row.createCell(COL_VALUE).setCellValue(measure.getMeasureValue());
-                        row.createCell(COL_UNIT).setCellValue(resolveMeasureUnit(measureType));
-                    }
+  private String nullSafe(String value) {
+    return value != null ? value : "";
+  }
 
-                    sheet.autoSizeColumn(COL_DATE);
-                    sheet.autoSizeColumn(COL_VALUE);
-                    sheet.autoSizeColumn(COL_UNIT);
-                }
-            }
-
-            if (request.isIncludeVaccines()) {
-                Sheet vaccinesSheet = workbook.createSheet("Vaccins");
-                writeVaccineHeaders(vaccinesSheet.createRow(0), headerStyle);
-
-                int rowIndex = 1;
-                List<VaccineEntity> vaccines = healthRecord
-                        .getVaccines()
-                        .stream()
-                        .sorted((vaccineA, vaccineB) -> vaccineA.getVaccineDate().compareTo(vaccineB.getVaccineDate()))
-                        .collect(Collectors.toList());
-
-                for (VaccineEntity vaccine : vaccines) {
-                    Row row = vaccinesSheet.createRow(rowIndex++);
-                    row.createCell(COL_DATE).setCellValue(vaccine.getVaccineDate().toString());
-                    row.createCell(COL_NAME).setCellValue(nullSafe(vaccine.getName()));
-                    row.createCell(COL_VACCINATOR).setCellValue(nullSafe(vaccine.getVaccinator()));
-                    row.createCell(COL_DESCRIPTION).setCellValue(nullSafe(vaccine.getDescription()));
-                }
-
-                vaccinesSheet.autoSizeColumn(COL_DATE);
-                vaccinesSheet.autoSizeColumn(COL_NAME);
-                vaccinesSheet.autoSizeColumn(COL_VACCINATOR);
-                vaccinesSheet.autoSizeColumn(COL_DESCRIPTION);
-            }
-
-            workbook.write(baos);
-            return baos.toByteArray();
-
-        } catch (Exception exception) {
-            throw new RuntimeException("Erreur lors de la génération du fichier Excel", exception);
-        }
-    }
-
-    private void writeMeasureHeaders(Row row, CellStyle style) {
-        applyStyle(row.createCell(COL_DATE), "Date", style);
-        applyStyle(row.createCell(COL_VALUE), "Valeur", style);
-        applyStyle(row.createCell(COL_UNIT), "Unité", style);
-    }
-
-    private void writeVaccineHeaders(Row row, CellStyle style) {
-        applyStyle(row.createCell(COL_DATE), "Date", style);
-        applyStyle(row.createCell(COL_NAME), "Nom", style);
-        applyStyle(row.createCell(COL_VACCINATOR), "Vaccinateur", style);
-        applyStyle(row.createCell(COL_DESCRIPTION), "Description", style);
-    }
-
-    private void applyStyle(Cell cell, String value, CellStyle style) {
-        cell.setCellValue(value);
-        cell.setCellStyle(style);
-    }
-
-    private CellStyle buildHeaderStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        Font font = workbook.createFont();
-        font.setBold(true);
-        style.setFont(font);
-        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        return style;
-    }
-
-    private String resolveMeasureLabel(MeasureType measureType) {
-        return switch (measureType) {
-            case WEIGHT -> "Poids";
-            case BPM -> "Fréquence cardiaque";
-            case RESPIRATORY_RATE -> "Fréquence respiratoire";
-            case TEMPERATURE -> "Température";
-        };
-    }
-
-    private String resolveMeasureUnit(MeasureType measureType) {
-        return switch (measureType) {
-            case WEIGHT -> "kg";
-            case BPM -> "bpm";
-            case RESPIRATORY_RATE -> "rpm";
-            case TEMPERATURE -> "°C";
-        };
-    }
-
-    private String nullSafe(String value) {
-        return value != null ? value : "";
-    }
+  private record HeaderCell(String value, int column) {}
 }
