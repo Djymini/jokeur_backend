@@ -1,7 +1,7 @@
 package com.ashleydev.jokeur_api.persistence.repositories;
 
 import com.ashleydev.jokeur_api.persistence.entities.AppointmentEntity;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,8 +32,8 @@ public interface AppoinmentRepository extends JpaRepository<AppointmentEntity, L
   )
   List<AppointmentEntity> findPendingAppointmentDuringPeriod(
     @Param("userId") Long userId,
-    @Param("startDate") LocalDate startDate,
-    @Param("endDate") LocalDate endDate
+    @Param("startDate") LocalDateTime startDate,
+    @Param("endDate") LocalDateTime endDate
   );
 
   @Query(

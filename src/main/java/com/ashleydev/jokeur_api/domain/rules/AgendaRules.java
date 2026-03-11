@@ -1,19 +1,18 @@
 package com.ashleydev.jokeur_api.domain.rules;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 
 public class AgendaRules {
 
-  public static LocalDate getFirstDayOfMonth(LocalDateTime date) {
+  public static LocalDateTime getFirstDayOfMonth(LocalDateTime date) {
     Month month = date.getMonth();
     int year = date.getYear();
 
-    return LocalDate.of(year, month, 1);
+    return LocalDateTime.of(year, month, 1, 0, 0);
   }
 
-  public static LocalDate getLastDayOfMonth(LocalDateTime date) {
+  public static LocalDateTime getLastDayOfMonth(LocalDateTime date) {
     Month month = date.getMonth();
     int year = date.getYear();
     int day;
@@ -24,6 +23,6 @@ public class AgendaRules {
       default -> day = 30;
     }
 
-    return LocalDate.of(year, month, day);
+    return LocalDateTime.of(year, month, day, 23, 59);
   }
 }
