@@ -1,6 +1,8 @@
 package com.ashleydev.jokeur_api.exceptions;
 
 import com.ashleydev.jokeur_api.exceptions.annotation.AspectExtractIdImpossibleException;
+import com.ashleydev.jokeur_api.exceptions.appointment.AppointmentDeleteFailedException;
+import com.ashleydev.jokeur_api.exceptions.appointment.AppointmentNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.*;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordUpdateEmptyException;
@@ -13,6 +15,8 @@ import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerUpdateEmptyException;
 import com.ashleydev.jokeur_api.exceptions.reminder.ReminderNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.storage.FileStorageException;
+import com.ashleydev.jokeur_api.exceptions.treatment.TreatmentDeleteFailedException;
+import com.ashleydev.jokeur_api.exceptions.treatment.TreatmentNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.user.UserEmailAlreadyUsedException;
 import com.ashleydev.jokeur_api.exceptions.user.UserNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.user.UserPseudoAlreadyUsedException;
@@ -170,6 +174,26 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(VaccineDeleteFailedException.class)
   public ResponseEntity<String> handleVaccineDeleteFailed(VaccineDeleteFailedException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(TreatmentNotFoundException.class)
+  public ResponseEntity<String> handleTreatmentNotFound(TreatmentNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(TreatmentDeleteFailedException.class)
+  public ResponseEntity<String> handleTreatmentDeleteFailed(TreatmentDeleteFailedException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(AppointmentNotFoundException.class)
+  public ResponseEntity<String> handleAppointmentNotFound(AppointmentNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+  }
+
+  @ExceptionHandler(AppointmentDeleteFailedException.class)
+  public ResponseEntity<String> handleAppointmentDeleteFailed(AppointmentDeleteFailedException ex) {
     return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(ex.getMessage());
   }
 
