@@ -84,15 +84,15 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(MaxUploadSizeExceededException.class)
   public ResponseEntity<Map<String, String>> handleMaxUploadSize(MaxUploadSizeExceededException ex) {
-      throw new FileTooLargeException();
+    throw new FileTooLargeException();
   }
 
   @ExceptionHandler(FileTooLargeException.class)
   public ResponseEntity<Map<String, String>> handleFileTooLarge(FileTooLargeException ex) {
-      Map<String, String> body = new HashMap<>();
-      body.put("error", "FILE_TOO_LARGE");
-      body.put("message", ex.getMessage());
-      return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(body);
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "FILE_TOO_LARGE");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(body);
   }
 
   @ExceptionHandler(HealthRecordNotFoundException.class)
