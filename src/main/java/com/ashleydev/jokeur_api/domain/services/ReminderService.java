@@ -3,7 +3,8 @@ package com.ashleydev.jokeur_api.domain.services;
 import com.ashleydev.jokeur_api.exposition.dtos.reminder.ReminderResponseDto;
 import com.ashleydev.jokeur_api.mappers.ReminderMapper;
 import com.ashleydev.jokeur_api.persistence.repositories.ReminderRepository;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public class ReminderService {
   private final ReminderRepository reminderRepository;
 
   public Page<ReminderResponseDto> getReminders(Long userId, Pageable pageable) {
-    LocalDate maxIntervalDate = LocalDate.now().plusMonths(REMINDER_MONTH_INTERVAL);
+    LocalDateTime maxIntervalDate = LocalDateTime.now().plusMonths(REMINDER_MONTH_INTERVAL);
     return reminderRepository.findPendingReminder(userId, maxIntervalDate, pageable).map(ReminderMapper::toDto);
   }
 }

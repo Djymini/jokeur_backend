@@ -1,7 +1,6 @@
 package com.ashleydev.jokeur_api.persistence.repositories;
 
 import com.ashleydev.jokeur_api.persistence.entities.ReminderEntity;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -22,7 +21,7 @@ public interface ReminderRepository extends JpaRepository<ReminderEntity, Long> 
     order by r.reminderDate asc
     """
   )
-  Page<ReminderEntity> findPendingReminder(@Param("userId") Long userId, @Param("maxIntervalDate") LocalDate maxIntervalDate, Pageable pageable);
+  Page<ReminderEntity> findPendingReminder(@Param("userId") Long userId, @Param("maxIntervalDate") LocalDateTime maxIntervalDate, Pageable pageable);
 
   @Query(
     """
