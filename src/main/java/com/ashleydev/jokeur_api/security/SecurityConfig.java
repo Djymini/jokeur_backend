@@ -42,7 +42,7 @@ public class SecurityConfig {
       .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(auth ->
         auth
-          .requestMatchers("/auth/**", "/test/all", "/owners/**", "/uploads/**")
+          .requestMatchers("/auth/**", "/test/all", "/owners/**", "/auth/forgot-password", "/uploads")
           .permitAll()
           .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
           .permitAll()
@@ -57,7 +57,8 @@ public class SecurityConfig {
             "/reminder/**",
             "/vaccines/**",
             "/treatments/**",
-            "/agenda/**"
+            "/agenda/**",
+            "/api/**"
           )
           .authenticated()
           .requestMatchers("/admin/**")

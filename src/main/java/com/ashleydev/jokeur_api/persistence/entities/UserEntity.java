@@ -2,6 +2,7 @@ package com.ashleydev.jokeur_api.persistence.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -50,6 +51,12 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  @Column(name = "reset_token_hash", length = 64)
+  private String resetTokenHash;
+
+  @Column(name = "reset_token_expires_at")
+  private LocalDateTime resetTokenExpiresAt;
 
   /* Méthodes UserDetails (utilisées par Spring Security) */
   @Override

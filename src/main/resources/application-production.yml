@@ -1,6 +1,9 @@
 jokeur:
   rssUrl: https://www.animaux.fr/actualites/rss/
 
+brevo:
+  resetBaseUrl: "http://jokeur.ashleydev.fr/reset-password"
+
 spring:
   datasource:
     url: jdbc:mysql://${DB_HOST_PROD}:${DB_PORT_PROD}/${DB_NAME_PROD}?createDatabaseIfNotExist=true

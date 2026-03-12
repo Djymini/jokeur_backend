@@ -1,3 +1,12 @@
+brevo:
+  apiKey: "dummy"
+  senderEmail: "no-reply@test.local"
+  senderName: "Test"
+  resetBaseUrl: "http://localhost:4200/reset-password"
+
+jokeur:
+  rssUrl: https://www.animaux.fr/actualites/rss/
+
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
