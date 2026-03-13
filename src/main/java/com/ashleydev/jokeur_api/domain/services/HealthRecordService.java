@@ -17,6 +17,7 @@ import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureReposito
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +27,7 @@ public class HealthRecordService {
   private final MeasureRepository measureRepository;
   private final UserRepository userRepository;
   private final HealthRecordRules healthRecordRules;
+  private final StorageService storageService;
 
   public HealthRecordResponseDto create(HealthRecordRequestDTO dto) {
     healthRecordRules.validateCreate(dto);
@@ -97,5 +99,22 @@ public class HealthRecordService {
         return HealthRecordMapper.toDto(entity, measuresDto);
       })
       .toList();
+  }
+
+  public HealthRecordResponseDto uploadPhoto(Long id, MultipartFile file) {
+    HealthRecordEntity entity = healthRecordRepository.findById(id).orElseThrow(() -> new HealthRecordNotFoundException(id));
+
+    if (entity.getPhotoKey() != null) {
+      storageService.delete(entity.getPhotoKey());
+    }
+
+    String photoKey = storageService.store(file, id);
+    entity.setPhotoKey(photoKey);
+
+    HealthRecordEntity saved = healthRecordRepository.save(entity);
+    List<MeasureEntity> measures = measureRepository.findByHealthRecordId(saved.getId());
+    HealthRecordMeasuresResponseDTO measuresDto = MeasureMapper.toHealthRecordDto(measures);
+
+    return HealthRecordMapper.toDto(saved, measuresDto);
   }
 }

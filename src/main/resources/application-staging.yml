@@ -1,6 +1,9 @@
 jokeur:
   rssUrl: https://www.animaux.fr/actualites/rss/
 
+brevo:
+  resetBaseUrl: "http://staging.jokeur.ashleydev.fr/reset-password"
+
 spring:
   datasource:
     url: jdbc:mysql://${DB_HOST_STAGING}:${DB_PORT_STAGING}/${DB_NAME_STAGING}?createDatabaseIfNotExist=true
@@ -17,3 +20,8 @@ cors:
 logging:
   level:
     com.backend_project_template: INFO
+
+app:
+  upload:
+    dir: /app/uploads/
+    base-url: https://staging-api.jokeur.ashleydev.fr/uploads/

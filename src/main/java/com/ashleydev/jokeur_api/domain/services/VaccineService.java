@@ -17,7 +17,6 @@ import com.ashleydev.jokeur_api.persistence.entities.VaccineEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.ReminderRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.vaccine.VaccineRepository;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +35,6 @@ public class VaccineService {
 
   @ValidateHealthRecord
   public List<VaccineResponseDto> getAllByHealthRecordId(Long healthRecordId) {
-    List<VaccineResponseDto> vaccinResponseList = new ArrayList<>();
-    List<VaccineEntity> vaccineEntityList = vaccineRepository.findAllByHealthRecordI(healthRecordId);
     return vaccineRepository.findAllByHealthRecordI(healthRecordId).stream().map(VaccinMapper::toDto).toList();
   }
 
@@ -53,7 +50,7 @@ public class VaccineService {
     HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
     ReminderEntity newReminder = new ReminderEntity();
     newReminder.setType(ReminderType.VACCINE);
-    newReminder.setDescription(VaccineRules.formatReminderVaccineDescription(request.name()));
+    newReminder.setDescription(VaccineRules.formatReminderVaccineDescription(request.name(), healthRecord.getPetName()));
     newReminder.setReminderDate(request.vaccineReminderDate());
     newReminder.setUser(healthRecord.getUser());
     VaccineEntity newVaccin = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, newReminder));
@@ -67,11 +64,11 @@ public class VaccineService {
       "Le rappel " + request.reminder().id() + " n'existe pas"
     );
 
-    ReminderEntity newReminder = reminderRepository.findById(request.reminder().id()).get();
-    newReminder.setDescription(request.reminder().description());
-    newReminder.setReminderDate(request.reminder().reminderDate());
-
     HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
+
+    ReminderEntity newReminder = reminderRepository.findById(request.reminder().id()).get();
+    newReminder.setReminderDate(request.reminder().reminderDate());
+    newReminder.setDescription(VaccineRules.formatReminderVaccineDescription(request.name(), healthRecord.getPetName()));
 
     VaccineEntity response = vaccineRepository.save(VaccinMapper.toEntity(request, healthRecord, newReminder));
 

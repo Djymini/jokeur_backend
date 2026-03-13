@@ -85,7 +85,7 @@ public class UserVaccinE2ETest extends TestContainerConfig {
     }
 
     @Test
-    void shouldCreateAndRetrieveVariousMeasures() throws Exception {
+    void shouldCreateAndRetrieveVariousVaccines() throws Exception {
         String jwt = this.jwt;
         String hrId = this.hrId;
 
@@ -98,7 +98,7 @@ public class UserVaccinE2ETest extends TestContainerConfig {
                                    "description": "Contre la rage",
                                    "vaccinator": "Dr Mattmoissat",
                                    "vaccineDate": "2026-03-03",
-                                   "vaccineReminderDate": "2026-03-03",
+                                   "vaccineReminderDate": "2026-03-03T09:30",
                                    "healthRecordId": %s
                                  }
                             """.formatted(hrId)))
@@ -110,7 +110,7 @@ public class UserVaccinE2ETest extends TestContainerConfig {
     }
 
     @Test
-    void shouldModifyExistingMeasure() throws Exception {
+    void shouldModifyExistingVaccine() throws Exception {
         String jwt = this.jwt;
         String hrId = this.hrId;
 
@@ -123,7 +123,7 @@ public class UserVaccinE2ETest extends TestContainerConfig {
                                    "description": "Contre la rage",
                                    "vaccinator": "Dr Mattmoissat",
                                    "vaccineDate": "2026-03-03",
-                                   "vaccineReminderDate": "2026-03-03",
+                                   "vaccineReminderDate": "2026-03-03T09:30",
                                    "healthRecordId": %s
                                  }
                             """.formatted(hrId)))
@@ -147,7 +147,7 @@ public class UserVaccinE2ETest extends TestContainerConfig {
                                     "reminder": {
                                       "id": %s,
                                       "description": "Test",
-                                      "reminderDate": "2026-03-03",
+                                      "reminderDate": "2026-03-03T09:30",
                                       "status": "PENDING"
                                     }
                                   }
@@ -156,7 +156,7 @@ public class UserVaccinE2ETest extends TestContainerConfig {
     }
 
     @Test
-    void shouldDeleteMeasure() throws Exception {
+    void shouldDeleteVaccine() throws Exception {
         String jwt = this.jwt;
         String hrId = this.hrId;
 
@@ -169,7 +169,7 @@ public class UserVaccinE2ETest extends TestContainerConfig {
                                    "description": "Contre la rage",
                                    "vaccinator": "Dr Mattmoissat",
                                    "vaccineDate": "2026-03-03",
-                                   "vaccineReminderDate": "2026-03-03",
+                                   "vaccineReminderDate": "2026-03-03T09:30",
                                    "healthRecordId": %s
                                  }
                             """.formatted(hrId)))

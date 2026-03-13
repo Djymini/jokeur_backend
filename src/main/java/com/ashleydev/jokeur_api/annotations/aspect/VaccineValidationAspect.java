@@ -22,7 +22,6 @@ public class VaccineValidationAspect extends ValidationAspectBase {
   public void validate(JoinPoint joinPoint, ValidateVaccine validateAnnotation) {
     Object[] args = joinPoint.getArgs();
     String fieldName = validateAnnotation.idField();
-    System.out.println("VaccineRepository test : " + fieldName);
     Long id = extractId(joinPoint, args, fieldName);
 
     if (id != null && !vaccineRepository.existsById(id)) {

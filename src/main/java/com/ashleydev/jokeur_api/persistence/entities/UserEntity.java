@@ -2,6 +2,7 @@ package com.ashleydev.jokeur_api.persistence.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +39,9 @@ public class UserEntity extends BaseEntity implements UserDetails {
   @Column(nullable = false)
   private String password;
 
+  @Column(nullable = true, unique = false)
+  private String address;
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JsonManagedReference
   private List<ReminderEntity> reminders;
@@ -45,8 +49,17 @@ public class UserEntity extends BaseEntity implements UserDetails {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<HealthRecordEntity> healthRecords;
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<AppointmentEntity> appointments;
+
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  @Column(name = "reset_token_hash", length = 64)
+  private String resetTokenHash;
+
+  @Column(name = "reset_token_expires_at")
+  private LocalDateTime resetTokenExpiresAt;
 
   /* Méthodes UserDetails (utilisées par Spring Security) */
   @Override

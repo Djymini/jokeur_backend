@@ -57,12 +57,8 @@ public class HealthRecordEntity {
   @Column(name = "allergy", length = 100)
   private String allergy;
 
-  @Lob
-  @Column(name = "image", columnDefinition = "MEDIUMBLOB")
-  private byte[] image;
-
-  @Column(name = "image_type")
-  private String imageType;
+  @Column(name = "photoKey")
+  private String photoKey;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "animal_type", nullable = false, length = 20)
@@ -72,12 +68,15 @@ public class HealthRecordEntity {
   @JoinColumn(name = "user_id", nullable = false)
   private UserEntity user;
 
-  @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<AppointmentEntity> appointments;
+  @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<SymptomHealthRecordEntity> symptoms = new ArrayList<>();
 
   @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<MeasureEntity> measures = new ArrayList<>();
 
   @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<VaccineEntity> vaccines = new ArrayList<>();
+
+  @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TreatmentEntity> treatments = new ArrayList<>();
 }

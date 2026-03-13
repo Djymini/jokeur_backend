@@ -35,12 +35,4 @@ public class VaccineEntity {
   @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
   @JoinColumn(name = "reminder_id", nullable = false)
   private ReminderEntity reminderEntity;
-
-  @Column(name = "creation_date", nullable = false, updatable = false)
-  private LocalDate creationDate;
-
-  @PrePersist
-  public void onCreate() {
-    creationDate = LocalDate.now();
-  }
 }
