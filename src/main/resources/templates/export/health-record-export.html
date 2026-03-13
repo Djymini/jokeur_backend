@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body        { font-family: Arial, sans-serif; font-size: 12px; color: #4a5568; margin: 40px; }
+        h1          { color: #122e52; font-size: 22px; margin-bottom: 2px; border-left: 5px solid #f0a07a; padding-left: 10px; }
+        h2          { color: #2a5a9e; font-size: 14px; margin-top: 28px; margin-bottom: 8px;
+                      border-bottom: 2px solid #8ecbba; padding-bottom: 4px; }
+        .subtitle   { color: #8a9bb0; font-size: 11px; margin-bottom: 24px; padding-left: 16px; }
+        .info-grid  { display: table; width: 100%; border-collapse: collapse; background: #dde8f5; }
+        .info-row   { display: table-row; }
+        .info-label { display: table-cell; font-weight: bold; width: 40%; padding: 6px 10px; color: #122e52; border-bottom: 1px solid white; }
+        .info-value { display: table-cell; padding: 6px 10px; color: #4a5568; border-bottom: 1px solid white; }
+        table       { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        th          { background: #2a5a9e; color: white; padding: 7px 10px; text-align: left; font-size: 11px; }
+        td          { padding: 6px 10px; border-bottom: 1px solid #dde8f5; font-size: 11px; color: #4a5568; }
+        tr:nth-child(even) td { background: #dde8f5; }
+        .empty      { color: #8a9bb0; font-style: italic; margin-top: 8px; }
+        .section    { margin-top: 24px; border-left: 3px solid #8ecbba; padding-left: 10px; }
+    </style>
+</head>
+<body>
+
+<h1>Fiche de santé</h1>
+<div class="subtitle">
+    Exporté le <span th:text="${#temporals.format(#temporals.createNow(), 'dd/MM/yyyy')}"/>
+    <span th:if="${from != null}">
+        | Mesures du <strong th:text="${#temporals.format(from, 'dd/MM/yyyy')}"/>
+        au <strong th:text="${#temporals.format(to, 'dd/MM/yyyy')}"/>
+    </span>
+</div>
+
+<!-- BLOC FIXE -->
+<h2>Informations de l'animal</h2>
+<div class="info-grid">
+    <div class="info-row">
+        <div class="info-label">Nom</div>
+        <div class="info-value" th:text="${healthRecord.petName}"/>
+    </div>
+    <div class="info-row">
+        <div class="info-label">Type</div>
+        <div class="info-value" th:text="${healthRecord.animalType.label}"/>
+    </div>
+    <div class="info-row">
+        <div class="info-label">Race</div>
+        <div class="info-value" th:text="${healthRecord.breed.label}"/>
+    </div>
+    <div class="info-row">
+        <div class="info-label">Sexe</div>
+        <div class="info-value" th:text="${healthRecord.sex.label}"/>
+    </div>
+    <div class="info-row">
+        <div class="info-label">Date de naissance</div>
+        <div class="info-value" th:text="${healthRecord.birthDate != null ? #temporals.format(healthRecord.birthDate, 'dd/MM/yyyy') : '-'}"/>
+    </div>
+    <div class="info-row">
+        <div class="info-label">Poids actuel</div>
+        <div class="info-value" th:text="${healthRecord.currentWeight != null ? healthRecord.currentWeight + ' kg' : '-'}"/>
+    </div>
+    <div class="info-row">
+        <div class="info-label">Couleur</div>
+        <div class="info-value" th:text="${healthRecord.color.label}"/>
+    </div>
+    <div class="info-row">
+        <div class="info-label">N° identification</div>
+        <div class="info-value" th:text="${healthRecord.identificationNumber ?: '-'}"/>
+    </div>
+    <div class="info-row">
+        <div class="info-label">Tatouage</div>
+        <div class="info-value" th:text="${healthRecord.tattoo ?: '-'}"/>
+    </div>
+    <div class="info-row">
+        <div class="info-label">Allergies</div>
+        <div class="info-value" th:text="${healthRecord.allergy ?: '-'}"/>
+    </div>
+</div>
+
+<!-- MESURES PAR TYPE -->
+<div th:if="${measuresByType != null}" th:each="entry : ${measuresByType}" class="section">
+    <h2 th:switch="${entry.key.name()}">
+        <span th:case="'TEMPERATURE'">Mesures — Température</span>
+        <span th:case="'WEIGHT'">Mesures — Poids</span>
+        <span th:case="'RESPIRATORY_RATE'">Mesures — Fréquence respiratoire</span>
+        <span th:case="'BPM'">Mesures — Fréquence cardiaque (BPM)</span>
+        <span th:case="*" th:text="'Mesures — ' + ${entry.key.name()}"/>
+    </h2>
+    <div th:if="${entry.value.isEmpty()}" class="empty">Aucune mesure sur cette période.</div>
+    <table th:unless="${entry.value.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Valeur</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="measure : ${entry.value}">
+            <td th:text="${#temporals.format(measure.creationDate, 'dd/MM/yyyy')}"/>
+            <td th:switch="${entry.key.name()}">
+                <span th:case="'TEMPERATURE'" th:text="${measure.measureValue} + ' °C'"/>
+                <span th:case="'WEIGHT'" th:text="${measure.measureValue} + ' kg'"/>
+                <span th:case="'RESPIRATORY_RATE'" th:text="${measure.measureValue} + ' resp/min'"/>
+                <span th:case="'BPM'" th:text="${measure.measureValue} + ' bpm'"/>
+                <span th:case="*" th:text="${measure.measureValue}"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- VACCINS -->
+<div th:if="${vaccines != null}" class="section">
+    <h2>Vaccins</h2>
+    <div th:if="${vaccines.isEmpty()}" class="empty">Aucun vaccin enregistré.</div>
+    <table th:unless="${vaccines.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Nom</th>
+            <th>Vaccinateur</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vaccine : ${vaccines}">
+            <td th:text="${#temporals.format(vaccine.vaccineDate, 'dd/MM/yyyy')}"/>
+            <td th:text="${vaccine.name ?: '-'}"/>
+            <td th:text="${vaccine.vaccinator ?: '-'}"/>
+            <td th:text="${vaccine.description ?: '-'}"/>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

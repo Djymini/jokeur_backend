@@ -79,4 +79,7 @@ public class HealthRecordEntity {
 
   @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<VaccineEntity> vaccines = new ArrayList<>();
+
+  @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TreatmentEntity> treatments = new ArrayList<>();
 }
