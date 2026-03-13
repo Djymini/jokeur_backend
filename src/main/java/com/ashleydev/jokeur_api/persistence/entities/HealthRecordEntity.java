@@ -68,9 +68,6 @@ public class HealthRecordEntity {
   @JoinColumn(name = "user_id", nullable = false)
   private UserEntity user;
 
-  @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<AppointmentEntity> appointments;
-
   @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<SymptomHealthRecordEntity> symptoms = new ArrayList<>();
 
