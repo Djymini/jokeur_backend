@@ -4,37 +4,34 @@ import com.ashleydev.jokeur_api.exceptions.symptom.BusinessException;
 import com.ashleydev.jokeur_api.exceptions.symptom.InvalidSymptomDateException;
 import com.ashleydev.jokeur_api.exceptions.symptom.SymptomAlreadyAddedException;
 import com.ashleydev.jokeur_api.exceptions.symptom.SymptomNotActiveException;
+import com.ashleydev.jokeur_api.exposition.dtos.symptomhealthrecord.AddSymptomToHealthRecordRequestDTO;
 import com.ashleydev.jokeur_api.persistence.entities.SymptomHealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.SymptomHealthRecordRepository;
 import java.time.LocalDate;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-@Component
-@RequiredArgsConstructor
-public class SymptomHealthRecordRules {
+public final class SymptomHealthRecordRules {
 
-  private final SymptomHealthRecordRepository symptomHealthRecordRepository;
+  private SymptomHealthRecordRules() {}
 
-  public void checkSymptomIsActive(SymptomHealthRecordEntity symptomHealthRecord) {
-    if (Boolean.FALSE.equals(symptomHealthRecord.getIsActive())) {
+  public static void checkSymptomIsActive(SymptomHealthRecordEntity symptomHealthRecord) {
+    if (!symptomHealthRecord.isActive()) {
       throw new SymptomNotActiveException(symptomHealthRecord.getId());
     }
   }
 
-  public void checkDateConsistency(LocalDate observationDate, LocalDate enddate) {
+  public static void checkDateConsistency(LocalDate observationDate, LocalDate endDate) {
     if (observationDate == null) {
       throw new BusinessException("La date d'observation est obligatoire");
     }
 
-    if (enddate != null && enddate.isBefore(observationDate)) {
+    if (endDate != null && endDate.isBefore(observationDate)) {
       throw new InvalidSymptomDateException();
     }
   }
 
-  public void checkNotAlreadyAdded(Long symptomId, Long healthRecordId) {
-    if (symptomHealthRecordRepository.existsByHealthRecordIdAndSymptomId(healthRecordId, symptomId)) {
-      throw new SymptomAlreadyAddedException(symptomId, healthRecordId);
+  public static void checkNotAlreadyAdded(SymptomHealthRecordRepository repository, AddSymptomToHealthRecordRequestDTO dto, Long healthRecordId) {
+    if (repository.existsByHealthRecordIdAndSymptomIdAndObservationDate(healthRecordId, dto.symptomId(), dto.observationDate())) {
+      throw new SymptomAlreadyAddedException(dto.symptomId(), healthRecordId);
     }
   }
 }

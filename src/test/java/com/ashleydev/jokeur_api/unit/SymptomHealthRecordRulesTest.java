@@ -4,7 +4,6 @@ import com.ashleydev.jokeur_api.domain.rules.SymptomHealthRecordRules;
 import com.ashleydev.jokeur_api.exceptions.symptom.InvalidSymptomDateException;
 import com.ashleydev.jokeur_api.exceptions.symptom.SymptomNotActiveException;
 import com.ashleydev.jokeur_api.persistence.entities.SymptomHealthRecordEntity;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -12,15 +11,10 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SymptomHealthRecordRulesTest {
+class SymptomHealthRecordRulesTest {
 
     private SymptomHealthRecordRules rules;
 
-    @BeforeEach
-    void setup() {
-        // Arrange
-        rules = new SymptomHealthRecordRules(null);
-    }
 
     @Test
     @DisplayName("Should throw exception when end date is before observation date")
@@ -42,7 +36,7 @@ public class SymptomHealthRecordRulesTest {
     void should_throw_exception_if_symptom_not_active(){
 
         SymptomHealthRecordEntity symptomHealthRecord = new SymptomHealthRecordEntity();
-        symptomHealthRecord.setIsActive(false);
+        symptomHealthRecord.setActive(false);
 
         Exception ex = assertThrows(
                 SymptomNotActiveException.class,
@@ -57,7 +51,7 @@ public class SymptomHealthRecordRulesTest {
     void should_not_throw_when_symptom_is_active(){
 
         SymptomHealthRecordEntity symptomHealthRecord = new SymptomHealthRecordEntity();
-        symptomHealthRecord.setIsActive(true);
+        symptomHealthRecord.setActive(true);
 
         assertDoesNotThrow(
                 ()-> rules.checkSymptomIsActive(symptomHealthRecord)

@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Service
 public class SenderMailService {
 
-  private final WebClient webClient;
+  private WebClient webClient;
 
   @Value("${brevo.apiKey}")
   private String apiKey;

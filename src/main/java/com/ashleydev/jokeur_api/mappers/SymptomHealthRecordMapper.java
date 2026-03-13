@@ -1,5 +1,6 @@
 package com.ashleydev.jokeur_api.mappers;
 
+import com.ashleydev.jokeur_api.exposition.dtos.symptom.SymptomResponseDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.symptomhealthrecord.AddSymptomToHealthRecordRequestDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.symptomhealthrecord.SymptomHealthRecordDTO;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
@@ -25,7 +26,7 @@ public class SymptomHealthRecordMapper {
 
     return new SymptomHealthRecordDTO(
       entity.getId(),
-      symptom != null ? symptom.getId() : null,
+      symptom != null ? new SymptomResponseDTO(symptom.getId(), symptom.getName()) : null,
       symptom != null ? symptom.getName() : null,
       entity.getObservationDate(),
       entity.getEndDate(),

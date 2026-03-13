@@ -4,10 +4,10 @@ import com.ashleydev.jokeur_api.domain.rules.SymptomRules;
 import com.ashleydev.jokeur_api.exposition.dtos.symptom.SymptomResponseDTO;
 import com.ashleydev.jokeur_api.mappers.SymptomMapper;
 import com.ashleydev.jokeur_api.persistence.entities.SymptomEntity;
+import com.ashleydev.jokeur_api.persistence.repositories.SymptomHealthRecordRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.SymptomRepository;
+import java.util.List;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 public class SymptomService {
 
   private final SymptomRepository symptomRepository;
-  private final SymptomRules symptomRules;
+  private final SymptomHealthRecordRepository symptomHealthRecordRepository;
 
   public SymptomResponseDTO createSymptom(String name) {
-    symptomRules.checkNameNotExists(name);
+    SymptomRules.checkNameNotExists(name, symptomRepository);
 
     SymptomEntity entity = new SymptomEntity();
     entity.setName(name);
@@ -27,20 +27,20 @@ public class SymptomService {
     return SymptomMapper.toDto(saved);
   }
 
-  public Page<SymptomResponseDTO> getAllSymptoms(Pageable pageable) {
-    return symptomRepository.findAll(pageable).map(SymptomMapper::toDto);
+  public List<SymptomResponseDTO> getAllSymptoms() {
+    return symptomRepository.findAll().stream().map(SymptomMapper::toDto).toList();
   }
 
   public SymptomResponseDTO getSymptomById(Long id) {
-    symptomRules.checkExists(id);
+    SymptomRules.checkExists(id, symptomRepository);
 
     SymptomEntity entity = symptomRepository.findById(id).orElseThrow();
     return SymptomMapper.toDto(entity);
   }
 
   public SymptomResponseDTO updateSymptom(Long id, String name) {
-    symptomRules.checkExists(id);
-    symptomRules.checkNameNotExists(name);
+    SymptomRules.checkExists(id, symptomRepository);
+    SymptomRules.checkNameNotExists(name, symptomRepository);
 
     SymptomEntity entity = symptomRepository.findById(id).orElseThrow();
     entity.setName(name);
@@ -49,8 +49,8 @@ public class SymptomService {
   }
 
   public void deleteSymptom(Long id) {
-    symptomRules.checkExists(id);
-    symptomRules.checkNotUsed(id);
+    SymptomRules.checkExists(id, symptomRepository);
+    SymptomRules.checkNotUsed(id, symptomHealthRecordRepository);
 
     symptomRepository.deleteById(id);
   }

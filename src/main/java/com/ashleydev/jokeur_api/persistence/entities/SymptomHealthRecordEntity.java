@@ -38,9 +38,5 @@ public class SymptomHealthRecordEntity {
   private String observation;
 
   @Column(name = "is_active")
-  private Boolean isActive = true;
-
-  public boolean isActive() {
-    return endDate == null || endDate.isAfter(LocalDate.now());
-  }
+  private boolean isActive;
 }

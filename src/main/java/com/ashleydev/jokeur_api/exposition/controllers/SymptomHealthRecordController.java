@@ -2,7 +2,7 @@ package com.ashleydev.jokeur_api.exposition.controllers;
 
 import com.ashleydev.jokeur_api.domain.services.SymptomHealthRecordService;
 import com.ashleydev.jokeur_api.exposition.dtos.symptomhealthrecord.AddSymptomToHealthRecordRequestDTO;
-import com.ashleydev.jokeur_api.persistence.entities.SymptomHealthRecordEntity;
+import com.ashleydev.jokeur_api.exposition.dtos.symptomhealthrecord.SymptomHealthRecordDTO;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +17,27 @@ public class SymptomHealthRecordController {
 
   private final SymptomHealthRecordService symptomHealthRecordService;
 
-  @PostMapping
-  public ResponseEntity<Void> addSymptomToHealthRecord(@Valid @RequestBody AddSymptomToHealthRecordRequestDTO dto) {
-    symptomHealthRecordService.addSymptomToHealthRecord(dto);
+  @PostMapping("/{healthRecordId}")
+  public ResponseEntity<Void> addSymptomToHealthRecord(
+    @PathVariable Long healthRecordId,
+    @Valid @RequestBody AddSymptomToHealthRecordRequestDTO dto
+  ) {
+    symptomHealthRecordService.addSymptomToHealthRecord(healthRecordId, dto);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
-  @GetMapping("/health-record/{healthRecordId}")
-  public ResponseEntity<List<SymptomHealthRecordEntity>> getSymptomsByHealthRecord(@PathVariable Long healthRecordId) {
+  @GetMapping("/{healthRecordId}")
+  public ResponseEntity<List<SymptomHealthRecordDTO>> getSymptomsByHealthRecord(@PathVariable Long healthRecordId) {
     return ResponseEntity.ok(symptomHealthRecordService.getSymptomsByHealthRecord(healthRecordId));
+  }
+
+  @PutMapping("/{healthRecordId}")
+  public ResponseEntity<Void> updatSymptomToHealthRecord(
+    @PathVariable Long healthRecordId,
+    @Valid @RequestBody AddSymptomToHealthRecordRequestDTO dto
+  ) {
+    symptomHealthRecordService.updateSymptomToHealthRecord(healthRecordId, dto);
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 
   @PatchMapping("/{id}/deactivate")

@@ -1,10 +1,11 @@
 package com.ashleydev.jokeur_api.exposition.dtos.symptomhealthrecord;
 
+import com.ashleydev.jokeur_api.exposition.dtos.symptom.SymptomResponseDTO;
 import java.time.LocalDate;
 
 public record SymptomHealthRecordDTO(
   Long id,
-  Long symptomId,
+  SymptomResponseDTO symptom,
   String symptomName,
   LocalDate observationDate,
   LocalDate endDate,
