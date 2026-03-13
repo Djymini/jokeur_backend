@@ -39,6 +39,9 @@ public class UserEntity extends BaseEntity implements UserDetails {
   @Column(nullable = false)
   private String password;
 
+  @Column(nullable = true, unique = false)
+  private String address;
+
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JsonManagedReference
   private List<ReminderEntity> reminders;
