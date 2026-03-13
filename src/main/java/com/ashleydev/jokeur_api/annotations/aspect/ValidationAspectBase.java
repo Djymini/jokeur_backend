@@ -7,7 +7,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 public class ValidationAspectBase {
 
   protected Long extractId(JoinPoint joinPoint, Object[] args, String fieldName) {
-    Long idInMethodArgs = isMethodHasFielName(joinPoint, fieldName);
+    Long idInMethodArgs = isMethodHasFieldName(joinPoint, fieldName);
     if (idInMethodArgs != null) return idInMethodArgs;
 
     for (Object arg : args) {
@@ -21,7 +21,7 @@ public class ValidationAspectBase {
     return null;
   }
 
-  private Long isMethodHasFielName(JoinPoint joinPoint, String fieldName) {
+  private Long isMethodHasFieldName(JoinPoint joinPoint, String fieldName) {
     MethodSignature signature = (MethodSignature) joinPoint.getSignature();
     String[] parametersName = signature.getParameterNames();
     Class[] parametersType = signature.getParameterTypes();

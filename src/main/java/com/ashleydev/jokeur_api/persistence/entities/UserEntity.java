@@ -46,6 +46,9 @@ public class UserEntity extends BaseEntity implements UserDetails {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<HealthRecordEntity> healthRecords;
 
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<AppointmentEntity> appointments;
+
   @Enumerated(EnumType.STRING)
   private Role role;
 

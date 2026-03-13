@@ -17,7 +17,6 @@ import com.ashleydev.jokeur_api.persistence.entities.VaccineEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.ReminderRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.vaccine.VaccineRepository;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +35,6 @@ public class VaccineService {
 
   @ValidateHealthRecord
   public List<VaccineResponseDto> getAllByHealthRecordId(Long healthRecordId) {
-    List<VaccineResponseDto> vaccinResponseList = new ArrayList<>();
-    List<VaccineEntity> vaccineEntityList = vaccineRepository.findAllByHealthRecordI(healthRecordId);
     return vaccineRepository.findAllByHealthRecordI(healthRecordId).stream().map(VaccinMapper::toDto).toList();
   }
 

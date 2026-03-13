@@ -27,6 +27,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,7 +59,7 @@ public class VaccineServiceIntegrationTest {
     private VaccineResponseDto vaccineCreated1;
     private VaccineResponseDto vaccineCreated2;
     private VaccineResponseDto vaccineCreated3;
-    private  VaccineResponseDto vaccineCreated4;
+    private VaccineResponseDto vaccineCreated4;
 
 
 
@@ -92,10 +93,10 @@ public class VaccineServiceIntegrationTest {
 
         healthRecord = healthRecordService.create(healthRecordRequest);
 
-        vaccine1 = new VaccineRequestDto("Naccie", "Vaccin contre la rage", "Dr Dumas", LocalDate.now(), LocalDate.of(2026, 12, 12), healthRecord.id());
-        vaccine2 = new VaccineRequestDto("Fizer", "Vaccin contre la polio", "Dr Dumas", LocalDate.now(), LocalDate.of(2026, 12, 12), healthRecord.id());
-        vaccine3 = new VaccineRequestDto("Props", "Vaccin contre ebola", "Dr Dumas", LocalDate.now(), LocalDate.of(2026, 12, 12), healthRecord.id());
-        vaccine4 = new VaccineRequestDto("Stacy", "Vaccin contre la grippe", "Dr Dumas", LocalDate.now(), LocalDate.of(2026, 12, 12), healthRecord.id());
+        vaccine1 = new VaccineRequestDto("Naccie", "Vaccin contre la rage", "Dr Dumas", LocalDate.now(), LocalDateTime.of(2026, 12, 12,9,30), healthRecord.id());
+        vaccine2 = new VaccineRequestDto("Fizer", "Vaccin contre la polio", "Dr Dumas", LocalDate.now(), LocalDateTime.of(2026, 12, 12,9,30), healthRecord.id());
+        vaccine3 = new VaccineRequestDto("Props", "Vaccin contre ebola", "Dr Dumas", LocalDate.now(), LocalDateTime.of(2026, 12, 12,9,30), healthRecord.id());
+        vaccine4 = new VaccineRequestDto("Stacy", "Vaccin contre la grippe", "Dr Dumas", LocalDate.now(), LocalDateTime.of(2026, 12, 12,9,30), healthRecord.id());
 
         vaccineCreated1 = vaccineService.create(vaccine1);
         vaccineCreated2 = vaccineService.create(vaccine2);
@@ -112,8 +113,7 @@ public class VaccineServiceIntegrationTest {
 
         VaccineEntity persisted = allVaccine.get(2);
         assertThat(persisted.getId()).isEqualTo(vaccineCreated3.id());
-        assertThat(persisted.getCreationDate()).isEqualTo(LocalDate.now());
-        assertThat(persisted.getReminderEntity().getReminderDate()).isEqualTo(LocalDate.of(2026, 12, 12));
+        assertThat(persisted.getReminderEntity().getReminderDate()).isEqualTo(LocalDateTime.of(2026, 12, 12,9,30));
         assertThat(persisted.getVaccinator()).isEqualTo(vaccine3.vaccinator());
         assertThat(persisted.getName()).isEqualTo(vaccine3.name());
 
@@ -124,7 +124,7 @@ public class VaccineServiceIntegrationTest {
     @Test
     @Transactional
     void shouldThrowForBadCreation() {
-        VaccineRequestDto vaccineInvalid = new VaccineRequestDto("Naccie", "Vaccin contre la rage", "Dr Dumas", LocalDate.now(), LocalDate.now(), 999L);
+        VaccineRequestDto vaccineInvalid = new VaccineRequestDto("Naccie", "Vaccin contre la rage", "Dr Dumas", LocalDate.now(), LocalDateTime.now(), 999L);
 
         Exception exception1 = assertThrows(RuntimeException.class,
                 () -> vaccineService.create(vaccineInvalid));
@@ -180,7 +180,7 @@ public class VaccineServiceIntegrationTest {
     @Transactional
     void shouldGetUpdate() {
         VaccineEntity persisted = vaccineRepository.findById(vaccineCreated1.id()).get();
-        ReminderVaccineRequestDto newReminder = new ReminderVaccineRequestDto(vaccineCreated1.reminder().id(), "new description for reminder", LocalDate.of(2026, 6, 6), ReminderStatus.PENDING);
+        ReminderVaccineRequestDto newReminder = new ReminderVaccineRequestDto(vaccineCreated1.reminder().id(), "new description for reminder", LocalDateTime.of(2026, 6, 6,9,30), ReminderStatus.PENDING);
         VaccineDetailRequestDto request = new VaccineDetailRequestDto(vaccineCreated1.id(), "Tester", "new desciption", "Testeur", LocalDate.of(2007, 12, 5), healthRecord.id(), newReminder);
 
         vaccineService.update(request);
@@ -196,7 +196,7 @@ public class VaccineServiceIntegrationTest {
     @Transactional
     void shouldThrowForBadUpdateRequest() {
         VaccineEntity persisted = vaccineRepository.findById(vaccineCreated1.id()).get();
-        ReminderVaccineRequestDto newReminder = new ReminderVaccineRequestDto(1L, "new description for reminder", LocalDate.of(2026, 6, 6), ReminderStatus.PENDING);
+        ReminderVaccineRequestDto newReminder = new ReminderVaccineRequestDto(1L, "new description for reminder", LocalDateTime.of(2026, 6, 6,9,30), ReminderStatus.PENDING);
         VaccineDetailRequestDto invalidRequest1 = new VaccineDetailRequestDto(999L, "Tester", "new desciption", "Testeur", LocalDate.of(2007, 12, 5), healthRecord.id(), newReminder);
         VaccineDetailRequestDto invalidRequest2 = new VaccineDetailRequestDto(1L, "Tester", "new desciption", "Testeur", LocalDate.of(2007, 12, 5), 999L, newReminder);
 

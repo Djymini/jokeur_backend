@@ -68,12 +68,12 @@ public class HealthRecordEntity {
   @JoinColumn(name = "user_id", nullable = false)
   private UserEntity user;
 
-  @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<AppointmentEntity> appointments;
-
   @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<MeasureEntity> measures = new ArrayList<>();
 
   @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<VaccineEntity> vaccines = new ArrayList<>();
+
+  @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<TreatmentEntity> treatments = new ArrayList<>();
 }
