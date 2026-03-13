@@ -29,6 +29,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
@@ -79,6 +80,19 @@ public class GlobalExceptionHandler {
     body.put("error", "OWNER_EMAIL_ALREADY_USED");
     body.put("message", ex.getMessage());
     return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+  }
+
+  @ExceptionHandler(MaxUploadSizeExceededException.class)
+  public ResponseEntity<Map<String, String>> handleMaxUploadSize(MaxUploadSizeExceededException ex) {
+    throw new FileTooLargeException();
+  }
+
+  @ExceptionHandler(FileTooLargeException.class)
+  public ResponseEntity<Map<String, String>> handleFileTooLarge(FileTooLargeException ex) {
+    Map<String, String> body = new HashMap<>();
+    body.put("error", "FILE_TOO_LARGE");
+    body.put("message", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body(body);
   }
 
   @ExceptionHandler(HealthRecordNotFoundException.class)
