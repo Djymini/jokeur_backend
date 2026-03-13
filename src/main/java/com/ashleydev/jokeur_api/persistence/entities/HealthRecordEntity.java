@@ -38,9 +38,6 @@ public class HealthRecordEntity {
   @Column(name = "sex", nullable = false, length = 12)
   private PetSex sex;
 
-  @Column(name = "photoKey")
-  private String photoKey;
-
   @Column(name = "birth_date")
   private LocalDate birthDate;
 
@@ -60,6 +57,9 @@ public class HealthRecordEntity {
   @Column(name = "allergy", length = 100)
   private String allergy;
 
+  @Column(name = "photoKey")
+  private String photoKey;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "animal_type", nullable = false, length = 20)
   private AnimalType animalType;
@@ -67,6 +67,9 @@ public class HealthRecordEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   private UserEntity user;
+
+  @OneToMany(mappedBy = "healthRecord", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<SymptomHealthRecordEntity> symptoms = new ArrayList<>();
 
   @OneToMany(mappedBy = "healthRecordEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<MeasureEntity> measures = new ArrayList<>();
