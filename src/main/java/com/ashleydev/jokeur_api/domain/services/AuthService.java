@@ -7,6 +7,7 @@ import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.security.JwtUtil;
 import com.ashleydev.jokeur_api.security.ResetTokenUtils;
 import java.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,23 +20,20 @@ import org.springframework.web.server.ResponseStatusException;
 public class AuthService {
 
   private final AuthenticationManager authenticationManager;
-  private final UserRepository userRepository;
+
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private SenderMailService senderMailService;
+
   private final PasswordEncoder passwordEncoder;
   private final JwtUtil jwtUtil;
-  private final SenderMailService senderMailService;
 
-  public AuthService(
-    AuthenticationManager authenticationManager,
-    UserRepository userRepository,
-    PasswordEncoder passwordEncoder,
-    JwtUtil jwtUtil,
-    SenderMailService senderMailService
-  ) {
+  public AuthService(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
     this.authenticationManager = authenticationManager;
-    this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.jwtUtil = jwtUtil;
-    this.senderMailService = senderMailService;
   }
 
   public RegisterUserResponseDTO register(RegisterUserRequestDTO dto) {
