@@ -1,5 +1,7 @@
 package com.ashleydev.jokeur_api.domain.services;
 
+import com.ashleydev.jokeur_api.exceptions.user.UserEmailAlreadyUsedException;
+import com.ashleydev.jokeur_api.exceptions.user.UserPseudoAlreadyUsedException;
 import com.ashleydev.jokeur_api.exposition.dtos.*;
 import com.ashleydev.jokeur_api.exposition.dtos.vaccine.ResetPasswordRequestDTO;
 import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
@@ -38,10 +40,11 @@ public class AuthService {
 
   public RegisterUserResponseDTO register(RegisterUserRequestDTO dto) {
     if (userRepository.existsByEmail(dto.email())) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "Cet email est déjà utilisé");
+      throw new UserEmailAlreadyUsedException(dto.email());
     }
+
     if (userRepository.existsByPseudo(dto.username())) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "Ce pseudo est déjà utilisé.");
+      throw new UserPseudoAlreadyUsedException(dto.username());
     }
 
     UserEntity user = dto.toEntity();
