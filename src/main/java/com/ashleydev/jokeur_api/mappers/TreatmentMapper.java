@@ -41,7 +41,7 @@ public class TreatmentMapper {
       entity.getId(),
       entity.getName(),
       entity.getDescription(),
-      entity.getFrequency(),
+      entity.getFrequency().getLabel(),
       entity.getBeginDate(),
       entity.getEndDate(),
       entity.getHealthRecordEntity().getId(),
