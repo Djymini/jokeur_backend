@@ -1,7 +1,6 @@
 package com.ashleydev.jokeur_api.domain.services;
 
 import com.ashleydev.jokeur_api.exceptions.user.UserEmailAlreadyUsedException;
-import com.ashleydev.jokeur_api.exceptions.user.UserPseudoAlreadyUsedException;
 import com.ashleydev.jokeur_api.exposition.dtos.*;
 import com.ashleydev.jokeur_api.exposition.dtos.vaccine.ResetPasswordRequestDTO;
 import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
@@ -43,9 +42,9 @@ public class AuthService {
       throw new UserEmailAlreadyUsedException(dto.email());
     }
 
-    if (userRepository.existsByPseudo(dto.username())) {
+    /* if (userRepository.existsByPseudo(dto.username())) {
       throw new UserPseudoAlreadyUsedException(dto.username());
-    }
+    } */
 
     UserEntity user = dto.toEntity();
     user.setPassword(passwordEncoder.encode(dto.password()));
