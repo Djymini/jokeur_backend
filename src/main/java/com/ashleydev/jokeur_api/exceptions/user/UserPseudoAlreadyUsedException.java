@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UserPseudoAlreadyUsedException extends RuntimeException {
 
   public UserPseudoAlreadyUsedException(String pseudo) {
-    super("Pseudo already used: " + pseudo);
+    super("Ce pseudo est déjà utilisé : " + pseudo);
   }
 }
