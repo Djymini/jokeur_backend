@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UserEmailAlreadyUsedException extends RuntimeException {
 
   public UserEmailAlreadyUsedException(String email) {
-    super("Email already used: " + email);
+    super("Cet email est déjà utilisé : " + email);
   }
 }

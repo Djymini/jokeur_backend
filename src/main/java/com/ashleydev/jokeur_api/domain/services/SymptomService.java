@@ -17,41 +17,19 @@ public class SymptomService {
   private final SymptomRepository symptomRepository;
   private final SymptomHealthRecordRepository symptomHealthRecordRepository;
 
+  public List<SymptomResponseDTO> getAllSymptoms() {
+    return symptomRepository.findAll().stream().map(SymptomMapper::toDto).toList();
+  }
+
   public SymptomResponseDTO createSymptom(String name) {
-    SymptomRules.checkNameNotExists(name, symptomRepository);
+    SymptomRules.validateName(name);
+    boolean exists = symptomRepository.existsByNameIgnoreCase(name);
+    SymptomRules.validateNameNoteExists(exists, name);
 
     SymptomEntity entity = new SymptomEntity();
     entity.setName(name);
 
     SymptomEntity saved = symptomRepository.save(entity);
     return SymptomMapper.toDto(saved);
-  }
-
-  public List<SymptomResponseDTO> getAllSymptoms() {
-    return symptomRepository.findAll().stream().map(SymptomMapper::toDto).toList();
-  }
-
-  public SymptomResponseDTO getSymptomById(Long id) {
-    SymptomRules.checkExists(id, symptomRepository);
-
-    SymptomEntity entity = symptomRepository.findById(id).orElseThrow();
-    return SymptomMapper.toDto(entity);
-  }
-
-  public SymptomResponseDTO updateSymptom(Long id, String name) {
-    SymptomRules.checkExists(id, symptomRepository);
-    SymptomRules.checkNameNotExists(name, symptomRepository);
-
-    SymptomEntity entity = symptomRepository.findById(id).orElseThrow();
-    entity.setName(name);
-    SymptomEntity saved = symptomRepository.save(entity);
-    return SymptomMapper.toDto(saved);
-  }
-
-  public void deleteSymptom(Long id) {
-    SymptomRules.checkExists(id, symptomRepository);
-    SymptomRules.checkNotUsed(id, symptomHealthRecordRepository);
-
-    symptomRepository.deleteById(id);
   }
 }
