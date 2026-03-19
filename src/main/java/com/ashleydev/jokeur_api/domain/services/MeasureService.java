@@ -66,6 +66,15 @@ public class MeasureService {
       throw new MeasureUpdateNotChangeValueException("Measure : " + measureId + " not changed after update");
     }
 
+    List<MeasureEntity> listWeight = measureRepository.findAllByHealthRecordIdAndType(healthRecordId, MeasureType.WEIGHT);
+
+    if (
+      checkChange.getMeasureType().toString().toLowerCase().equals("WEIGHT".toLowerCase()) &&
+      listWeight.get(listWeight.size() - 1).getId() == measureId
+    ) {
+      healthRecordRepository.setCurrentWeight(healthRecordId, BigDecimal.valueOf(newValue));
+    }
+
     return MeasureMapper.toDto(checkChange);
   }
 
