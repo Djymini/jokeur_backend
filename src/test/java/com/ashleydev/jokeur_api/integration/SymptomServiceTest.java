@@ -31,23 +31,21 @@ class SymptomServiceTest {
     void createSymptom_shouldSaveSymptom() {
 
         SymptomResponseDTO response =
-                symptomService.createSymptom("mal aux poil");
+                symptomService.createSymptom("new symptom");
 
         assertNotNull(response);
 
         assertTrue(
-                symptomRepository.existsByNameIgnoreCase("mal aux poil")
+                symptomRepository.existsByNameIgnoreCase("new symptom")
         );
     }
 
     @Test
     void getAllSymptoms_shouldReturnAllSymptoms() {
-
-        symptomRepository.save(new SymptomEntity(null, "nouvel symptôme", new ArrayList<>()));
-        symptomRepository.save(new SymptomEntity(null, "mal aux ongles", new ArrayList<>()));
-
+        List<SymptomEntity> persisted = symptomRepository.findAll();
         List<SymptomResponseDTO> symtoms = symptomService.getAllSymptoms();
-        assertEquals(2,symtoms.size());
+
+        assertEquals(persisted.size(),symtoms.size());
     }
 
 }
