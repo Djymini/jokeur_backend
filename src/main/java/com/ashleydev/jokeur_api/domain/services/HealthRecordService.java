@@ -1,11 +1,14 @@
 package com.ashleydev.jokeur_api.domain.services;
 
+import static org.aspectj.runtime.internal.Conversions.floatValue;
+
 import com.ashleydev.jokeur_api.domain.rules.HealthRecordRules;
 import com.ashleydev.jokeur_api.exceptions.healthRecord.HealthRecordNotFoundException;
 import com.ashleydev.jokeur_api.exceptions.owner.OwnerNotFoundException;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.*;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordResponseDto;
 import com.ashleydev.jokeur_api.exposition.dtos.measure.HealthRecordMeasuresResponseDTO;
+import com.ashleydev.jokeur_api.exposition.dtos.measure.MeasureRequestDto;
 import com.ashleydev.jokeur_api.mappers.HealthRecordMapper;
 import com.ashleydev.jokeur_api.mappers.MeasureMapper;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
@@ -14,13 +17,16 @@ import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureRepository;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class HealthRecordService {
 
   private final HealthRecordRepository healthRecordRepository;
@@ -28,6 +34,7 @@ public class HealthRecordService {
   private final UserRepository userRepository;
   private final HealthRecordRules healthRecordRules;
   private final StorageService storageService;
+  private final MeasureService measureService;
 
   public HealthRecordResponseDto create(HealthRecordRequestDTO dto) {
     healthRecordRules.validateCreate(dto);
@@ -36,6 +43,8 @@ public class HealthRecordService {
 
     HealthRecordEntity entity = HealthRecordMapper.toEntity(dto, user);
     HealthRecordEntity saved = healthRecordRepository.save(entity);
+
+    saveCurrentWeight(saved);
 
     List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordId(saved.getId());
     HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
@@ -116,5 +125,11 @@ public class HealthRecordService {
     HealthRecordMeasuresResponseDTO measuresDto = MeasureMapper.toHealthRecordDto(measures);
 
     return HealthRecordMapper.toDto(saved, measuresDto);
+  }
+
+  private void saveCurrentWeight(HealthRecordEntity entity) {
+    MeasureRequestDto currentWeightForSave = new MeasureRequestDto(floatValue(entity.getCurrentWeight()), "WEIGHT", entity.getId(), LocalDate.now());
+
+    measureService.create(currentWeightForSave);
   }
 }

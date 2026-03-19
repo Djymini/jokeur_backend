@@ -11,4 +11,6 @@ public interface SymptomRepository extends JpaRepository<SymptomEntity, Long> {
   boolean existsByNameIgnoreCase(String name);
 
   Page<SymptomEntity> findAll(Pageable pageable);
+
+  SymptomEntity findByName(String name);
 }
