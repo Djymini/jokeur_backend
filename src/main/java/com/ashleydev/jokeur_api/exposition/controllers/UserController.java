@@ -28,5 +28,11 @@ public class UserController {
     return ResponseEntity.noContent().build();
   }
 
+  @DeleteMapping("/me")
+  public ResponseEntity<Void> deleteMe(@AuthenticationPrincipal UserEntity user) {
+    userService.deleteAccount(user);
+    return ResponseEntity.noContent().build();
+  }
+
   public record UpdateUserProfileRequestDTO(String name, String firstname, String address) {}
 }

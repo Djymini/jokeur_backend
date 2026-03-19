@@ -28,4 +28,8 @@ public class UserService {
 
     userRepository.save(user);
   }
+
+  public void deleteAccount(UserEntity user) {
+    userRepository.deleteById(user.getId());
+  }
 }
