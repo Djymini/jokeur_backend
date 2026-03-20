@@ -3,9 +3,11 @@ package com.ashleydev.jokeur_api.persistence.repositories.healthRecord;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordDashboardDTO;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.HealthRecordMyAnimalsDTO;
 import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -62,4 +64,8 @@ public interface HealthRecordRepository extends JpaRepository<HealthRecordEntity
     """
   )
   List<HealthRecordEntity> findAllAnimals(@Param("idUser") Long idUser);
+
+  @Modifying(clearAutomatically = true)
+  @Query("UPDATE HealthRecordEntity hr SET hr.currentWeight = :newValue WHERE hr.id = :id")
+  void setCurrentWeight(@Param("id") Long id, @Param("newValue") BigDecimal newValue);
 }

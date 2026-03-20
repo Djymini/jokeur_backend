@@ -13,12 +13,15 @@ import com.ashleydev.jokeur_api.persistence.entities.HealthRecordEntity;
 import com.ashleydev.jokeur_api.persistence.entities.MeasureEntity;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureRepository;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class MeasureService {
 
   @Autowired
@@ -32,6 +35,11 @@ public class MeasureService {
     MeasureRules.validateType(request.measureType());
 
     HealthRecordEntity healthRecord = healthRecordRepository.findById(request.healthRecordId()).get();
+
+    if (request.measureType().toLowerCase().equals("WEIGHT".toLowerCase())) {
+      healthRecordRepository.setCurrentWeight(healthRecord.getId(), BigDecimal.valueOf(request.value()));
+    }
+
     MeasureEntity newEntity = MeasureMapper.toEntity(request, healthRecord);
 
     MeasureEntity response = measureRepository.save(newEntity);
@@ -56,6 +64,15 @@ public class MeasureService {
     MeasureEntity checkChange = measureRepository.findById(measureId).get();
     if (checkChange.getMeasureValue() != newValue) {
       throw new MeasureUpdateNotChangeValueException("Measure : " + measureId + " not changed after update");
+    }
+
+    List<MeasureEntity> listWeight = measureRepository.findAllByHealthRecordIdAndType(healthRecordId, MeasureType.WEIGHT);
+
+    if (
+      checkChange.getMeasureType().toString().toLowerCase().equals("WEIGHT".toLowerCase()) &&
+      listWeight.get(listWeight.size() - 1).getId() == measureId
+    ) {
+      healthRecordRepository.setCurrentWeight(healthRecordId, BigDecimal.valueOf(newValue));
     }
 
     return MeasureMapper.toDto(checkChange);

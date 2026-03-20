@@ -16,7 +16,7 @@ public class UserService {
   }
 
   public UserMeResponseDTO getMe(UserEntity user) {
-    return new UserMeResponseDTO(user.getEmail(), user.getRole().name(), user.getPseudo(), user.getName(), user.getFirstname(), user.getAddress());
+    return new UserMeResponseDTO(user.getEmail(), user.getRole().name(), user.getName(), user.getFirstname(), user.getAddress());
   }
 
   public void updateProfile(UserEntity user, UserController.UpdateUserProfileRequestDTO dto) {
@@ -27,5 +27,9 @@ public class UserService {
     user.setAddress(addr == null || addr.isBlank() ? null : addr.trim());
 
     userRepository.save(user);
+  }
+
+  public void deleteAccount(UserEntity user) {
+    userRepository.deleteById(user.getId());
   }
 }

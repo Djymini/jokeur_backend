@@ -107,7 +107,7 @@ public class UserMeasureE2ETest extends TestContainerConfig {
 
         mockMvc.perform(get("/measures/" + hrId + "/weight").header("Authorization", "Bearer " + jwt))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].value").value(12.0));
+                .andExpect(jsonPath("$[1].value").value(12.0));
     }
 
     @Test

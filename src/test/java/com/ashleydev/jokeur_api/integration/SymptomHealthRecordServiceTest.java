@@ -15,6 +15,7 @@ import com.ashleydev.jokeur_api.persistence.repositories.SymptomRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.UserRepository;
 import com.ashleydev.jokeur_api.persistence.repositories.healthRecord.HealthRecordRepository;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,12 +45,10 @@ class SymptomHealthRecordServiceTest {
     @Autowired
     private UserRepository userRepository;
 
+
     @Test
     void addSymptom_shouldSaveAssociation() {
-
-        SymptomEntity symptom = new SymptomEntity();
-        symptom.setName("Toux");
-        symptomRepository.save(symptom);
+        SymptomEntity symptom = symptomRepository.findByName("Toux");
         UserEntity user = new UserEntity();
         user.setName("Jean");
         user.setFirstname("Moulin");

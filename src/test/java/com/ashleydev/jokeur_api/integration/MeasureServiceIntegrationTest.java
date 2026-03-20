@@ -104,7 +104,7 @@ public class MeasureServiceIntegrationTest {
         List<MeasureEntity> allWeight = measureRepository.findAllByHealthRecordIdAndType(healthRecord.id(), MeasureType.WEIGHT);
         List<MeasureEntity> allRespiratoryRate = measureRepository.findAllByHealthRecordIdAndType(healthRecord.id(), MeasureType.RESPIRATORY_RATE);
 
-        assertThat(allWeight).hasSize(1);
+        assertThat(allWeight).hasSize(2);
         assertThat(allRespiratoryRate).hasSize(3);
 
         MeasureEntity persisted = allRespiratoryRate.get(2);
