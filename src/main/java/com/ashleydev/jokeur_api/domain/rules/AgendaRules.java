@@ -9,7 +9,7 @@ public class AgendaRules {
     Month month = date.getMonth();
     int year = date.getYear();
 
-    return LocalDateTime.of(year, month, 1, 0, 0);
+    return LocalDateTime.of(year, month, 1, 0, 0).minusDays(8);
   }
 
   public static LocalDateTime getLastDayOfMonth(LocalDateTime date) {
