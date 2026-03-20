@@ -28,9 +28,9 @@ public class AgendaRulesTest {
         LocalDateTime response2 = AgendaRules.getFirstDayOfMonth(date2);
         LocalDateTime response3 = AgendaRules.getFirstDayOfMonth(date3);
 
-        assertEquals(response1, LocalDateTime.of(date1.getYear(), date1.getMonth(), 1, 0, 0));
-        assertEquals(response2, LocalDateTime.of(date2.getYear(), date2.getMonth(), 1, 0, 0));
-        assertEquals(response3, LocalDateTime.of(date3.getYear(), date3.getMonth(), 1, 0, 0));
+        assertEquals(response1, LocalDateTime.of(date1.getYear(), date1.getMonth(), 1, 0, 0).minusDays(8));
+        assertEquals(response2, LocalDateTime.of(date2.getYear(), date2.getMonth(), 1, 0, 0).minusDays(8));
+        assertEquals(response3, LocalDateTime.of(date3.getYear(), date3.getMonth(), 1, 0, 0).minusDays(8));
     }
 
     @Test
