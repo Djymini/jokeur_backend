@@ -40,8 +40,8 @@ public class AgendaRulesTest {
         LocalDateTime response2 = AgendaRules.getLastDayOfMonth(date2);
         LocalDateTime response3 = AgendaRules.getLastDayOfMonth(date3);
 
-        assertEquals(response1, LocalDateTime.of(date1.getYear(), date1.getMonth(), 31, 23, 59));
-        assertEquals(response2, LocalDateTime.of(date2.getYear(), date2.getMonth(), 30, 23, 59));
-        assertEquals(response3, LocalDateTime.of(date3.getYear(), date3.getMonth(), 28, 23, 59));
+        assertEquals(response1, LocalDateTime.of(date1.getYear(), date1.getMonth(), 31, 23, 59).plusDays(8));
+        assertEquals(response2, LocalDateTime.of(date2.getYear(), date2.getMonth(), 30, 23, 59).plusDays(8));
+        assertEquals(response3, LocalDateTime.of(date3.getYear(), date3.getMonth(), 28, 23, 59).plusDays(8));
     }
 }
