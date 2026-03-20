@@ -23,6 +23,6 @@ public class AgendaRules {
       default -> day = 30;
     }
 
-    return LocalDateTime.of(year, month, day, 23, 59);
+    return LocalDateTime.of(year, month, day, 23, 59).plusDays(8);
   }
 }
