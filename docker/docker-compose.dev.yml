@@ -1,0 +1,48 @@
+name: jokeur-dev-back
+
+services:
+  jokeur_db-dev:
+    image: mysql:8.0
+    container_name: jokeur_db-dev
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${DB_NAME_DEV}
+      MYSQL_USER: ${DB_USER_DEV}
+      MYSQL_PASSWORD: ${DB_PASSWORD_DEV}
+    ports:
+      - "3307:3306"
+    volumes:
+      - jokeur_mysql_data_dev:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  jokeur-api-dev:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: jokeur-api-dev
+    restart: unless-stopped
+    depends_on:
+      jokeur_db-dev:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: development
+      DB_HOST_DEV: jokeur_db-dev
+      DB_PORT_DEV: 3306
+      DB_NAME_DEV: ${DB_NAME_DEV}
+      DB_USER_DEV: ${DB_USER_DEV}
+      DB_PASSWORD_DEV: ${DB_PASSWORD_DEV}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS}
+      CLIENT_URL_DEV: ${CLIENT_URL_DEV}
+      BREVO_API_KEY: ${BREVO_API_KEY}
+      APP_UPLOAD_DIR: ${APP_UPLOAD_DIR}
+    ports:
+      - "8080:8080"
+
+volumes:
+  jokeur_mysql_data_dev:
