@@ -2,6 +2,7 @@ package com.ashleydev.jokeur_api.exposition.controllers;
 
 import com.ashleydev.jokeur_api.domain.services.HealthRecordService;
 import com.ashleydev.jokeur_api.exposition.dtos.healthRecord.*;
+import com.ashleydev.jokeur_api.persistence.entities.UserEntity;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @RestController
 @RequestMapping("/health-records")
@@ -30,10 +32,12 @@ public class HealthRecordController {
     return ResponseEntity.status(HttpStatus.CREATED).body(saved);
   }
 
-  @GetMapping("/{id}")
-  public HealthRecordResponseDto getByHealthRecordId(@PathVariable Long id) {
-    return healthRecordService.getByHealthRecordId(id);
-  }
+    @GetMapping("/{id}")
+    public HealthRecordResponseDto getByHealthRecordId(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserEntity currentUser) {
+        return healthRecordService.getByHealthRecordId(id, currentUser);
+    }
 
   @GetMapping("/dashboard")
   public List<HealthRecordDashboardDTO> dashboard(@RequestParam Long userId) {

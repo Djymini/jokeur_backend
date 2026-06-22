@@ -20,6 +20,7 @@ import com.ashleydev.jokeur_api.persistence.repositories.measure.MeasureReposito
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,14 +53,19 @@ public class HealthRecordService {
     return HealthRecordMapper.toDto(saved, measures);
   }
 
-  public HealthRecordResponseDto getByHealthRecordId(Long id) {
-    HealthRecordEntity entity = healthRecordRepository.findById(id).orElseThrow(() -> new HealthRecordNotFoundException(id));
+    public HealthRecordResponseDto getByHealthRecordId(Long id, UserEntity currentUser) {
+        HealthRecordEntity entity = healthRecordRepository.findById(id)
+                .orElseThrow(() -> new HealthRecordNotFoundException(id));
 
-    List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordId(entity.getId());
-    HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
+        if (!entity.getUser().getId().equals(currentUser.getId())) {
+            throw new AccessDeniedException("Accès refusé");
+        }
 
-    return HealthRecordMapper.toDto(entity, measures);
-  }
+        List<MeasureEntity> measureEntities = measureRepository.findByHealthRecordId(entity.getId());
+        HealthRecordMeasuresResponseDTO measures = MeasureMapper.toHealthRecordDto(measureEntities);
+
+        return HealthRecordMapper.toDto(entity, measures);
+    }
 
   public List<HealthRecordDashboardDTO> getDashboardByUser(Long userId) {
     return healthRecordRepository.findDashboardDtosByUserId(userId);
@@ -90,12 +96,16 @@ public class HealthRecordService {
     return HealthRecordMapper.toDto(healthRecordRepository.save(entity), measures);
   }
 
-  public void deleteByHealthRecordId(Long id) {
-    if (!healthRecordRepository.existsById(id)) {
-      throw new HealthRecordNotFoundException(id);
+    public void deleteByHealthRecordId(Long id) {
+        HealthRecordEntity entity = healthRecordRepository.findById(id)
+                .orElseThrow(() -> new HealthRecordNotFoundException(id));
+
+        if (entity.getPhotoKey() != null) {
+            storageService.delete(entity.getPhotoKey());
+        }
+
+        healthRecordRepository.deleteById(id);
     }
-    healthRecordRepository.deleteById(id);
-  }
 
   public List<HealthRecordResponseDto> getAllAnimals(Long userId) {
     return healthRecordRepository

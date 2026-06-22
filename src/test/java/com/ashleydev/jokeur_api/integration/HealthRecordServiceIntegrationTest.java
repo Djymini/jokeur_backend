@@ -83,8 +83,10 @@ class HealthRecordServiceIntegrationTest {
     void getByHealthRecordId_shouldReturnData_whenExists() {
         HealthRecordResponseDto created = healthRecordService.create(validCreateDto(userId));
 
+        UserEntity currentUser = userRepository.findById(userId).orElseThrow();
+
         HealthRecordResponseDto found =
-                healthRecordService.getByHealthRecordId(created.id());
+                healthRecordService.getByHealthRecordId(created.id(), currentUser);
 
         assertEquals(created.id(), found.id());
         assertEquals(userId, found.userId());
